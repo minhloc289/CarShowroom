@@ -6,6 +6,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\fontend\CustomerDashBoardController;
 
 
 /* BACKEND ROUTES */
@@ -32,6 +33,4 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
 
 
 /* FRONTEND ROUTES */
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDashBoard.index');

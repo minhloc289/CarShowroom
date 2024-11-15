@@ -32,8 +32,10 @@ class AuthController extends Controller
         ];
     
         if (Auth::attempt($credentials)) {
-            session()->flash('success', 'Đăng nhập thành công');
-            return redirect()->route('dashboard');    
+
+            toastr()->success('Đăng nhập thành công!');
+            
+            return redirect()->route('dashboard');
         } 
         return back()->with('error', 'Email hoặc mật khẩu không chính xác!')->withInput();
     }

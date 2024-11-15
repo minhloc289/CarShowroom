@@ -3,10 +3,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    @include('fontend.dashboard.components.head')
 </head>
 
 <body>
@@ -14,8 +11,11 @@
         <!-- Include Header Component -->
         @include('fontend.dashboard.components.Header')
         <!-- Include Introduce Component -->
-        @include('fontend.dashboard.components.Introduce')
-        @include('fontend.dashboard.components.Swiper')
+
+        <div class="content flex-grow w-full pt-[90px] mb-10">
+            @yield('content')
+        </div>
+
         <!-- Include Introduce Footer -->
         @include('fontend.dashboard.components.Footer')
     </div>

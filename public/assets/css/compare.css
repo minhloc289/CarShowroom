@@ -1,0 +1,46 @@
+/* Custom underline effect */
+.custom-underline::after {
+    content: "";
+    display: block;
+    width: 50%; /* Adjust width to control the length of the underline */
+    height: 3px; /* Thickness of the underline */
+    margin: 0 auto;
+    background: linear-gradient(to right, orange, red, purple);
+    border-radius: 2px;
+    transition: width 0.3s;
+}
+
+/* ----------------------------------------- CSS Chart ---------------------------------------------------- */
+
+.radar-chart {
+    width: 80%;
+    height: 80%;
+    margin-left:20px ;
+  }
+  
+  .radar-chart path {
+    transition: all 0.3s ease;
+  }
+  
+  .radar-chart path:hover {
+    opacity: 0.8;
+  }
+  
+  .radar-legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .legend-color {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+  }

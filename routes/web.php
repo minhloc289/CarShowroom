@@ -22,7 +22,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class]);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-    /* DASHBOARD */
+    /* DASHBOARD 
     Route::get('/dashboard', [DashboardController::class, 'loadDashboard'])->name('dashboard');
 
     /* USERS */
@@ -34,3 +34,4 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
 
 /* FRONTEND ROUTES */
 Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDashBoard.index');
+Route::get('/compare', [CustomerDashBoardController::class, 'compare'])->name('CustomerDashBoard.compare');

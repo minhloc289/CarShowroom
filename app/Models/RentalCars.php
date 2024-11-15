@@ -20,13 +20,13 @@ class RentalCars extends Model
         'rental_conditions'
     ];
 
-    public function carDetails()
-    {
-        return $this->belongsTo(CarDetails::class, 'car_id', 'car_id');
-    }
+    // public function carDetails()
+    // {
+    //     return $this->belongsTo(CarDetails::class, 'car_id', 'car_id');
+    // }
 
-    public function rentalReceipts()
-    {
-        return $this->hasMany(RentalReceipt::class, 'car_id', 'rental_id');
-    }
+    // public function rentalReceipts()
+    // {
+    //     return $this->hasMany(RentalReceipt::class, 'car_id', 'rental_id');
+    // }
 }

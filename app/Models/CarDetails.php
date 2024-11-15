@@ -31,19 +31,19 @@ class CarDetails extends Model
         'image_url',
     ];
 
-    public function rentalCars()
-    {
-        return $this->hasMany(RentalCars::class, 'car_id', 'car_id');
-    }
+    // public function rentalCars()
+    // {
+    //     return $this->hasMany(RentalCars::class, 'car_id', 'car_id');
+    // }
 
-    public function salesCars()
-    {
-        return $this->hasMany(SalesCars::class, 'car_id', 'car_id');
-    }
+    // public function salesCars()
+    // {
+    //     return $this->hasMany(SalesCars::class, 'car_id', 'car_id');
+    // }
 
-    public function testDriveRegistrations()
-    {
-        return $this->hasMany(TestDriveRegistration::class, 'car_id', 'car_id');
-    }
+    // public function testDriveRegistrations()
+    // {
+    //     return $this->hasMany(TestDriveRegistration::class, 'car_id', 'car_id');
+    // }
     
 }

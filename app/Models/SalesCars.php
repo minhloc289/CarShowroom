@@ -20,9 +20,9 @@ class SalesCars extends Model
         'sale_conditions',
     ];
 
-    // Định nghĩa mối quan hệ belongsTo với bảng CarDetails
-    public function carDetails()
-    {
-        return $this->belongsTo(CarDetails::class, 'car_id', 'car_id');
-    }
+    // // Định nghĩa mối quan hệ belongsTo với bảng CarDetails
+    // public function carDetails()
+    // {
+    //     return $this->belongsTo(CarDetails::class, 'car_id', 'car_id');
+    // }
 }

@@ -22,11 +22,11 @@ return new class extends Migration
             $table->enum('status', ['Active', 'Completed', 'Canceled'])->default('Active'); // Trạng thái
             $table->timestamps(); // Thời gian tạo và cập nhật
             
-            // Thêm khóa ngoại cho user_id
-            $table->foreign('user_id')->references('id')->on('account')->onDelete('cascade');
+            // // Thêm khóa ngoại cho user_id
+            // $table->foreign('user_id')->references('id')->on('accounts')->onDelete('cascade');
 
-            // Thêm khóa ngoại cho car_id
-            $table->foreign('car_id')->references('rental_id')->on('rental_cars')->onDelete('cascade');
+            // // Thêm khóa ngoại cho car_id
+            // $table->foreign('car_id')->references('rental_id')->on('rental_cars')->onDelete('cascade');
             
         });
     }
@@ -37,10 +37,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('rental_receipt');
-        Schema::table('rental_receipt', function (Blueprint $table) {
-            // Xóa khóa ngoại
-            $table->dropForeign(['user_id']);
-            $table->dropForeign(['car_id']);
-        });
+        // Schema::table('rental_receipt', function (Blueprint $table) {
+        //     // Xóa khóa ngoại
+        //     $table->dropForeign(['user_id']);
+        //     $table->dropForeign(['car_id']);
+        // });
     }
 };

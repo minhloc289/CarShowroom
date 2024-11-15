@@ -25,16 +25,16 @@ class ScheduleBooking extends Model
     /**
      * Thiết lập quan hệ belongsTo với bảng Account.
      */
-    public function user()
-    {
-        return $this->belongsTo(Account::class, 'user_id', 'id');
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(Account::class, 'user_id', 'id');
+    // }
 
-    /**
-     * Thiết lập quan hệ belongsTo với bảng Service.
-     */
-    public function service()
-    {
-        return $this->belongsTo(Service::class, 'service_id', 'service_id');
-    }
+    // /**
+    //  * Thiết lập quan hệ belongsTo với bảng Service.
+    //  */
+    // public function service()
+    // {
+    //     return $this->belongsTo(Service::class, 'service_id', 'service_id');
+    // }
 }

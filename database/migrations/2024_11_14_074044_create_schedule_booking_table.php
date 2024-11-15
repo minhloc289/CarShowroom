@@ -19,10 +19,10 @@ return new class extends Migration
             $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending');
             $table->timestamps();
 
-            // Thêm khóa ngoại cho user_id
-            $table->foreign('user_id')->references('id')->on('account')->onDelete('cascade');
+            // // Thêm khóa ngoại cho user_id
+            // $table->foreign('user_id')->references('id')->on('accounts')->onDelete('cascade');
             // Thêm khóa ngoại cho service_id
-            $table->foreign('service_id')->references('service_id')->on('services')->onDelete('cascade');
+            // $table->foreign('service_id')->references('service_id')->on('services')->onDelete('cascade');
         });
     }
 
@@ -31,11 +31,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('schedule_booking', function (Blueprint $table) {
-            // Xóa khóa ngoại trước khi xóa bảng
-            $table->dropForeign(['user_id']);
-            $table->dropForeign(['service_id']);
-        }); 
+        // Schema::table('schedule_booking', function (Blueprint $table) {
+        //     // Xóa khóa ngoại trước khi xóa bảng
+        //     // $table->dropForeign(['user_id']);
+        //     $table->dropForeign(['service_id']);
+        // }); 
 
         Schema::dropIfExists('schedule_booking');
     }

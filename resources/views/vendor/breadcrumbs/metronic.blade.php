@@ -3,7 +3,7 @@
     <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1">
         {{ $breadcrumbs->first()->title }}
     </h1>
-    <span class="h-20px border-gray-200 border-start mx-4"></span>
+    <span class="test h-20px border-gray-200 border-start mx-4"></span>
     <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
         @foreach ($breadcrumbs->slice(1) as $breadcrumb)
             @if (!is_null($breadcrumb->url) && !$loop->last)

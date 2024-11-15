@@ -17,4 +17,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="/assets/css/customize.css">
+<link rel="stylesheet" href="{{ asset('/assets/css/customize.css') }}">
+<script src="{{ asset('/assets/js/custom/customizeJS.js') }}" defer></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>

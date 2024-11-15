@@ -59,17 +59,24 @@ return [
     |
     */
 
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
+'providers' => [
+    'accounts' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\Account::class,
+    ],
+],
+
+    // 'providers' => [
+    //     'users' => [
+    //         'driver' => 'eloquent',
+    //         'model' => env('AUTH_MODEL', App\Models\User::class),
+    //     ],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
-    ],
+    // ],
 
     /*
     |--------------------------------------------------------------------------
@@ -90,14 +97,15 @@ return [
     |
     */
 
-    'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire' => 60,
-            'throttle' => 60,
-        ],
+'passwords' => [
+    'accounts' => [
+        'provider' => 'accounts', // Tham chiếu đến bảng accounts
+        'table' => 'password_resets', // Bảng lưu trữ token đặt lại mật khẩu
+        'expire' => 60,
+        'throttle' => 60,
     ],
+],
+
 
     /*
     |--------------------------------------------------------------------------

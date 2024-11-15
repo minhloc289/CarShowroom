@@ -110,4 +110,8 @@ class CustomerDashBoardController extends Controller
 
     return redirect()->route('Forgotpass.showForgotfrom');
 }
+//compare
+public function compare(){
+    return view("frontend.compareCar.compare_car");
+}
 }

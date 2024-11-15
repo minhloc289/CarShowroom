@@ -9,7 +9,7 @@ use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\frontend\CustomerDashBoardController;
 use App\Http\Controllers\frontend\ForgetPasswordManager;
-
+use App\Http\Controllers\frontend\CustomerAuthController;
 
 
 

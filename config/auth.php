@@ -60,7 +60,7 @@ return [
     */
 
 'providers' => [
-    'accounts' => [
+    'users' => [
         'driver' => 'eloquent',
         'model' => App\Models\Account::class,
     ],

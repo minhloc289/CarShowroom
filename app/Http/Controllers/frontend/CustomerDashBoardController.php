@@ -40,25 +40,27 @@ class CustomerDashBoardController extends Controller
      */
     public function login(Request $request)
     {
-        // Xác thực dữ liệu đầu vào
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
 
-        // Thử đăng nhập
-        if (Auth::attempt($credentials)) {
-            // Nếu đăng nhập thành công, chuyển hướng về trang chủ với thông báo thành công
-            toastr()->success("Đăng nhhập tài khoản thành công");
+        // Debug thông tin trước khi xác thực
+        if (!Account::where('email', $credentials['email'])->exists()) {
+            toastr()->error("Email không tồn tại trong cơ sở dữ liệu");
+            return redirect()->route('customer.login');
+        }
 
+        // Kiểm tra Auth::attempt
+        if (Auth::attempt($credentials)) {
+            toastr()->success("Đăng nhập thành công");
             return redirect()->route('CustomerDashBoard.index');
         }
 
-        // Nếu đăng nhập thất bại, chuyển hướng về trang đăng nhập với thông báo lỗi
-        toastr()->error("Tài khoản hoặc mặt khẩu không đúng");
-
-        return redirect()->route('CustomerDashBoard.index');
+        toastr()->error("Tài khoản hoặc mật khẩu không đúng");
+        return redirect()->route('customer.login');
     }
+
 
     /**
      * Xử lý đăng ký.
@@ -83,9 +85,6 @@ class CustomerDashBoardController extends Controller
         toastr()->success("Đăng kí tài khoản thành công");
         return redirect()->route('CustomerDashBoard.index');
     }
-    
-    
-
     
     //From forgot pass
     public function showForgotForm(){

@@ -12,9 +12,6 @@ use App\Http\Controllers\fontend\CustomerDashBoardController;
 /* BACKEND ROUTES */
 
 /* AUTHENTICATION */
-
-
-
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
 
     /* AUTHENTICATION */
@@ -26,8 +23,16 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/dashboard', [DashboardController::class, 'loadDashboard'])->name('dashboard');
 
     /* USERS */
-    Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user');
+    Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
     Route::get('/user/account', [AdminController::class, 'loadUserAccountPage'])->name('user.account');
+
+    /* USER CRUD */
+    Route::get('/user/create', [AdminController::class, 'loadUserCreatePage'])->name('user.create');
+    Route::post('/user/create', [AdminController::class, 'createUser'])->name('user.store'); // Unique name for POST
+    Route::get('/user/edit/{id}', [AdminController::class, 'loadUserEditPage'])->name('user.edit');
+    Route::post('/user/edit/{id}', [AdminController::class, 'editUser'])->name('user.update'); // Unique name for POST
+    Route::delete('/user/delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete'); // Use DELETE method;
+    Route::get('user/details/{id}', [AdminController::class, 'loadUserDetails'])->name('user.details');
 
 });
 

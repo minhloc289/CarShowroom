@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->text('user_agent')->nullable();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_quanly')->default(0);
             $table->rememberToken();

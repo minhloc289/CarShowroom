@@ -2,25 +2,40 @@
 
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Account extends Authenticatable
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Account extends Model
 {
     use HasFactory;
 
-    protected $table = 'accounts';
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-    protected $keyType = 'string';
+    protected $table = 'accounts'; // Tên bảng trong cơ sở dữ liệu
 
-    // Các trường có thể được gán hàng loạt
+    protected $primaryKey = 'id'; // Khóa chính của bảng
+
+    public $timestamps = true; // Bật timestamps (created_at, updated_at)
+
     protected $fillable = [
         'email',
         'password',
     ];
 
-    // Ẩn trường password khi trả về dạng mảng hoặc JSON
+    // public function rentalReceipts()
+    //     {
+    //         return $this->hasMany(RentalReceipt::class, 'user_id', 'id');
+    //     }
+
+    // public function scheduleBookings()
+    //     {
+    //         return $this->hasMany(ScheduleBooking::class, 'user_id', 'id');
+    //     }
+
+    // public function testDriveRegistrations()
+    //     {
+    //         return $this->hasMany(TestDriveRegistration::class, 'user_id', 'id');
+    //     }
+
     protected $hidden = [
         'password',
     ];

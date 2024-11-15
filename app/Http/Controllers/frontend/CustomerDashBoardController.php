@@ -38,7 +38,7 @@ class CustomerDashBoardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(Request $request)
+ public function login(Request $request)
     {
         // Xác thực dữ liệu đầu vào
         $credentials = $request->validate([
@@ -49,7 +49,8 @@ class CustomerDashBoardController extends Controller
         // Thử đăng nhập
         if (Auth::attempt($credentials)) {
             // Nếu đăng nhập thành công, chuyển hướng về trang chủ với thông báo thành công
-            dd('Heloooo');
+            toastr()->success("Đăng nhập thành công");
+
             return redirect()->route('CustomerDashBoard.index');
         }
 
@@ -58,6 +59,7 @@ class CustomerDashBoardController extends Controller
 
         return redirect()->route('CustomerDashBoard.index');
     }
+
 
     /**
      * Xử lý đăng ký.
@@ -82,9 +84,6 @@ class CustomerDashBoardController extends Controller
         toastr()->success("Đăng kí tài khoản thành công");
         return redirect()->route('CustomerDashBoard.index');
     }
-    
-    
-
     
     //From forgot pass
     public function showForgotForm(){

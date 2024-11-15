@@ -1,18 +1,24 @@
 <?php
 
+use App\Http\Controllers\frontend\ForgotPassController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\Backend\AdminController;
-use App\Http\Controllers\fontend\CustomerDashBoardController;
+use App\Http\Controllers\frontend\CustomerDashBoardController;
+use App\Http\Controllers\frontend\ForgetPasswordManager;
+
+
+
 
 
 /* BACKEND ROUTES */
 
 /* AUTHENTICATION */
 
+Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDashBoard.index');
 
 
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
@@ -31,6 +37,25 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
 
 });
 
+// Route đăng nhập
+Route::get('/customer/login', [CustomerDashBoardController::class, 'showLoginForm'])->name('customer.login');
+Route::post('/customer/login', [CustomerDashBoardController::class, 'login'])->name('login');
 
-/* FRONTEND ROUTES */
-Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDashBoard.index');
+// Route đăng ký
+Route::get('/customer/sign_up', [CustomerDashBoardController::class, 'showSignUpForm'])->name('customer.sign_up');
+Route::post('/customer/sign_up', [CustomerDashBoardController::class, 'signUp'])->name('sign_up');
+//Route forgot
+
+Route::get('/forget-password', [ForgetPasswordManager::class, 'forgetPassword'])->name('forget.password');
+Route::post('/forget-password', [ForgetPasswordManager::class, 'forgetPasswordPost'])->name('forget.password.post');
+Route::get('/reset-password/{token}', [ForgetPasswordManager::class, 'resetPassword'])->name('reset.password');
+Route::post('/reset-password/{token}', [ForgetPasswordManager::class, 'resetPasswordPost'])->name('reset.password.post');
+
+
+// Trang chủ
+Route::get('/home', function () {    
+    return view('home');
+})->name('home');
+
+
+

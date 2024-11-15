@@ -49,7 +49,8 @@ class CustomerDashBoardController extends Controller
         // Thử đăng nhập
         if (Auth::attempt($credentials)) {
             // Nếu đăng nhập thành công, chuyển hướng về trang chủ với thông báo thành công
-            dd('Heloooo');
+            toastr()->success("Đăng nhập thành công");
+
             return redirect()->route('CustomerDashBoard.index');
         }
 
@@ -110,5 +111,9 @@ class CustomerDashBoardController extends Controller
     }
 
     return redirect()->route('Forgotpass.showForgotfrom');
+}
+//compare
+public function compare(){
+    return view("frontend.compareCar.compare_car");
 }
 }

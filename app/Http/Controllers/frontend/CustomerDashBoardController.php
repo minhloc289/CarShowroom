@@ -49,8 +49,7 @@ class CustomerDashBoardController extends Controller
         // Thử đăng nhập
         if (Auth::attempt($credentials)) {
             // Nếu đăng nhập thành công, chuyển hướng về trang chủ với thông báo thành công
-            toastr()->success("Đăng nhhập tài khoản thành công");
-
+            dd('Heloooo');
             return redirect()->route('CustomerDashBoard.index');
         }
 

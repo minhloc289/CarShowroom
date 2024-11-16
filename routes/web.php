@@ -25,7 +25,7 @@ Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDa
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
 
     /* AUTHENTICATION */
-    Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
+    Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class]);
     Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class]);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 

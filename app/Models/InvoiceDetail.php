@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Accessory; // Ensure that the Accessory class exists in this namespace or update the namespace accDordingly
 
 class InvoiceDetail extends Model
 {
@@ -45,7 +47,7 @@ class InvoiceDetail extends Model
      */
     public function accessory()
     {
-        return $this->belongsTo(Accessory::class, 'accessory_id', 'accessory_id');
+        return $this->belongsTo(Accessories::class, 'accessory_id', 'accessory_id');
     }
 
     /**

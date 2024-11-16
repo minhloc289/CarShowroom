@@ -35,14 +35,15 @@ return [
     |
     */
 
+
 'guards' => [
     'web' => [
         'driver' => 'session',
         'provider' => 'customers',
     ],
-    'admin' => [
+    'account' => [ // Guard mới cho accounts
         'driver' => 'session',
-        'provider' => 'admins',
+        'provider' => 'accounts',
     ],
 ],
 
@@ -64,13 +65,13 @@ return [
     */
 
 'providers' => [
-    'customers' => [
+    'users' => [
         'driver' => 'eloquent',
-        'model' => App\Models\Account::class,
+        'model' => App\Models\User::class,
     ],
-    'admins' => [
+    'accounts' => [ // Thêm provider mới cho account
         'driver' => 'eloquent',
-        'model' => env('AUTH_MODEL', App\Models\User::class),
+        'model' => App\Models\Account::class, // Model của bảng account
     ],
 ],
 

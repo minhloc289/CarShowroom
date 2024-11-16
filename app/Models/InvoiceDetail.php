@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Accessory; // Ensure that the Accessory class exists in this namespace or update the namespace accDordingly
 
 class InvoiceDetail extends Model
 {
@@ -45,7 +44,7 @@ class InvoiceDetail extends Model
     /**
      * Thiết lập quan hệ belongsTo với bảng Accessories.
      */
-    public function accessory()
+    public function accessories()
     {
         return $this->belongsTo(Accessories::class, 'accessory_id', 'accessory_id');
     }

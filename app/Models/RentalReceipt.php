@@ -28,16 +28,16 @@ class RentalReceipt extends Model
     /**
      * Thiết lập quan hệ belongsTo với bảng Account.
      */
-    // public function user()
-    // {
-    //     return $this->belongsTo(Account::class, 'user_id', 'id');
-    // }
+    public function user()
+    {
+        return $this->belongsTo(Account::class, 'user_id', 'id');
+    }
 
-    // /**
-    //  * Thiết lập quan hệ belongsTo với bảng RentalCars.
-    //  */
-    // public function rentalCar()
-    // {
-    //     return $this->belongsTo(RentalCars::class, 'car_id', 'rental_id');
-    // }
+    /**
+     * Thiết lập quan hệ belongsTo với bảng RentalCars.
+     */
+    public function rentalCar()
+    {
+        return $this->belongsTo(RentalCars::class, 'car_id', 'rental_id');
+    }
 }

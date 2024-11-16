@@ -57,6 +57,7 @@ class ForgetPasswordManager extends Controller
         
         // Kiểm tra xem cập nhật có thành công không
         if (!$updated) {
+            
             return redirect()->route('reset.password')->with('error', 'Không thể cập nhật mật khẩu.');
         }
     

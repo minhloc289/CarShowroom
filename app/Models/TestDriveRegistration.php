@@ -25,16 +25,16 @@ class TestDriveRegistration extends Model
     /**
      * Thiết lập quan hệ belongsTo với bảng Account.
      */
-    // public function user()
-    // {
-    //     return $this->belongsTo(Account::class, 'user_id', 'id');
-    // }
+    public function user()
+    {
+        return $this->belongsTo(Account::class, 'user_id', 'id');
+    }
 
-    // /**
-    //  * Thiết lập quan hệ belongsTo với bảng CarDetails.
-    //  */
-    // public function carDetails()
-    // {
-    //     return $this->belongsTo(CarDetails::class, 'car_id', 'car_id');
-    // }
+    /**
+     * Thiết lập quan hệ belongsTo với bảng CarDetails.
+     */
+    public function carDetails()
+    {
+        return $this->belongsTo(CarDetails::class, 'car_id', 'car_id');
+    }
 }

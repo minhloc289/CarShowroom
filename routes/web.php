@@ -60,6 +60,8 @@ Route::post('/forget-password', [ForgetPasswordManager::class, 'forgetPasswordPo
 Route::get('/reset-password/{token}', [ForgetPasswordManager::class, 'resetPassword'])->name('reset.password');
 Route::post('/reset-password/{token}', [ForgetPasswordManager::class, 'resetPasswordPost'])->name('reset.password.post');
 
+//Compare car
+Route::get('/compare', [CustomerDashBoardController::class, 'compare'])->name('CustomerDashBoard.compare');
 
 // Trang chủ
 Route::get('/home', function () {    

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InvoiceDetail extends Model
 {
@@ -43,9 +44,9 @@ class InvoiceDetail extends Model
     /**
      * Thiết lập quan hệ belongsTo với bảng Accessories.
      */
-    public function accessory()
+    public function accessories()
     {
-        return $this->belongsTo(Accessory::class, 'accessory_id', 'accessory_id');
+        return $this->belongsTo(Accessories::class, 'accessory_id', 'accessory_id');
     }
 
     /**

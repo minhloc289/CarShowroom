@@ -38,7 +38,7 @@ class CustomerDashBoardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
- public function login(Request $request)
+    public function login(Request $request)
     {
         // Xác thực dữ liệu đầu vào
         $credentials = $request->validate([
@@ -47,7 +47,7 @@ class CustomerDashBoardController extends Controller
         ]);
 
         // Thử đăng nhập
-        if (Auth::attempt($credentials)) {
+        if (Auth::guard('account')->attempt($credentials)) {
             // Nếu đăng nhập thành công, chuyển hướng về trang chủ với thông báo thành công
             toastr()->success("Đăng nhập thành công");
 
@@ -67,7 +67,8 @@ class CustomerDashBoardController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function signUp(Request $request){
+    public function signUp(Request $request)
+    {
         // Xác thực dữ liệu đầu vào, đảm bảo email là duy nhất trong bảng accounts
         $request->validate([
             'email' => 'required|email|unique:accounts,email',
@@ -89,29 +90,31 @@ class CustomerDashBoardController extends Controller
     public function showForgotForm(){
         return view("frontend.login_sign.forgot_pass");
     }
+
     public function Forgot(Request $request)
-{
+    {
     // Validate email input
-    $request->validate([
-        'email' => 'required|email|exists:accounts,email',
-    ]);
+        $request->validate([
+            'email' => 'required|email|exists:accounts,email',
+        ]);
 
-    // Gửi email reset mật khẩu
-    $status = Password::sendResetLink(
-        $request->only('email')
-    );
+        // Gửi email reset mật khẩu
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
 
-    // Kiểm tra và thông báo theo kết quả gửi email
-    if ($status === Password::RESET_LINK_SENT) {
-        toastr()->success(__($status));
-    } else {
-        toastr()->error(__($status));
+        // Kiểm tra và thông báo theo kết quả gửi email
+        if ($status === Password::RESET_LINK_SENT) {
+            toastr()->success(__($status));
+        } else {
+            toastr()->error(__($status));
+        }
+
+        return redirect()->route('Forgotpass.showForgotfrom');
     }
 
-    return redirect()->route('Forgotpass.showForgotfrom');
-}
-//compare
-public function compare(){
-    return view("frontend.compareCar.compare_car");
-}
+    //compare
+    public function compare(){
+        return view("frontend.compareCar.compare_car");
+    }
 }

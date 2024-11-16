@@ -39,7 +39,11 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
-        ],
+        ], 
+        'account' => [ // Guard mới cho accounts
+            'driver' => 'session',
+            'provider' => 'accounts',
+        ],  
     ],
 
     /*
@@ -62,7 +66,11 @@ return [
 'providers' => [
     'users' => [
         'driver' => 'eloquent',
-        'model' => App\Models\Account::class,
+        'model' => App\Models\User::class,
+    ],
+    'accounts' => [ // Thêm provider mới cho account
+        'driver' => 'eloquent',
+        'model' => App\Models\Account::class, // Model của bảng account
     ],
 ],
 

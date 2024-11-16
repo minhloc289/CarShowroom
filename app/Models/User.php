@@ -30,7 +30,11 @@ class User extends Authenticatable
         'password',
         'is_quanly',
     ];
-
+    
+    public function salesInvoicesAsSeller()
+    {
+        return $this->hasMany(SalesInvoice::class, 'seller_id', 'id');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -21,4 +21,10 @@ class Accessories extends Model
         'description',
         'image_url',
     ];
+
+    public function invoiceDetails()
+    {
+        return $this->hasMany(InvoiceDetail::class, 'accessory_id', 'accessory_id');
+    }
+    
 }

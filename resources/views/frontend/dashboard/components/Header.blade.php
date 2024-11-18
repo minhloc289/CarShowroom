@@ -55,10 +55,15 @@
                 {{---------------- Dropdown for service ---------------}}
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                <a id="loginLink" href="{{ route('customer.login') }}"
-                    class="font-semibold text-gray-900 md:hover:text-green-700">Log in <span
-                        aria-hidden="true">&rarr;</span></a>
-            </div>
+    @if (Auth::check())
+        {{-- Nếu người dùng đã đăng nhập, hiển thị file signed.blade.php --}}
+        @include('frontend.signed.signed')
+    @else
+        {{-- Nếu người dùng chưa đăng nhập, hiển thị nút đăng nhập --}}
+        <a id="loginLink" href="{{ route('customer.login') }}"
+            class="font-semibold text-gray-900 md:hover:text-green-700">Log in <span aria-hidden="true">&rarr;</span></a>
+    @endif
+</div>
         </nav>
     </div>
     </div>

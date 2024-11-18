@@ -15,22 +15,38 @@ class ForgetPasswordManager extends Controller
     function forgetPassword(){
         return view("frontend.login_sign.forgot_pass");
     }
-    function forgetPasswordPost(Request $request){
+    public function forgetPasswordPost(Request $request)
+    {
         $request->validate([
-            'email'=>'required|email|exists:accounts',
+            'email' => 'required|email',
         ]);
-        $token=Str::random(64);
+    
+        // Kiểm tra xem email có tồn tại trong bảng accounts hay không
+        $accountExists = DB::table('accounts')->where('email', $request->email)->exists();
+    
+        if (!$accountExists) {
+            // Nếu không tồn tại, hiển thị thông báo lỗi và quay lại trang trước
+            toastr()->error("Email chưa được đăng kí");
+            return redirect()->back()->withInput();
+        }
+    
+        // Nếu tồn tại, thực hiện tạo token và gửi email
+        $token = Str::random(64);
         DB::table('password_resets')->insert([
-            'email'=> $request->email,
-            'token'=> $token,
-            'created_at'=>\Carbon\Carbon::now(),
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => \Carbon\Carbon::now(),
         ]);
-        Mail::send('emails.forget_password',['token'=>$token], function($message) use($request){
-            $message->to($request->email);
-            $message->subject('Reset Password');
+    
+        // Gửi email reset mật khẩu
+        Mail::send('emails.forget_password', ['token' => $token], function ($message) use ($request) {
+            $message->to($request->email)->subject('Đặt lại mật khẩu của bạn');
         });
-        return redirect()->to(route('CustomerDashBoard.index'))->with('success','We have send an email to reset password.');
+    
+        toastr()->success("Gửi xác nhận thành công. Vui lòng kiểm tra email của bạn.");
+        return redirect()->route('CustomerDashBoard.index');
     }
+    
     function resetPassword($token){
         return view('frontend.login_sign.new_password', compact('token'));
     }
@@ -40,7 +56,6 @@ class ForgetPasswordManager extends Controller
             'password' => 'required|string|min:6|confirmed',
             'password_confirmation' => 'required'
         ]);
-    
         // Kiểm tra xem token đặt lại mật khẩu có hợp lệ không
         $updatePassword = DB::table('password_resets')
             ->where([
@@ -49,7 +64,9 @@ class ForgetPasswordManager extends Controller
             ])->first();
     
         if (!$updatePassword) {
-            return redirect()->route('reset.password')->with('error', 'Token đặt lại mật khẩu hoặc email không hợp lệ.');
+            toastr()->error("token hoặc email không hợp lệ");
+
+            return redirect()->route('reset.password');
         }
     
         // Cập nhật mật khẩu trong bảng accounts
@@ -57,14 +74,17 @@ class ForgetPasswordManager extends Controller
         
         // Kiểm tra xem cập nhật có thành công không
         if (!$updated) {
-            
-            return redirect()->route('reset.password')->with('error', 'Không thể cập nhật mật khẩu.');
+            toastr()->error("không thể cập nhật mật khẩu");
+
+            return redirect()->route('reset.password');
         }
     
         // Xóa bản ghi đặt lại mật khẩu để ngăn chặn việc sử dụng lại
         DB::table("password_resets")->where("email", $request->email)->delete();
         
         // Chuyển hướng với thông báo thành công
-        return redirect()->route("CustomerDashBoard.index")->with("success", "Đặt lại mật khẩu thành công.");
+        toastr()->success("cập nhật mật khẩu thành công");
+
+        return redirect()->route("CustomerDashBoard.index");
     }
 }

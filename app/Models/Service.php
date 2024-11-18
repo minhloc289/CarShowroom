@@ -20,8 +20,14 @@ class Service extends Model
         'description',
     ];
 
-    // public function scheduleBookings()
-    // {
-    //     return $this->hasMany(ScheduleBooking::class, 'service_id', 'service_id');
-    // }
+    public function scheduleBookings()
+    {
+        return $this->hasMany(ScheduleBooking::class, 'service_id', 'service_id');
+    }
+
+    public function invoiceDetails()
+    {
+        return $this->hasMany(InvoiceDetail::class, 'service_id', 'service_id');
+    }
+    
 }

@@ -5,6 +5,7 @@ namespace App\Models;
 
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
@@ -23,20 +24,25 @@ class Account extends Authenticatable
         'password',
     ];
 
-    // public function rentalReceipts()
-    //     {
-    //         return $this->hasMany(RentalReceipt::class, 'user_id', 'id');
-    //     }
+    public function rentalReceipts()
+        {
+            return $this->hasMany(RentalReceipt::class, 'user_id', 'id');
+        }
 
-    // public function scheduleBookings()
-    //     {
-    //         return $this->hasMany(ScheduleBooking::class, 'user_id', 'id');
-    //     }
+    public function scheduleBookings()
+        {
+            return $this->hasMany(ScheduleBooking::class, 'user_id', 'id');
+        }
 
-    // public function testDriveRegistrations()
-    //     {
-    //         return $this->hasMany(TestDriveRegistration::class, 'user_id', 'id');
-    //     }
+    public function testDriveRegistrations()
+        {
+            return $this->hasMany(TestDriveRegistration::class, 'user_id', 'id');
+        }
+
+    public function salesInvoices()
+        {
+            return $this->hasMany(SalesInvoice::class, 'user_id', 'id');
+        }
 
     protected $hidden = [
         'password',

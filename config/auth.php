@@ -39,7 +39,7 @@ return [
 'guards' => [
     'web' => [
         'driver' => 'session',
-        'provider' => 'customers',
+        'provider' => 'users',
     ],
     'account' => [ // Guard mới cho accounts
         'driver' => 'session',

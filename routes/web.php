@@ -34,7 +34,6 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
 
     /* USERS */
     Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
-    Route::get('/user/account', [AdminController::class, 'loadUserAccountPage'])->name('user.account');
 
     /* USER CRUD */
     Route::get('/user/create', [AdminController::class, 'loadUserCreatePage'])->name('user.create');

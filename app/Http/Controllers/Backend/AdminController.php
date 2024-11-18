@@ -122,7 +122,7 @@ class AdminController extends Controller
             ]);
 
             // Generate and update password
-            $generatedPassword = 'user' . str_pad($user->id, 2, '0', STR_PAD_LEFT);
+            $generatedPassword = 'minhlocdeptrai';
             $user->update([
                 'password' => Hash::make($generatedPassword),
             ]);
@@ -142,13 +142,5 @@ class AdminController extends Controller
         return response()->json($employee);
     }
 
-
-
-    //Employees Account Page
-
-    public function loadUserAccountPage()
-    {
-        return view('Backend.user.account');
-    }
 
 }

@@ -98,10 +98,10 @@ class AdminController extends Controller
             // Lấy dữ liệu đã được validate
             $validated = $request->validated();
 
-            // Handle photo upload
-            $photoPath = null;
-            if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store('photos', 'public');
+            // Xử lý upload ảnh
+            $imagePath = null; // Ảnh mặc định
+            if ($request->hasFile('image')) { // Nếu có upload ảnh
+                $imagePath = $request->file('image')->store('photos', 'public');
             }
 
             // Set is_quanly based on level
@@ -114,17 +114,11 @@ class AdminController extends Controller
                 'phone' => $validated['phone'] ?? null,
                 'address' => $validated['address'] ?? null,
                 'birthday' => $validated['birthday'] ?? null,
-                'image' => $photoPath,
+                'image' => $imagePath,
                 'description' => $validated['description'] ?? null,
                 'user_agent' => $request->header('User-Agent'),
                 'is_quanly' => $is_quanly,
-                'password' => Hash::make('temporary'),
-            ]);
-
-            // Generate and update password
-            $generatedPassword = 'minhlocdeptrai';
-            $user->update([
-                'password' => Hash::make($generatedPassword),
+                'password' => Hash::make('minhlocdeptrai'),
             ]);
 
             toastr()->success('Thêm mới nhân viên thành công!');

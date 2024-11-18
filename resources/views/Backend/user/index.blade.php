@@ -78,7 +78,7 @@
                                                             onclick="showEmployeeDetails({{ $employee->id }})">
                                                             {{ $employee->name }}
                                                         </a>
-                                                        <span class="text-muted fw-bold text-muted d-block fs-7">{{$employee->description}}</span>
+                                                        <span class="text-muted fw-bold text-muted d-block fs-7">{{$employee->description ?? 'Chưa cập nhật thông tin'}}</span>
                                                     </div>
                                                 </div>
                                             </td>

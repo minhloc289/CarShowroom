@@ -32,7 +32,7 @@ class AuthController extends Controller
         ];
     
         if (Auth::attempt($credentials)) {
-
+            $user = Auth::user();
             toastr()->success('Đăng nhập thành công!');
             
             return redirect()->route('dashboard');

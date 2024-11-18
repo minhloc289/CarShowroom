@@ -29,7 +29,7 @@ Route::get('/booking-form', [CustomerDashBoardController::class, 'Bookingform'])
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
 
     /* AUTHENTICATION */
-    Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
+    Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class]);
     Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class]);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
@@ -38,7 +38,6 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
 
     /* USERS */
     Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
-    Route::get('/user/account', [AdminController::class, 'loadUserAccountPage'])->name('user.account');
 
     /* USER CRUD */
     Route::get('/user/create', [AdminController::class, 'loadUserCreatePage'])->name('user.create');

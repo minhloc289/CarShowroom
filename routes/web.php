@@ -60,6 +60,9 @@ Route::post('/forget-password', [ForgetPasswordManager::class, 'forgetPasswordPo
 Route::get('/reset-password/{token}', [ForgetPasswordManager::class, 'resetPassword'])->name('reset.password');
 Route::post('/reset-password/{token}', [ForgetPasswordManager::class, 'resetPasswordPost'])->name('reset.password.post');
 
+//Route accessories
+Route::get('/accessories', [CustomerDashBoardController::class, 'accessories'])->name('CustomerDashBoard.accsessories');
+
 
 // Trang chủ
 Route::get('/home', function () {    

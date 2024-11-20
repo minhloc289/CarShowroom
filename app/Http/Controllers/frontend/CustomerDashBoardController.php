@@ -4,6 +4,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Account; // Đảm bảo đã import
+use App\Models\Accessories;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
@@ -111,5 +112,10 @@ class CustomerDashBoardController extends Controller
     }
 
     return redirect()->route('Forgotpass.showForgotfrom');
+}
+// accessories
+function accessories(){
+    $accessories = Accessories::all(); // Lấy toàn bộ danh sách phụ kiện
+    return view('frontend.accessories.accessories', compact('accessories'));
 }
 }

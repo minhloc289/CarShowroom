@@ -35,16 +35,17 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ], 
-        'account' => [ // Guard mới cho accounts
-            'driver' => 'session',
-            'provider' => 'accounts',
-        ],  
+
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
+    'account' => [ // Guard mới cho accounts
+        'driver' => 'session',
+        'provider' => 'accounts',
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------

@@ -53,7 +53,7 @@
                             </a>
                             <span class="menu-arrow"></span>
                         </div>
-                        <div class="menu-item menu-accordion">
+                        {{-- <div class="menu-item menu-accordion">
                             <a href="{{ route('user.account') }}" class="menu-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
@@ -61,7 +61,7 @@
                                 <span class="menu-title">Quản lí tài khoản</span>
                             </a>
                             </span><span class="menu-arrow"></span>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">

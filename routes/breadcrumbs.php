@@ -24,8 +24,4 @@ Breadcrumbs::for('user.edit', function (BreadcrumbTrail $trail) {
     $trail->push('Chỉnh sửa nhân viên');
 });
 
-Breadcrumbs::for('user.account', function (BreadcrumbTrail $trail) {
-    $trail->push('Quản lý nhân viên', route('user'));
-    $trail->push('Home', route('dashboard'));
-    $trail->push('Quản lý tài khoản nhân viên', route('user.account'));
-});
+

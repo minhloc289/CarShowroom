@@ -27,12 +27,10 @@ class CreateRequest extends FormRequest
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
             'birthday' => 'nullable|date',
-            'image' => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'user_agent' => 'nullable|string',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'level' => 'required|string|in:Employee,Admin',
+            'image' => 'nullable|string|max:255', // Xử lý upload ảnh
         ];
-
     }
 
     public function messages()
@@ -44,9 +42,6 @@ class CreateRequest extends FormRequest
             'name.required' => 'Tên là trường bắt buộc',
             'name.string' => 'Tên phải là chuỗi ký tự',
             'name.max' => 'Tên không được vượt quá 255 ký tự',
-            'photo.image' => 'File phải là hình ảnh',
-            'photo.mimes' => 'Hình ảnh phải có định dạng: jpeg, png, jpg, gif',
-            'photo.max' => 'Kích thước hình ảnh không được vượt quá 2MB'
         ];
     }
 

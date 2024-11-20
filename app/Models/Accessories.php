@@ -20,6 +20,8 @@ class Accessories extends Model
         'price',
         'description',
         'image_url',
+        'category',
+        'status',
     ];
 
     public function invoiceDetails()

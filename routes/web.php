@@ -80,6 +80,9 @@ Route::middleware('auth')->group(function () {
 
 
 
+//Route accessories
+Route::get('/accessories', [CustomerDashBoardController::class, 'accessories'])->name('CustomerDashBoard.accsessories');
+
 
 // Trang chủ
 Route::get('/home', function () {    

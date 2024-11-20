@@ -27,9 +27,11 @@ public function compare(){
 public function bookingform(){
     return view("frontend.Booking_form.booking_form");
 }
+
 // accessories
 function accessories(){
     $accessories = Accessories::all(); // Lấy toàn bộ danh sách phụ kiện
     return view('frontend.accessories.accessories', compact('accessories'));
 }
+
 }

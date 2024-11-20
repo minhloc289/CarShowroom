@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\frontend\ForgotPassController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AuthController;
 use App\Http\Controllers\Backend\DashboardController;
@@ -8,6 +7,7 @@ use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\frontend\CustomerDashBoardController;
+use App\Http\Controllers\frontend\CarController;
 use App\Http\Controllers\frontend\ForgetPasswordManager;
 use App\Http\Controllers\frontend\CustomerAuthController;
 use App\Http\Controllers\frontend\ProfileController;
@@ -24,6 +24,10 @@ Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDa
 Route::get('/compare', [CustomerDashBoardController::class, 'compare'])->name('CustomerDashBoard.compare');
 // Booking form
 Route::get('/booking-form', [CustomerDashBoardController::class, 'Bookingform'])->name('CustomerDashBoard.bookingform');
+// Cars
+Route::get('/cars', [CarController::class, 'index'])->name('CarController.index');
+
+
 
 
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {

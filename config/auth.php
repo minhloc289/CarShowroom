@@ -35,12 +35,17 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
+
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
     ],
+    'account' => [ // Guard mới cho accounts
+        'driver' => 'session',
+        'provider' => 'accounts',
+    ],
+],
 
     /*
     |--------------------------------------------------------------------------
@@ -60,9 +65,13 @@ return [
     */
 
 'providers' => [
-    'accounts' => [
+    'users' => [
         'driver' => 'eloquent',
-        'model' => App\Models\Account::class,
+        'model' => App\Models\User::class,
+    ],
+    'accounts' => [ // Thêm provider mới cho account
+        'driver' => 'eloquent',
+        'model' => App\Models\Account::class, // Model của bảng account
     ],
 ],
 
@@ -99,8 +108,8 @@ return [
 
 'passwords' => [
     'accounts' => [
-        'provider' => 'accounts', // Tham chiếu đến bảng accounts
-        'table' => 'password_resets', // Bảng lưu trữ token đặt lại mật khẩu
+        'provider' => 'users',
+        'table' => 'password_resets',
         'expire' => 60,
         'throttle' => 60,
     ],

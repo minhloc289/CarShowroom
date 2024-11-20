@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Account; // Đảm bảo đã import
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+
 
 class CustomerAuthController extends Controller
 {
@@ -17,7 +19,7 @@ class CustomerAuthController extends Controller
      */
     public function showLoginForm()
     {
-        return view('customer_login');
+        return view('frontend.login_sign.customer_login');
     }
 
     /**
@@ -27,7 +29,7 @@ class CustomerAuthController extends Controller
      */
     public function showSignUpForm()
     {
-        return view('customer_signup');
+        return view('frontend.login_sign.customer_signup');
     }
 
     /**
@@ -36,7 +38,7 @@ class CustomerAuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function login(Request $request)
+ public function login(Request $request)
     {
         // Xác thực dữ liệu đầu vào
         $credentials = $request->validate([
@@ -47,12 +49,17 @@ class CustomerAuthController extends Controller
         // Thử đăng nhập
         if (Auth::attempt($credentials)) {
             // Nếu đăng nhập thành công, chuyển hướng về trang chủ với thông báo thành công
-            return redirect()->route('CustomerDashBoardController.index')->with('success', 'Đăng nhập thành công!');
+            toastr()->success("Đăng nhập thành công");
+
+            return redirect()->route('CustomerDashBoard.index');
         }
 
         // Nếu đăng nhập thất bại, chuyển hướng về trang đăng nhập với thông báo lỗi
-        return redirect()->route('CustomerDashBoardController.index')->with('error', 'Đăng nhập không thành công!');
+        toastr()->error("Tài khoản hoặc mặt khẩu không đúng");
+
+        return redirect()->route('CustomerDashBoard.index');
     }
+
 
     /**
      * Xử lý đăng ký.
@@ -60,21 +67,47 @@ class CustomerAuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function signUp(Request $request)
-    {
-        // Xác thực dữ liệu đầu vào
+    public function signUp(Request $request){
+        // Xác thực dữ liệu đầu vào, đảm bảo email là duy nhất trong bảng accounts
         $request->validate([
-            'email' => 'required|email|unique:accounts,email', // Đảm bảo tên bảng là "accounts"
+            'email' => 'required|email|unique:accounts,email',
             'password' => 'required|min:6|confirmed',
         ]);
-
-        // Lưu thông tin vào bảng account
+    
+        // Lưu thông tin người dùng vào bảng accounts
         Account::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
-        // Chuyển hướng hoặc trả về thông báo thành công
-        return redirect()->route('CustomerDashBoardController.index')->with('success', 'Tài khoản tạo thành công');
+    
+        // Chuyển hướng với thông báo thành công
+        toastr()->success("Đăng kí tài khoản thành công");
+        return redirect()->route('CustomerDashBoard.index');
     }
+    
+    //From forgot pass
+    public function showForgotForm(){
+        return view("frontend.login_sign.forgot_pass");
+    }
+    public function Forgot(Request $request)
+{
+    // Validate email input
+    $request->validate([
+        'email' => 'required|email|exists:accounts,email',
+    ]);
+
+    // Gửi email reset mật khẩu
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+
+    // Kiểm tra và thông báo theo kết quả gửi email
+    if ($status === Password::RESET_LINK_SENT) {
+        toastr()->success(__($status));
+    } else {
+        toastr()->error(__($status));
+    }
+
+    return redirect()->route('Forgotpass.showForgotfrom');
+}
 }

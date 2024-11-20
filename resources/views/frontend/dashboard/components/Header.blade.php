@@ -2,7 +2,7 @@
     <div class="container mx-auto">
         <nav class="flex items-center justify-between p-0 lg:px-2" aria-label="Global">
             <div class="flex lg:flex-1">
-                <a href="{{route('CustomerDashBoard.index')}}" class="-m-1.5 p-1.5">
+                <a href="{{ route('CustomerDashBoard.index') }}" class="-m-1.5 p-1.5">
                     <span class="sr-only">Your Company</span>
                     <img class="h-20 w-auto" src="{{ asset('assets/img/logo (2).png') }}" alt="Logo">
                 </a>
@@ -22,13 +22,15 @@
                 <a href="#"
                     class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline text">Introduction</a>
                 <a href="#" class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Car</a>
-                <a href="#" class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Accessories</a>
+                <a href="#"
+                    class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Accessories</a>
                 <a href="{{ route('CustomerDashBoard.compare') }}"
                     class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Compare Cars</a>
 
                 <!-- Service with Centered Dropdown -->
                 <div class="relative group">
-                    <a href="#" class="inline-flex md:hover:text-blue-700 font-semibold text-gray-900 hover:underline ">
+                    <a href="#"
+                        class="inline-flex md:hover:text-blue-700 font-semibold text-gray-900 hover:underline ">
                         Service
                         <svg class="w-2.5 ms-2 translate-y-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                             fill="none" viewBox="0 0 10 6">
@@ -52,20 +54,20 @@
                         </ul>
                     </div>
                 </div>
-                {{---------------- Dropdown for service ---------------}}
+                {{-- -------------- Dropdown for service ------------- --}}
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-    @if (Auth::check())
-        {{-- Nếu người dùng đã đăng nhập, hiển thị file signed.blade.php --}}
-        @include('frontend.signed.signed')
-    @else
-        {{-- Nếu người dùng chưa đăng nhập, hiển thị nút đăng nhập --}}
-        <a id="loginLink" href="{{ route('customer.login') }}"
-            class="font-semibold text-gray-900 md:hover:text-green-700">Log in <span aria-hidden="true">&rarr;</span></a>
-    @endif
-</div>
+                @if (Auth::check())
+                    {{-- Nếu người dùng đã đăng nhập, hiển thị file signed.blade.php --}}
+                    @include('frontend.signed.signed')
+                @else
+                    {{-- Nếu người dùng chưa đăng nhập, hiển thị nút đăng nhập --}}
+                    <a id="loginLink" href="{{ route('customer.login') }}"
+                        class="font-semibold text-gray-900 md:hover:text-green-700">Log in <span
+                            aria-hidden="true">&rarr;</span></a>
+                @endif
+            </div>
         </nav>
-    </div>
     </div>
     <!-- Mobile menu -->
     {{-- <div class="lg:hidden" role="dialog" aria-modal="true">

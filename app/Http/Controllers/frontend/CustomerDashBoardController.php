@@ -26,4 +26,6 @@ public function compare(){
 public function bookingform(){
     return view("frontend.Booking_form.booking_form");
 }
+// cars
+
 }

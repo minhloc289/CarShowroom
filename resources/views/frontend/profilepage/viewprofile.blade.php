@@ -67,9 +67,12 @@
             </ul>
             <ul class="mt-6">
                 <li>
-                    <a href="#" class="flex items-center text-red-600 hover:text-red-800">
-                        <i class="fas fa-sign-out-alt mr-3"></i> Đăng xuất
-                    </a>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="flex items-center text-red-600 hover:text-red-800">
+                            <i class="fas fa-sign-out-alt mr-3"></i> Đăng xuất
+                        </button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -83,23 +86,28 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-gray-600 font-medium">Họ và tên</label>
-                        <input type="text" name="name" class="w-full mt-1 px-4 py-2 border rounded-md" value="Nguyễn Văn A">
+                        <input type="text" name="name" class="w-full mt-1 px-4 py-2 border rounded-md"
+                            value="Nguyễn Văn A">
                     </div>
                     <div>
                         <label class="block text-gray-600 font-medium">Email</label>
-                        <input type="email" name="email" class="w-full mt-1 px-4 py-2 border rounded-md" value="email@example.com">
+                        <input type="email" name="email" class="w-full mt-1 px-4 py-2 border rounded-md"
+                            value="email@example.com">
                     </div>
                     <div>
                         <label class="block text-gray-600 font-medium">Số điện thoại</label>
-                        <input type="text" name="phone" class="w-full mt-1 px-4 py-2 border rounded-md" value="0123456789">
+                        <input type="text" name="phone" class="w-full mt-1 px-4 py-2 border rounded-md"
+                            value="0123456789">
                     </div>
                     <div>
                         <label class="block text-gray-600 font-medium">Địa chỉ</label>
-                        <input type="text" name="address" class="w-full mt-1 px-4 py-2 border rounded-md" value="123 Đường ABC, TP.HCM">
+                        <input type="text" name="address" class="w-full mt-1 px-4 py-2 border rounded-md"
+                            value="123 Đường ABC, TP.HCM">
                     </div>
                 </div>
                 <div class="mt-4">
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Cập nhật</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Cập
+                        nhật</button>
                 </div>
             </form>
         </div>

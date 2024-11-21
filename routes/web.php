@@ -82,6 +82,8 @@ Route::middleware('auth')->group(function () {
 
 //Route accessories
 Route::get('/accessories', [CustomerDashBoardController::class, 'accessories'])->name('CustomerDashBoard.accsessories');
+Route::get('/api/accessories', [CustomerDashBoardController::class, 'getAccessories'])->name('api.accessories');
+Route::get('/api/accessories/sorted', [CustomerDashBoardController::class, 'getSortedAccessories']);
 
 
 // Trang chủ

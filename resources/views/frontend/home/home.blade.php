@@ -30,7 +30,7 @@
             </p>
             <br>
             <div class="mt-10 flex items-center justify-center gap-x-6">
-                <a href={{ route('CustomerDashBoard.bookingform') }}
+                <a href="{{ route('CustomerDashBoard.bookingform') }}"
                     class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Register For Consultation</a>
                 <a href="#" class="text-sm/6 font-semibold text-gray-900" style="color: #4954F4;">Learn more <span
                         aria-hidden="true">→</span></a>

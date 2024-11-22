@@ -27,7 +27,7 @@
 
                 <a href="{{ route('CustomerDashBoard.accsessories') }} "class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Accessories</a>
 
-                <a href="{{ route('CustomerDashBoard.compare') }}"
+                <a href="{{ route('CustomerDashBoard.compare') }} "
                     class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Compare Cars</a>
 
                 <!-- Service with Centered Dropdown -->

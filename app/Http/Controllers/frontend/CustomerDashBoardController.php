@@ -33,5 +33,17 @@ function accessories(){
     $accessories = Accessories::all(); // Lấy toàn bộ danh sách phụ kiện
     return view('frontend.accessories.accessories', compact('accessories'));
 }
-
+public function showDashboard()
+{
+    $user = Auth::user(); // Lấy thông tin người dùng đã đăng nhập
+    return view('frontend.CustomerDashBoard.index', compact('user'));
+}
+// Introduce
+public function introduce(){
+    return view("frontend.Introduce.Introduce");
+}
+// Register
+public function registration(){
+    return view("frontend.registration_drive.register");
+}
 }

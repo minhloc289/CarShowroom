@@ -86,12 +86,14 @@ Route::middleware('auth')->group(function () {
 
 //Route accessories
 Route::get('/accessories', [CustomerDashBoardController::class, 'accessories'])->name('CustomerDashBoard.accsessories');
-
+// Introduce 
+Route::get('/introduce', [CustomerDashBoardController::class, 'introduce'])->name('CustomerDashBoard.introduce');
+// Registration 
+Route::get('/registration', [CustomerDashBoardController::class, 'registration'])->name('CustomerDashBoard.registration');
 
 // Trang chủ
 Route::get('/home', function () {    
     return view('home');
 })->name('home');
-
 
 

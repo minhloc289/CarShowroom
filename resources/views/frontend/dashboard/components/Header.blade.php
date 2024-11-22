@@ -21,8 +21,12 @@
             <div class="hidden lg:flex lg:gap-x-12">
                 <a href="#"
                     class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline text">Introduction</a>
-                <a href="#" class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Car</a>
+
+                <a href="{{ route('CarController.index') }}" class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Car</a>
+       
+
                 <a href="{{ route('CustomerDashBoard.accsessories') }} "class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Accessories</a>
+
                 <a href="{{ route('CustomerDashBoard.compare') }}"
                     class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Compare Cars</a>
 

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AuthController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
@@ -14,27 +15,12 @@ use App\Http\Controllers\frontend\ProfileController;
 
 
 
-
 /* BACKEND ROUTES */
-
-/* AUTHENTICATION */
-
-
-Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDashBoard.index');
-Route::get('/compare', [CustomerDashBoardController::class, 'compare'])->name('CustomerDashBoard.compare');
-// Booking form
-Route::get('/booking-form', [CustomerDashBoardController::class, 'Bookingform'])->name('CustomerDashBoard.bookingform');
-// Cars
-Route::get('/cars', [CarController::class, 'index'])->name('CarController.index');
-
-
-
-
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
 
     /* AUTHENTICATION */
-    Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class]);
-    Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class]);
+    Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
+    Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     /* DASHBOARD */
@@ -52,6 +38,16 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('user/details/{id}', [AdminController::class, 'loadUserDetails'])->name('user.details');
 
 });
+
+
+/* FRONTEND ROUTES */
+
+Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDashBoard.index');
+Route::get('/compare', [CustomerDashBoardController::class, 'compare'])->name('CustomerDashBoard.compare');
+// Booking form
+Route::get('/booking-form', [CustomerDashBoardController::class, 'Bookingform'])->name('CustomerDashBoard.bookingform');
+// Cars
+Route::get('/cars', [CarController::class, 'index'])->name('CarController.index');
 
 Route::prefix('customer')->group(function () {
     Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');

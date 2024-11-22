@@ -24,7 +24,7 @@ public function compare(){
     return view("frontend.compareCar.compare_car");
 }
 //booking form
-public function bookingform(){
+public function Bookingform(){
     return view("frontend.Booking_form.booking_form");
 }
 
@@ -33,6 +33,7 @@ function accessories(){
     $accessories = Accessories::all(); // Lấy toàn bộ danh sách phụ kiện
     return view('frontend.accessories.accessories', compact('accessories'));
 }
+
 public function showDashboard()
 {
     $user = Auth::user(); // Lấy thông tin người dùng đã đăng nhập
@@ -46,4 +47,30 @@ public function introduce(){
 public function registration(){
     return view("frontend.registration_drive.register");
 }
+
+
+public function getAccessories()
+{
+    $accessories = Accessories::all(); // Lấy toàn bộ danh sách phụ kiện
+    return response()->json($accessories); // Trả về dạng JSON
+}
+
+public function getSortedAccessories(Request $request)
+{
+    $sortType = $request->input('sort', 'newest'); // Lấy loại sắp xếp (mặc định là newest)
+    
+    if ($sortType === 'newest') {
+        $accessories = Accessories::orderBy('updated_at', 'desc')->get(); // Sắp xếp theo mới nhất
+    } elseif ($sortType === 'low-high') {
+        $accessories = Accessories::orderBy('price', 'asc')->get(); // Sắp xếp giá từ thấp đến cao
+    } elseif ($sortType === 'high-low') {
+        $accessories = Accessories::orderBy('price', 'desc')->get(); // Sắp xếp giá từ cao đến thấp
+    } else {
+        $accessories = Accessories::all(); // Mặc định: lấy tất cả
+    }
+
+    return response()->json($accessories); // Trả về JSON
+}
+
+
 }

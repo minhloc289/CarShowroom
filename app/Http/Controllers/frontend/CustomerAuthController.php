@@ -49,6 +49,7 @@ class CustomerAuthController extends Controller
         // Thử đăng nhập
         if (Auth::attempt($credentials)) {
             // Nếu đăng nhập thành công, chuyển hướng về trang chủ với thông báo thành công
+            $user=Auth::user();
             toastr()->success("Đăng nhập thành công");
 
             return redirect()->route('CustomerDashBoard.index');

@@ -19,7 +19,7 @@
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-12">
-                <a href="#"
+                <a href="{{ route('CustomerDashBoard.introduce') }}"
                     class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline text">Introduction</a>
 
                 <a href="{{ route('CarController.index') }}" class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Car</a>
@@ -27,7 +27,7 @@
 
                 <a href="{{ route('CustomerDashBoard.accsessories') }} "class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Accessories</a>
 
-                <a href="{{ route('CustomerDashBoard.compare') }}"
+                <a href="{{ route('CustomerDashBoard.compare') }} "
                     class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Compare Cars</a>
 
                 <!-- Service with Centered Dropdown -->
@@ -49,7 +49,7 @@
                                     class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Car Rent</a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a href="{{ route('CustomerDashBoard.registration') }}"
                                     class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Test
                                     Drive Registration</a>
                             </li>

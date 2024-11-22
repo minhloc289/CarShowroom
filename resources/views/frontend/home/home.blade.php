@@ -4,41 +4,38 @@
     <!-- resources/views/components/introduce.blade.php -->
 
 
-    <!-- Content Section -->
-    <div class="relative mx-auto max-w-2xl py-[20vh] sm:py-[25vh] lg:py-[30vh] z-10">
-        <!-- Announcement Section -->
-        <div class="hidden sm:mb-[2vh] sm:flex sm:justify-center">
-            <div
-                class="relative h-[3vh] mt-[-20vh] rounded-full px-[2vw] py-[0.5vh] text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                Announcing our next round of funding.
-                <a href="javascript:void(0)" class="font-semibold text-indigo-600">
-                    Read more <span aria-hidden="true">&rarr;</span>
-                </a>
-            </div>
-        </div>
-
-        <!-- Main Content Section -->
-        <div class="text-center">
-            <h1 class="mt-[-15vh] text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
-                Discover Luxury Cars
-            </h1>
-            <div class="grid place-items-center h-auto">
-                <img class="p-4 w-[200%] h-auto object-contain" src="{{ asset('assets/img/porsche4.png') }}" alt="Logo">
-            </div>
-            <p class="text-pretty text-lg font-medium sm:text-xl/8 text-gray-900" style="margin-top: 0vh;">
-                Experience the thrill of driving with our exclusive collection of high-performance vehicles.
-                Quality and elegance in every model, waiting for you to explore.
-            </p>
-            <div class=" mt-[5vh] flex items-center justify-center gap-x-[2vw] ">
-                <a href="{{ route('CustomerDashBoard.bookingform') }}"
-                    class="rounded-md bg-indigo-600 px-[2vw] py-[1vh] text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
-                    Register For Consultation
-                </a>
-                <a href="#" class="text-sm font-semibold text-gray-900 hover:underline" style="color: #4954F4;">
-                    Learn more <span aria-hidden="true">→</span>
-                </a>
-            </div>
-        </div>
+<!-- Content Section -->
+<div class="relative mx-auto max-w-2xl py-[20vh] sm:py-[25vh] lg:py-[30vh] z-10">
+  <!-- Announcement Section -->
+  <div class="hidden sm:mb-[2vh] sm:flex sm:justify-center">
+    <div
+      class="relative h-[3vh] mt-[-20vh] rounded-full px-[2vw] py-[0.5vh] text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+      Announcing our next round of funding.
+      <a href="javascript:void(0)" class="font-semibold text-indigo-600">
+        Read more <span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+  </div>
+  <!-- Main Content Section -->
+  <div class="text-center">
+    <h1 class="mt-[-15vh] text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
+      Discover Luxury Cars
+    </h1>
+    <div class="grid place-items-center h-auto">
+    <img class="p-4 w-[200%] h-auto object-contain" src="{{ asset('assets/img/porsche4.png') }}" alt="Logo">
+    </div>
+    <p class="text-pretty text-lg font-medium sm:text-xl/8 text-gray-900" style="margin-top: 0vh;">
+      Experience the thrill of driving with our exclusive collection of high-performance vehicles.
+      Quality and elegance in every model, waiting for you to explore.
+    </p>
+    <div class=" mt-[5vh] flex items-center justify-center gap-x-[2vw] ">
+      <a href="{{ route('CustomerDashBoard.bookingform') }}"
+        class="rounded-md bg-indigo-600 px-[2vw] py-[1vh] text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
+        Register For Consultation
+      </a>
+      <a href="{{ route('CustomerDashBoard.introduce') }}" class="text-sm font-semibold text-gray-900 hover:underline" style="color: #4954F4;">
+        Learn more <span aria-hidden="true">→</span>
+      </a>
     </div>
 
 
@@ -107,18 +104,17 @@
         </div>
     </div>
 
-    <!-- Information display container -->
-    <div id="car-info" class="relative text-center mt-4 bg-white p-6 border rounded-lg shadow-lg z-50">
-        <p><strong>Model</strong>: Porsche 911 Carrera</p>
-        <p><strong>Seats</strong>: 4 seats</p>
-        <p><strong>Range</strong>: ~ 350 km (NEDC)</p>
-        <p><strong>Starting Price</strong>: 2,500,000,000 VND</p>
-        <div class="flex justify-center space-x-4 mt-4">
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">Reserve</button>
-            <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded">View Details</button>
-        </div>
-    </div>
-
+<!-- Information display container -->
+<div id="car-info" class="relative text-center mt-4 z-10">
+  <p><strong>Model</strong>: Porsche 911 Carrera</p>
+  <p><strong>Seats</strong>: 4 seats</p>
+  <p><strong>Range</strong>: ~ 350 km (NEDC)</p>
+  <p><strong>Starting Price</strong>: 2,500,000,000 VND</p>
+  <div class="flex justify-center space-x-4 mt-4">
+    <button class="bg-blue-600 text-white px-4 py-2 rounded">Reserve</button>
+    <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded">View Details</button>
+  </div>
+</div> 
 
     <div class="flex items-center p-8 text-white h-[800px] rounded-[20px]"
         style="background: radial-gradient(circle, rgb(35, 35, 35), rgb(26, 26, 26), rgb(9, 9, 9)); margin-top: 20px ">

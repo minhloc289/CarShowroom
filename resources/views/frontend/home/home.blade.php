@@ -33,7 +33,7 @@
         class="rounded-md bg-indigo-600 px-[2vw] py-[1vh] text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
         Register For Consultation
       </a>
-      <a href="#" class="text-sm font-semibold text-gray-900 hover:underline" style="color: #4954F4;">
+      <a href="{{ route('CustomerDashBoard.introduce') }}" class="text-sm font-semibold text-gray-900 hover:underline" style="color: #4954F4;">
         Learn more <span aria-hidden="true">→</span>
       </a>
     </div>
@@ -107,7 +107,7 @@
 </div>
 
 <!-- Information display container -->
-<div id="car-info" class="relative text-center mt-4 bg-white p-6 border rounded-lg shadow-lg z-50">
+<div id="car-info" class="relative text-center mt-4 z-10">
   <p><strong>Model</strong>: Porsche 911 Carrera</p>
   <p><strong>Seats</strong>: 4 seats</p>
   <p><strong>Range</strong>: ~ 350 km (NEDC)</p>
@@ -116,7 +116,7 @@
     <button class="bg-blue-600 text-white px-4 py-2 rounded">Reserve</button>
     <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded">View Details</button>
   </div>
-</div>
+</div> 
 
 
 <div class="flex items-center p-8 text-white h-[800px] rounded-[20px]"

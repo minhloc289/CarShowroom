@@ -1,0 +1,9 @@
+header {
+    margin-bottom: 0;
+}
+
+.introduction {
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 100vw; /* Chiếm toàn bộ chiều rộng màn hình */
+}

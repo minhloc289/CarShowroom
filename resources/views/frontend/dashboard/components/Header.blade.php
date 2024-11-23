@@ -59,7 +59,7 @@
                 {{-- -------------- Dropdown for service ------------- --}}
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                @if (Auth::check())
+                @if (Auth::guard('account')->check())
                     {{-- Nếu người dùng đã đăng nhập, hiển thị file signed.blade.php --}}
                     @include('frontend.signed.signed')
                 @else
@@ -69,6 +69,7 @@
                             aria-hidden="true">&rarr;</span></a>
                 @endif
             </div>
+
         </nav>
     </div>
     <!-- Mobile menu -->

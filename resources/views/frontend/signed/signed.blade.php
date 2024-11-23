@@ -1,8 +1,11 @@
+@php
+    $user = session('login_account');
+@endphp
 <div class="relative font-[sans-serif] w-max mx-auto" style=" left: 230px;">
     <button type="button" id="dropdownToggle"
         class="px-4 py-2 flex items-center rounded-full text-[#333] text-sm border border-gray-300 outline-none hover:bg-gray-100">
         <img src="https://readymadeui.com/profile_6.webp" class="w-7 h-7 mr-3 rounded-full shrink-0"></img>
-        John Doe
+        {{ $user->email }}
         <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-gray-400 inline ml-3" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
                 d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
@@ -32,12 +35,12 @@
             Dashboard
         </li>
         <li class='py-2.5 px-5 flex items-center hover:bg-gray-100 text-[#333] text-sm cursor-pointer'>
-            <div class="flex items-center gap-4">
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="font-semibold text-red-600 hover:underline">Log out</button>
-                </form>
-            </div>
+        <div class="flex items-center gap-4">
+    <form method="POST" action="{{ route('account.logout') }}">
+        @csrf
+        <button type="submit" class="font-semibold text-red-600 hover:underline">Log out</button>
+    </form>
+</div>
         </li>
     </ul>
 </div>

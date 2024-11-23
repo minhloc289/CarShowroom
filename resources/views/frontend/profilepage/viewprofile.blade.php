@@ -1,7 +1,8 @@
 @extends('frontend.layouts.App')
-
 @section('content')
-
+@php
+    $user = session('login_account');
+@endphp
 <div class="flex min-h-screen bg-gray-100">
     <!-- Sidebar -->
     <aside class="w-64 bg-white shadow-md">
@@ -67,7 +68,7 @@
             </ul>
             <ul class="mt-6">
                 <li>
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('account.logout') }}">
                         @csrf
                         <button type="submit" class="flex items-center text-red-600 hover:text-red-800">
                             <i class="fas fa-sign-out-alt mr-3"></i> Đăng xuất
@@ -92,7 +93,7 @@
                     <div>
                         <label class="block text-gray-600 font-medium">Email</label>
                         <input type="email" name="email" class="w-full mt-1 px-4 py-2 border rounded-md"
-                            value="email@example.com">
+                            value="{{ $user->email }}">
                     </div>
                     <div>
                         <label class="block text-gray-600 font-medium">Số điện thoại</label>

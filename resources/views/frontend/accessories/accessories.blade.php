@@ -115,5 +115,6 @@
     </div>
 
 </div>
-
+<script src="{{asset('/assets/js/custom/accessories.js')}}"></script>
+<link rel="stylesheet" href="{{asset('/assets/css/accessories.css')}}">
 @endsection

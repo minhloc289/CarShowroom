@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 
 
+
 class CustomerAuthController extends Controller
 {
     /**
@@ -38,28 +39,30 @@ class CustomerAuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
- public function login(Request $request)
+
+    public function login(Request $request)
     {
         // Xác thực dữ liệu đầu vào
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-
-        // Thử đăng nhập
-        if (Auth::attempt($credentials)) {
-            // Nếu đăng nhập thành công, chuyển hướng về trang chủ với thông báo thành công
-            $user=Auth::user();
+    
+        // Thử đăng nhập với guard 'account'
+        if (Auth::guard('account')->attempt($credentials)) {
+            // Nếu đăng nhập thành công, lấy thông tin người dùng và chuyển hướng
+            $user = Auth::guard('account')->user();
+            session(['login_account' => $user]);
             toastr()->success("Đăng nhập thành công");
-
+    
             return redirect()->route('CustomerDashBoard.index');
         }
-
+    
         // Nếu đăng nhập thất bại, chuyển hướng về trang đăng nhập với thông báo lỗi
-        toastr()->error("Tài khoản hoặc mặt khẩu không đúng");
-
-        return redirect()->route('CustomerDashBoard.index');
+        toastr()->error("Tài khoản hoặc mật khẩu không đúng");
+        return redirect()->back()->withInput();
     }
+    
 
 
     /**
@@ -110,5 +113,14 @@ class CustomerAuthController extends Controller
     }
 
     return redirect()->route('Forgotpass.showForgotfrom');
+}
+public function logout(Request $request)
+{
+        
+    Auth::guard('account')->logout();
+    $request->session()->invalidate(); // Làm mất hiệu lực của phiên làm việc
+    $request->session()->regenerateToken(); // Tạo lại token CSRF
+
+    return redirect()->route('CustomerDashBoard.index');
 }
 }

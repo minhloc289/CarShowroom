@@ -108,12 +108,13 @@ return [
 
 'passwords' => [
     'accounts' => [
-        'provider' => 'users',
+        'provider' => 'accounts', // Sửa lại để sử dụng provider 'accounts' thay vì 'users'
         'table' => 'password_resets',
         'expire' => 60,
         'throttle' => 60,
     ],
 ],
+
 
 
     /*

@@ -79,6 +79,10 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('account.logout');
+
+
+
 // Introduce 
 Route::get('/introduce', [CustomerDashBoardController::class, 'introduce'])->name('CustomerDashBoard.introduce');
 // Registration 

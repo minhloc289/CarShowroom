@@ -5,5 +5,5 @@ header {
 .introduction {
     margin-top: 0;
     margin-bottom: 0;
-    width: 100vw; /* Chiếm toàn bộ chiều rộng màn hình */
+    width: 100vw; 
 }

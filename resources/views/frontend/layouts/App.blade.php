@@ -9,7 +9,7 @@
             @include('frontend.dashboard.components.Header')
 
             <!-- Content -->
-            <div class="content flex-grow w-full pt-[90px] mb-10">
+            <div class="content flex-grow w-full pt-[80px] mb-10">
                 @yield('content')
             </div>
             <!-- End Content -->

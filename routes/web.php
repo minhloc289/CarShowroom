@@ -78,6 +78,7 @@ Route::middleware('auth')->group(function () {
     })->name('logout');
 });
 
+
 Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('account.logout');
 
 
@@ -91,7 +92,8 @@ Route::get('/accessories', [CustomerDashBoardController::class, 'accessories'])-
 Route::get('/api/accessories', [CustomerDashBoardController::class, 'getAccessories'])->name('api.accessories');
 Route::get('/api/accessories/sorted', [CustomerDashBoardController::class, 'getSortedAccessories']);
 
-
+//Car rent
+Route::get('/car-rent', [CustomerDashBoardController::class, 'carRent'])->name('rent.car');
 
 // Trang chủ
 Route::get('/home', function () {    

@@ -1,6 +1,7 @@
 @extends('frontend.layouts.App')
 
 @section('content')
+
 <!-- resources/views/components/introduce.blade.php -->
 
 

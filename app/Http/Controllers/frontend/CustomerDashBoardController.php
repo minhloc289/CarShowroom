@@ -5,9 +5,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Account; // Đảm bảo đã import
 use App\Models\Accessories;
+use App\Models\RentalCar;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
+use App\Models\CarDetails;
+
 class CustomerDashBoardController extends Controller
 {
     public function index(){
@@ -72,5 +75,9 @@ public function getSortedAccessories(Request $request)
     return response()->json($accessories); // Trả về JSON
 }
 
-
+//Car rent
+    public function carRent(){
+        $rental_car = CarDetails::with('rentalCars')->get();
+        return view("frontend.car_rent.car_rent", compact('rental_car'));
+    }
 }

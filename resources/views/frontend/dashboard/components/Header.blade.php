@@ -19,7 +19,7 @@
                 </button>
             </div>
             <div class="hidden lg:flex lg:gap-x-12">
-                <a href="#"
+                <a href="{{ route('CustomerDashBoard.introduce') }}"
                     class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline text">Introduction</a>
 
                 <a href="{{ route('CarController.index') }}" class=" md:hover:text-blue-700 font-semibold text-gray-900 hover:underline">Car</a>
@@ -45,12 +45,11 @@
                         class="absolute z-10 left-1/2 transform -translate-x-1/2 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-white-700 group-hover:block">
                         <ul class="py-2 text-sm/6 font-semibold text-gray-900 ">
                             <li>
-                                <a href="#"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Car
-                                    Rent</a>
+                                <a href="{{route('rent.car')}}"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Car Rent</a>
                             </li>
                             <li>
-                                <a href="#"
+                                <a href="{{ route('CustomerDashBoard.registration') }}"
                                     class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Test
                                     Drive Registration</a>
                             </li>
@@ -60,7 +59,7 @@
                 {{-- -------------- Dropdown for service ------------- --}}
             </div>
             <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-                @if (Auth::check())
+                @if (Auth::guard('account')->check())
                     {{-- Nếu người dùng đã đăng nhập, hiển thị file signed.blade.php --}}
                     @include('frontend.signed.signed')
                 @else
@@ -70,6 +69,7 @@
                             aria-hidden="true">&rarr;</span></a>
                 @endif
             </div>
+
         </nav>
     </div>
     <!-- Mobile menu -->

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AuthController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
@@ -14,27 +15,12 @@ use App\Http\Controllers\frontend\ProfileController;
 use App\Http\Controllers\frontend\AccessoryController;
 
 
-
 /* BACKEND ROUTES */
-
-/* AUTHENTICATION */
-
-
-Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDashBoard.index');
-Route::get('/compare', [CustomerDashBoardController::class, 'compare'])->name('CustomerDashBoard.compare');
-// Booking form
-Route::get('/booking-form', [CustomerDashBoardController::class, 'Bookingform'])->name('CustomerDashBoard.bookingform');
-// Cars
-Route::get('/cars', [CarController::class, 'index'])->name('CarController.index');
-
-
-
-
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
 
     /* AUTHENTICATION */
-    Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class]);
-    Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class]);
+    Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
+    Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     /* DASHBOARD */
@@ -52,6 +38,18 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('user/details/{id}', [AdminController::class, 'loadUserDetails'])->name('user.details');
 
 });
+
+
+/* FRONTEND ROUTES */
+
+Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDashBoard.index');
+Route::get('/compare', [CustomerDashBoardController::class, 'compare'])->name('CustomerDashBoard.compare');
+// Booking form
+Route::get('/booking-form', [CustomerDashBoardController::class, 'Bookingform'])->name('CustomerDashBoard.bookingform');
+// Cars
+Route::get('/cars', [CarController::class, 'index'])->name('CarController.index');
+//details car
+Route::get('/cars/{car_id}', [CarController::class, 'show'])->name('cars.details');
 
 Route::prefix('customer')->group(function () {
     Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');
@@ -73,6 +71,7 @@ Route::prefix('password')->group(function () {
 
 // Route view profile
 Route::get('/view-profile', [ProfileController::class, 'viewprofile'])->name('view.profile');
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
 // Route logout
 Route::middleware('auth')->group(function () {
@@ -83,7 +82,14 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('account.logout');
 
+
+
+// Introduce 
+Route::get('/introduce', [CustomerDashBoardController::class, 'introduce'])->name('CustomerDashBoard.introduce');
+// Registration 
+Route::get('/registration', [CustomerDashBoardController::class, 'registration'])->name('CustomerDashBoard.registration');
 //Route accessories
 Route::get('/accessories', [CustomerDashBoardController::class, 'accessories'])->name('CustomerDashBoard.accsessories');
 Route::get('/api/accessories', [CustomerDashBoardController::class, 'getAccessories'])->name('api.accessories');
@@ -91,11 +97,12 @@ Route::get('/api/accessories/sorted', [CustomerDashBoardController::class, 'getS
 Route::get('/accessory/{id}', [CustomerDashBoardController::class, 'showAccessory'])->name('accessory.show');
 
 
+//Car rent
+Route::get('/car-rent', [CustomerDashBoardController::class, 'carRent'])->name('rent.car');
 
 // Trang chủ
 Route::get('/home', function () {    
     return view('home');
 })->name('home');
-
 
 

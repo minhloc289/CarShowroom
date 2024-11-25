@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 
 
+
 class CustomerAuthController extends Controller
 {
     /**
@@ -38,27 +39,30 @@ class CustomerAuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
- public function login(Request $request)
+
+    public function login(Request $request)
     {
         // Xác thực dữ liệu đầu vào
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-
-        // Thử đăng nhập
-        if (Auth::attempt($credentials)) {
-            // Nếu đăng nhập thành công, chuyển hướng về trang chủ với thông báo thành công
+    
+        // Thử đăng nhập với guard 'account'
+        if (Auth::guard('account')->attempt($credentials)) {
+            // Nếu đăng nhập thành công, lấy thông tin người dùng và chuyển hướng
+            $user = Auth::guard('account')->user();
+            session(['login_account' => $user]);
             toastr()->success("Đăng nhập thành công");
-
+    
             return redirect()->route('CustomerDashBoard.index');
         }
-
+    
         // Nếu đăng nhập thất bại, chuyển hướng về trang đăng nhập với thông báo lỗi
-        toastr()->error("Tài khoản hoặc mặt khẩu không đúng");
-
-        return redirect()->route('CustomerDashBoard.index');
+        toastr()->error("Tài khoản hoặc mật khẩu không đúng");
+        return redirect()->back()->withInput();
     }
+    
 
 
     /**
@@ -67,23 +71,31 @@ class CustomerAuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function signUp(Request $request){
-        // Xác thực dữ liệu đầu vào, đảm bảo email là duy nhất trong bảng accounts
+    public function signUp(Request $request)
+    {
+        // Xác thực dữ liệu đầu vào, đảm bảo các trường được nhập đúng và email là duy nhất
         $request->validate([
-            'email' => 'required|email|unique:accounts,email',
-            'password' => 'required|min:6|confirmed',
+            'name' => 'required|string|max:255', // Họ tên bắt buộc
+            'address' => 'required|string|max:255', // Địa chỉ bắt buộc
+            'phone' => 'required|string|max:15|unique:accounts,phone', // Số điện thoại phải là duy nhất
+            'email' => 'required|email|unique:accounts,email', // Email phải là duy nhất
+            'password' => 'required|min:6|confirmed', // Mật khẩu xác nhận
         ]);
     
         // Lưu thông tin người dùng vào bảng accounts
         Account::create([
+            'name' => $request->name,
+            'address' => $request->address,
+            'phone' => $request->phone,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->password), // Mã hóa mật khẩu
         ]);
     
         // Chuyển hướng với thông báo thành công
-        toastr()->success("Đăng kí tài khoản thành công");
+        toastr()->success("Đăng ký tài khoản thành công");
         return redirect()->route('CustomerDashBoard.index');
     }
+    
     
     //From forgot pass
     public function showForgotForm(){
@@ -109,5 +121,14 @@ class CustomerAuthController extends Controller
     }
 
     return redirect()->route('Forgotpass.showForgotfrom');
+}
+public function logout(Request $request)
+{
+        
+    Auth::guard('account')->logout();
+    $request->session()->invalidate(); // Làm mất hiệu lực của phiên làm việc
+    $request->session()->regenerateToken(); // Tạo lại token CSRF
+
+    return redirect()->route('CustomerDashBoard.index');
 }
 }

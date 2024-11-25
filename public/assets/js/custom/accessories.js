@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", async function () {
     const categoryButtons = document.querySelectorAll('[data-category]');
     const productsContainer = document.querySelector('.grid'); // Container chứa sản phẩm
@@ -126,3 +127,4 @@ document.addEventListener("DOMContentLoaded", async function () {
         });
     });
 });
+

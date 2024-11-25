@@ -10,7 +10,7 @@
 <div id="register-overlay"
     class="overlay-hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
     <div id="signup_form"
-        class="register-form-container flex flex-col h-[700px] w-[400px] max-w-md px-6 py-4 bg-white shadow-lg rounded-lg"
+        class="register-form-container flex flex-col h-[700px] w-[700px] px-6 py-4 bg-white shadow-lg rounded-lg"
         onclick="event.stopPropagation();">
         @include('frontend/login_sign/customer_signup')
     </div>

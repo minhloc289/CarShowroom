@@ -9,3 +9,4 @@
 <script src="{{ asset('assets/js/custom/customSwiper.js') }}"></script>
 <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
 <link rel="stylesheet" href="{{asset('assets/css/home.css')}}">
+

@@ -2,12 +2,8 @@
 
 namespace App\Models;
 
-
-use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 
 class Account extends Authenticatable
 {
@@ -17,37 +13,49 @@ class Account extends Authenticatable
 
     protected $primaryKey = 'id'; // Khóa chính của bảng
 
+    public $incrementing = false; // Khóa chính không tự động tăng vì bạn đã tùy chỉnh
+
     public $timestamps = true; // Bật timestamps (created_at, updated_at)
 
     protected $fillable = [
         'email',
         'password',
+        'name',       // Họ tên
+        'address',    // Địa chỉ
+        'phone',      // Số điện thoại
     ];
-
-    public function rentalReceipts()
-        {
-            return $this->hasMany(RentalReceipt::class, 'user_id', 'id');
-        }
-
-    public function scheduleBookings()
-        {
-            return $this->hasMany(ScheduleBooking::class, 'user_id', 'id');
-        }
-
-    public function testDriveRegistrations()
-        {
-            return $this->hasMany(TestDriveRegistration::class, 'user_id', 'id');
-        }
-
-    public function salesInvoices()
-        {
-            return $this->hasMany(SalesInvoice::class, 'user_id', 'id');
-        }
 
     protected $hidden = [
-        'password',
+        'password',      // Ẩn password khi xuất dữ liệu ra ngoài
+        'remember_token' // Ẩn remember_token (nếu sử dụng)
     ];
 
+    /**
+     * Quan hệ với các bảng khác
+     */
+    public function rentalReceipts()
+    {
+        return $this->hasMany(RentalReceipt::class, 'user_id', 'id');
+    }
+
+    public function scheduleBookings()
+    {
+        return $this->hasMany(ScheduleBooking::class, 'user_id', 'id');
+    }
+
+    public function testDriveRegistrations()
+    {
+        return $this->hasMany(TestDriveRegistration::class, 'user_id', 'id');
+    }
+
+    public function salesInvoices()
+    {
+        return $this->hasMany(SalesInvoice::class, 'user_id', 'id');
+    }
+
+    /**
+     * Boot method - Tạo ID tự động với tiền tố ACC
+     */
     protected static function boot()
     {
         parent::boot();

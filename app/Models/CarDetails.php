@@ -29,6 +29,7 @@ class CarDetails extends Model
         'width',
         'height',
         'image_url',
+        'description',
     ];
 
     public function rentalCars()
@@ -50,5 +51,9 @@ class CarDetails extends Model
     {
         return $this->hasMany(InvoiceDetail::class, 'car_id', 'car_id');
     }
-    
+    public function sale()
+{
+    return $this->hasOne(SalesCars::class, 'car_id', 'car_id');
+}
+
 }

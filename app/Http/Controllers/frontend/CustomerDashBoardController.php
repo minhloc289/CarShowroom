@@ -75,9 +75,4 @@ public function getSortedAccessories(Request $request)
     return response()->json($accessories); // Trả về JSON
 }
 
-//Car rent
-    public function carRent(){
-        $rental_car = CarDetails::with('rentalCars')->get();
-        return view("frontend.car_rent.car_rent", compact('rental_car'));
-    }
 }

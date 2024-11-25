@@ -12,8 +12,7 @@ use App\Http\Controllers\frontend\CarController;
 use App\Http\Controllers\frontend\ForgetPasswordManager;
 use App\Http\Controllers\frontend\CustomerAuthController;
 use App\Http\Controllers\frontend\ProfileController;
-
-
+use App\Http\Controllers\frontend\RentCarController;
 
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
@@ -93,7 +92,9 @@ Route::get('/api/accessories', [CustomerDashBoardController::class, 'getAccessor
 Route::get('/api/accessories/sorted', [CustomerDashBoardController::class, 'getSortedAccessories']);
 
 //Car rent
-Route::get('/car-rent', [CustomerDashBoardController::class, 'carRent'])->name('rent.car');
+Route::get('/car-rent', [RentCarController::class, 'carRent'])->name('rent.car');
+Route::get('/api/cars/{id}', [RentCarController::class, 'show']);
+Route::get('/car-rent/{id}', [RentCarController::class, 'showRentForm'])->name('rent.form');
 
 // Trang chủ
 Route::get('/home', function () {    

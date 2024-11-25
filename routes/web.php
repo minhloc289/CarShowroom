@@ -48,6 +48,8 @@ Route::get('/compare', [CustomerDashBoardController::class, 'compare'])->name('C
 Route::get('/booking-form', [CustomerDashBoardController::class, 'Bookingform'])->name('CustomerDashBoard.bookingform');
 // Cars
 Route::get('/cars', [CarController::class, 'index'])->name('CarController.index');
+//details car
+Route::get('/cars/{car_id}', [CarController::class, 'show'])->name('cars.details');
 
 Route::prefix('customer')->group(function () {
     Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');
@@ -69,6 +71,7 @@ Route::prefix('password')->group(function () {
 
 // Route view profile
 Route::get('/view-profile', [ProfileController::class, 'viewprofile'])->name('view.profile');
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
 // Route logout
 Route::middleware('auth')->group(function () {

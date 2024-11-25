@@ -75,7 +75,6 @@ public function getSortedAccessories(Request $request)
     return response()->json($accessories); // Trả về JSON
 }
 
-
 public function showAccessory($id)
 {
     $accessory = Accessories::where('accessory_id', $id)->firstOrFail();

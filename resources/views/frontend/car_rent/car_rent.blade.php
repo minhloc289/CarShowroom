@@ -1,6 +1,8 @@
 @extends('frontend.layouts.App')
 
 @section('content')
+    <script src="{{asset('assets/js/custom/rentCar.js')}}"></script>
+    <link rel="stylesheet" href="{{asset('assets/css/rentCar.css')}}">
     <!-- Main Container - Subtle luxury gradient background -->
     <div class="relative min-h-screen py-10" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%, #f8fafc 100%);">
         <!-- Decorative Elements -->
@@ -47,92 +49,145 @@
             </div>
         </div>
 
-        <!-- Header Section -->
+        
         <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center mb-12">
+            <!-- Header Section -->
+            <div class="flex justify-between items-center mb-6">
                 <h1 class="text-4xl font-bold text-gray-800">Premium Car Collection</h1>
-                <div class="relative w-1/3">
-                    <input type="text" id="carSearchInput" placeholder="Tìm kiếm xe..."
-                        class="w-full py-4 pl-12 pr-4 rounded-lg bg-white/80 backdrop-blur-sm border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-lg transition-all duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="absolute top-4 left-4 h-6 w-6 text-gray-400" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
+                <!-- Search and Dropdown Container -->
+                <div class="flex items-center gap-4">
+                    <!-- Search Bar -->
+                    <div class="relative w-72">
+                        <input type="text" id="carSearchInput" placeholder="Search by name, brand, or year..."
+                            class="w-full py-3 pl-12 pr-4 rounded-lg bg-white border border-gray-200 shadow focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="absolute top-3 left-3 h-6 w-6 text-gray-400" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+            
+                    <!-- Dropdown Sort -->
+                    <div class="relative">
+                        <select id="sortSelect" class="w-48 py-3 pl-4 pr-10 rounded-lg bg-white border border-gray-200 shadow focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <option value="all">All</option>
+                            <option value="brand-asc">Brand: A to Z</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                        </select>
+                    </div>
                 </div>
             </div>
+            
+            
 
             <!-- Cars Grid -->
-            <div id="carsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div id="carsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach ($rental_car as $car)
-                    <div class="car-item bg-white/80 backdrop-blur-sm border border-gray-100 p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300">
-                        <!-- Header Information - Fixed Height -->
-                        <div class="h-24 text-center">
-                            <h2 class="text-2xl font-bold text-gray-800 mb-1">{{ $car->name }}</h2>
-                            <p class="text-lg text-gray-600 mb-1">{{ $car->brand }} - {{ $car->model }}</p>
-                            <p class="text-sm text-gray-500">Year: {{ $car->year }}</p>
-                        </div>
+                    @if ($car->rentalCars->isNotEmpty())
+                        <div class="car-item bg-white/80 backdrop-blur-sm border border-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+                            <!-- Header Information -->
+                            <div class="h-16 text-center">
+                                <h2 class="text-lg font-bold text-gray-800 mb-1">{{ $car->name }}</h2>
+                                <p class="text-sm text-gray-600 mb-1">{{ $car->brand }} - {{ $car->model }}</p>
+                                <p class="text-xs text-gray-500">Year: {{ $car->year }}</p>
+                            </div>
 
-                        <!-- Car Image - Fixed Height Container -->
-                        <div class="h-48 flex items-center justify-center my-6">
-                            <img src="{{ $car->image_url }}" alt="{{ $car->name }}" 
-                                class="max-h-full w-auto rounded-lg transform hover:scale-105 transition duration-300">
-                        </div>
+                            <!-- Car Image -->
+                            <div class="h-32 flex items-center justify-center my-4">
+                                <img src="{{ $car->image_url }}" alt="{{ $car->name }}" 
+                                    class="max-h-full w-auto rounded-lg transform hover:scale-105 transition duration-300">
+                            </div>
 
-                        <!-- Specifications - Fixed Height -->
-                        <div class="h-24 space-y-3">
-                            <p class="text-gray-700 flex items-center justify-center gap-2">
-                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-                                </svg>
-                                <span class="min-w-[100px] text-center">Seats: {{ $car->seat_capacity }}</span>
-                            </p>
-                            <p class="text-gray-700 flex items-center justify-center gap-2">
-                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
-                                </svg>
-                                <span class="min-w-[100px] text-center">{{ $car->max_speed }} km/h</span>
-                            </p>
-                        </div>
+                            <!-- Specifications -->
+                            <div class="h-20 space-y-1">
+                                <p class="text-gray-700 flex items-center justify-center gap-2 text-sm">
+                                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                                    </svg>
+                                    Seats: {{ $car->seat_capacity }}
+                                </p>
+                                <p class="text-gray-700 flex items-center justify-center gap-2 text-sm">
+                                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Max Speed: {{ $car->max_speed }} km/h
+                                </p>
+                            </div>
 
-                        <!-- Rental Information - Fixed Height -->
-                        <div class="h-32 mt-4">
-                            @if ($car->rentalCars->isNotEmpty())
-                                @foreach ($car->rentalCars as $rentalCar)
-                                    <div class="space-y-2">
-                                        <p class="text-gray-600 text-center">License plates: {{ $rentalCar->license_plate_number }}</p>
-                                        <p class="text-2xl font-bold text-gray-900 text-center">
-                                            {{ number_format($rentalCar->rental_price_per_day, 0) }} VNĐ/day
-                                        </p>
-                                        <p class="text-center">
-                                            @if ($rentalCar->availability_status === 'Available')
-                                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                                                    Ready
-                                                </span>
-                                            @else
-                                                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800">
-                                                    Rented
-                                                </span>
-                                            @endif
-                                        </p>
-                                    </div>
-                                @endforeach
-                            @else
-                                <p class="text-red-500 font-medium text-center">There is no rental information at this time.</p>
-                            @endif
-                        </div>
+                            <!-- Rental Information -->
+                            <div class="h-24 mt-2 space-y-1 text-center">
+                                @if ($car->rentalCars->isNotEmpty())
+                                    @foreach ($car->rentalCars as $rentalCar)
+                                        <div class="text-sm space-y-2">
+                                            <p class="text-gray-600">License plates: {{ $rentalCar->license_plate_number }}</p>
+                                            <p class="text-lg font-bold text-gray-900">{{ number_format($rentalCar->rental_price_per_day, 0) }} VNĐ/day</p>
+                                            <p>
+                                                @if ($rentalCar->availability_status === 'Available')
+                                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                        Ready
+                                                    </span>
+                                                @else
+                                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                                        Rented
+                                                    </span>
+                                                @endif
+                                            </p>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p class="text-red-500 font-medium text-center">No rental information available.</p>
+                                @endif
+                            </div>
 
-                        <!-- Action Button - Fixed Position -->
-                        <div class="mt-6">
-                            <a href="#" 
-                            class="block w-full py-3 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-300 text-center font-medium">
-                                View details
-                            </a>
+                            <!-- Action Button -->
+                            <div class="flex justify-center gap-4 mt-4">
+                                @if ($rentalCar->availability_status === 'Available')
+                                    <!-- Rent Now Button -->
+                                    <a href="#"
+                                        class="w-1/2 py-3 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300 text-center font-medium rent-now-button"
+                                        data-car-id="{{ $rentalCar->car_id }}">
+                                        Rent Now
+                                    </a>
+
+                            
+                                    <!-- View Details Button -->
+                                    <a href="#"
+                                        class="w-1/2 py-3 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-300 text-center font-medium">
+                                        View Details
+                                    </a>
+                                @else
+                                    <!-- Only View Details Button -->
+                                    <a href="#"
+                                        class="w-full py-3 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-300 text-center font-medium">
+                                        View Details
+                                    </a>
+                                @endif
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 @endforeach
             </div>
         </div>
+
+        <!-- Modal Xác Nhận -->
+        <div id="confirmationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-6 w-96 shadow-lg">
+                <h2 class="text-lg font-bold text-gray-800 mb-4">Confirm Rental</h2>
+                <p class="text-gray-600 mb-6">Are you sure you want to rent this car?</p>
+                <div class="flex justify-end gap-4">
+                    <button id="cancelButton"
+                        class="py-2 px-4 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors duration-300">
+                        Cancel
+                    </button>
+                    <button id="confirmButton"
+                        class="py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+
 
         <!-- View All Button -->
         <div class="text-center mt-12">

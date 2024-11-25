@@ -12,7 +12,12 @@ use App\Http\Controllers\frontend\CarController;
 use App\Http\Controllers\frontend\ForgetPasswordManager;
 use App\Http\Controllers\frontend\CustomerAuthController;
 use App\Http\Controllers\frontend\ProfileController;
+
 use App\Http\Controllers\frontend\RentCarController;
+
+use App\Http\Controllers\frontend\AccessoryController;
+
+
 
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
@@ -47,6 +52,8 @@ Route::get('/compare', [CustomerDashBoardController::class, 'compare'])->name('C
 Route::get('/booking-form', [CustomerDashBoardController::class, 'Bookingform'])->name('CustomerDashBoard.bookingform');
 // Cars
 Route::get('/cars', [CarController::class, 'index'])->name('CarController.index');
+//details car
+Route::get('/cars/{car_id}', [CarController::class, 'show'])->name('cars.details');
 
 Route::prefix('customer')->group(function () {
     Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');
@@ -68,6 +75,7 @@ Route::prefix('password')->group(function () {
 
 // Route view profile
 Route::get('/view-profile', [ProfileController::class, 'viewprofile'])->name('view.profile');
+Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
 // Route logout
 Route::middleware('auth')->group(function () {
@@ -90,6 +98,8 @@ Route::get('/registration', [CustomerDashBoardController::class, 'registration']
 Route::get('/accessories', [CustomerDashBoardController::class, 'accessories'])->name('CustomerDashBoard.accsessories');
 Route::get('/api/accessories', [CustomerDashBoardController::class, 'getAccessories'])->name('api.accessories');
 Route::get('/api/accessories/sorted', [CustomerDashBoardController::class, 'getSortedAccessories']);
+Route::get('/accessory/{id}', [CustomerDashBoardController::class, 'showAccessory'])->name('accessory.show');
+
 
 //Car rent
 Route::get('/car-rent', [RentCarController::class, 'carRent'])->name('rent.car');

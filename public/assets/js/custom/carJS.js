@@ -1,58 +1,68 @@
 document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('carSearchInput');
+    const engineTypeFilter = document.getElementById('engineTypeFilter');
+    const seatCapacityFilter = document.getElementById('seatCapacityFilter');
+    const brandFilter = document.getElementById('brandFilter');
     const carItems = document.querySelectorAll('.car-item');
-    const carsContainer = document.getElementById('carsContainer');
     const viewAllButton = document.getElementById('viewAllButton');
 
     let currentItemCount = 10; // Số lượng xe hiển thị ban đầu
-    const totalItems = carItems.length; // Tổng số xe
+    const totalItems = carItems.length; // Tổng số xe trong danh sách
 
-    // Ẩn các phần tử vượt quá số lượng hiện tại
-    for (let i = currentItemCount; i < totalItems; i++) {
-        carItems[i].style.display = 'none';
-    }
+    // Ẩn các xe vượt quá số lượng hiển thị ban đầu
+    const hideExtraCars = () => {
+        for (let i = 0; i < totalItems; i++) {
+            carItems[i].style.display = i < currentItemCount ? 'block' : 'none';
+        }
+    };
 
-    // Thêm sự kiện click cho nút "View All"
+    // Hiển thị thêm xe khi nhấn "View All"
     viewAllButton.addEventListener('click', function () {
-        // Tăng số lượng xe hiển thị thêm 10
         currentItemCount += 10;
-
-        // Hiển thị các xe mới
-        for (let i = 0; i < currentItemCount && i < totalItems; i++) {
-            carItems[i].style.display = 'block';
-        }
-
-        // Nếu đã hiển thị tất cả xe, không làm gì cả, chỉ dừng việc tăng số lượng xe hiển thị
+        hideExtraCars();
     });
 
-    // Thêm sự kiện tìm kiếm cho ô input
-    searchInput.addEventListener('input', function () {
-        const filter = searchInput.value.toLowerCase();
+    // Hàm lọc xe
+    const filterCars = () => {
+        const searchText = searchInput.value.toLowerCase();
+        const selectedEngineType = engineTypeFilter.value.toLowerCase();
+        const selectedSeatCapacity = seatCapacityFilter.value;
+        const selectedBrand = brandFilter.value.toLowerCase();
 
-        if (filter === "") {
-            // Nếu ô tìm kiếm trống, hiển thị số lượng xe ban đầu
-            for (let i = 0; i < totalItems; i++) {
-                if (i < currentItemCount) {
-                    carItems[i].style.display = 'block';
-                } else {
-                    carItems[i].style.display = 'none';
-                }
+        let filteredCount = 0; // Số lượng xe phù hợp với bộ lọc
+
+        carItems.forEach(car => {
+            const name = car.querySelector('h2').textContent.toLowerCase();
+            const brand = car.querySelector('p:nth-child(2)').textContent.toLowerCase();
+            const seatCapacity = car.querySelector('p:nth-child(5)').textContent.split(': ')[1];
+            const engineType = car.querySelector('p:nth-child(6)').textContent.split(': ')[1].toLowerCase(); // Lấy giá trị từ cột engine_type
+
+            const matchesSearch = !searchText || name.includes(searchText) || brand.includes(searchText);
+            const matchesEngineType = !selectedEngineType || engineType === selectedEngineType;
+            const matchesSeatCapacity = !selectedSeatCapacity || seatCapacity === selectedSeatCapacity;
+            const matchesBrand = !selectedBrand || brand.includes(selectedBrand);
+
+            if (matchesSearch && matchesEngineType && matchesSeatCapacity && matchesBrand) {
+                car.style.display = 'block';
+                filteredCount++;
+            } else {
+                car.style.display = 'none';
             }
-        } else {
-            // Tìm kiếm xe phù hợp
-            carItems.forEach(car => {
-                // Lấy tên, thương hiệu và model của ô tô
-                const name = car.querySelector('h2').textContent.toLowerCase();
-                const brand = car.querySelector('p:nth-child(2)').textContent.toLowerCase();
-                const model = brand.split(' - ')[1]; // model nằm sau dấu "-"
+        });
 
-                // Kiểm tra xem từ khóa tìm kiếm có khớp với tên, thương hiệu hoặc model
-                if (name.includes(filter) || brand.includes(filter) || (model && model.includes(filter))) {
-                    car.style.display = 'block';
-                } else {
-                    car.style.display = 'none';
-                }
-            });
+        // Nếu không có bộ lọc nào được áp dụng, hiển thị số xe theo trạng thái ban đầu
+        if (!searchText && !selectedEngineType && !selectedSeatCapacity && !selectedBrand) {
+
+            hideExtraCars();
         }
-    });
+    };
+
+    // Gắn sự kiện cho các bộ lọc và ô tìm kiếm
+    searchInput.addEventListener('input', filterCars);
+    engineTypeFilter.addEventListener('change', filterCars);
+    seatCapacityFilter.addEventListener('change', filterCars);
+    brandFilter.addEventListener('change', filterCars);
+
+    // Ẩn các xe vượt quá số lượng hiển thị ban đầu khi tải trang
+    hideExtraCars();
 });

@@ -2,8 +2,125 @@ header {
     margin-bottom: 0;
 }
 
+/* Tổng thể phần giới thiệu */
 .introduction {
-    margin-top: 0;
-    margin-bottom: 0;
-    width: 100vw; 
+    display: flex;
+    position: relative;
+    height: 700px;
+    width: 100vw; /* Chiếm toàn bộ chiều rộng màn hình */
+    background: linear-gradient(to right, white, #d3d3d3, black); /* Gradient từ trắng sang đen */
+    overflow: hidden;
+}
+
+/* Container chính với gradient kéo dài */
+.w-screen {
+    height: 700px;
+    display: flex;
+    position: relative;
+    background: linear-gradient(to right, white, black); /* Gradient trắng đen */
+}
+
+/* Phần chữ */
+.text-container {
+    position: absolute;
+    left: 0;
+    width: 40%; /* Chiếm 40% màn hình */
+    height: 100%;
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    padding: 2rem;
+    color: black;
+}
+
+/* Phần hình ảnh */
+.image-container {
+    position: absolute;
+    right: 0;
+    width: 60%; /* Chiếm 60% màn hình */
+    height: 100%;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Đảm bảo ảnh không bị cắt mà vừa khung */
+}
+
+@keyframes smoothSlideIn {
+    0% {
+        transform: translateX(100%) scale(0.8); /* Start off-screen to the right and slightly smaller */
+        opacity: 0; /* Start invisible */
+    }
+    100% {
+        transform: translateX(0) scale(1); /* End at its correct position and size */
+        opacity: 1; /* Fully visible */
+    }
+}
+
+.animate-car {
+    animation: smoothSlideIn 1.3s ease-out; /* Smooth and polished animation */
+    position: relative;
+}
+
+
+.find-more-btn {
+    display: inline-block;
+    background-color: #2563eb; /* Màu xanh lam */
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem; /* Kích thước chữ nhỏ */
+    font-weight: 500; /* Đậm vừa */
+    text-decoration: none; /* Bỏ gạch dưới */
+    transition: background-color 0.3s ease; /* Hiệu ứng hover */
+    border-radius: 5px; 
+}
+
+.find-more-btn:hover {
+    background-color: #0a319c; /* Màu xanh lam tối hơn khi hover */
+}
+
+
+/* Chỉ áp dụng cho thẻ img trong khung sản phẩm */
+.grid .p-4 img {
+    border: 1.5px solid whitesmoke; /* Viền đen đậm cho hình ảnh */
+    border-radius: 8px; /* Bo tròn viền nếu cần */
+}
+
+/* Viền mảnh cho khung sản phẩm */
+.grid .p-4 {
+    border: 0.7px solid whitesmoke; /* Viền đen mảnh cho khung */
+    border-radius: 8px; /* Bo tròn viền nếu cần */
+    background-color: whitesmoke; /* Đặt lại màu nền nếu cần */
+}
+
+/* Thay đổi màu tên và giá khi trỏ chuột vào khung sản phẩm */
+.grid .p-4:hover h3, 
+.grid .p-4:hover p {
+    color: #1D4ED8; 
+    transition: color 0.3s ease-in-out; 
+}
+
+/* Hiệu ứng hover cho khung sản phẩm */
+.grid .p-4 {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Hiệu ứng chuyển mượt mà */
+}
+
+/* Khi trỏ chuột vào khung sản phẩm */
+.grid .p-4:hover {
+    transform: translateY(-8px); /* Di chuyển nhẹ lên trên */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Tăng bóng đổ */
+}
+
+
+#load-more {
+    background: none; /* Loại bỏ nền */
+    border: none; /* Loại bỏ viền */
+    color: #2563eb; /* Màu xanh */
+    text-decoration: underline; /* Gạch chân */
+    cursor: pointer; /* Thay đổi con trỏ khi hover */
+}
+
+#load-more:hover {
+    color: #1d4ed8; /* Màu xanh đậm hơn khi hover */
 }

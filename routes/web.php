@@ -12,7 +12,7 @@ use App\Http\Controllers\frontend\CarController;
 use App\Http\Controllers\frontend\ForgetPasswordManager;
 use App\Http\Controllers\frontend\CustomerAuthController;
 use App\Http\Controllers\frontend\ProfileController;
-
+use App\Http\Controllers\frontend\AccessoryController;
 
 
 /* BACKEND ROUTES */
@@ -94,6 +94,8 @@ Route::get('/registration', [CustomerDashBoardController::class, 'registration']
 Route::get('/accessories', [CustomerDashBoardController::class, 'accessories'])->name('CustomerDashBoard.accsessories');
 Route::get('/api/accessories', [CustomerDashBoardController::class, 'getAccessories'])->name('api.accessories');
 Route::get('/api/accessories/sorted', [CustomerDashBoardController::class, 'getSortedAccessories']);
+Route::get('/accessory/{id}', [CustomerDashBoardController::class, 'showAccessory'])->name('accessory.show');
+
 
 //Car rent
 Route::get('/car-rent', [CustomerDashBoardController::class, 'carRent'])->name('rent.car');

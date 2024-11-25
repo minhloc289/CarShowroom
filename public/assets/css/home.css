@@ -1,0 +1,24 @@
+@keyframes carJourney {
+    0% {
+      transform: translateX(-100%); /* Xe bắt đầu ngoài màn hình bên trái */
+      opacity: 1;
+    }
+    50% {
+      transform: translateX(100vw); /* Xe chạy sang ngoài màn hình bên phải */
+      opacity: 0; /* Ẩn xe sau khi ra khỏi màn hình */
+    }
+    51% {
+      transform: translateX(-100%); /* Xe xuất hiện lại từ bên trái */
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0); /* Xe chạy về đúng vị trí */
+      opacity: 1;
+    }
+  }
+  
+  .animate-car {
+    animation: carJourney 4s ease-in-out 1; /* Chạy 1 lần */
+    animation-fill-mode: forwards; /* Giữ trạng thái cuối cùng */
+  }
+  

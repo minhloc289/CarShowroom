@@ -22,7 +22,7 @@
       Discover Luxury Cars
     </h1>
     <div class="grid place-items-center h-auto">
-    <img class="p-4 w-[200%] h-auto object-contain" src="{{ asset('assets/img/porsche3.png') }}" alt="Logo">
+    <img class="p-4 w-[200%] h-auto object-contain animate-car" src="{{ asset('assets/img/porsche4.png') }}" alt="Logo">
     </div>
     <p class="text-pretty text-lg font-medium sm:text-xl/8 text-gray-900" style="margin-top: 0vh;">
       Experience the thrill of driving with our exclusive collection of high-performance vehicles.

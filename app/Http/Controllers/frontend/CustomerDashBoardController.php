@@ -75,9 +75,17 @@ public function getSortedAccessories(Request $request)
     return response()->json($accessories); // Trả về JSON
 }
 
+
+public function showAccessory($id)
+{
+    $accessory = Accessories::where('accessory_id', $id)->firstOrFail();
+    return view('frontend.accessories.accessories_detail', compact('accessory'));
+}
+
 //Car rent
     public function carRent(){
         $rental_car = CarDetails::with('rentalCars')->get();
         return view("frontend.car_rent.car_rent", compact('rental_car'));
     }
+
 }

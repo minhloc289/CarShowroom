@@ -1,0 +1,22 @@
+.magnify {
+    width: 150px; /* Kích thước kính lúp */
+    height: 150px;
+    position: absolute;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-size: 200%; /* Phóng to ảnh */
+    background-repeat: no-repeat;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+}
+
+.group:hover .magnify {
+    display: block;
+}
+
+.group:hover .magnify {
+    position: absolute;
+    top: var(--mouse-y); /* Vị trí theo chuột */
+    left: var(--mouse-x);
+}
+

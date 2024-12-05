@@ -25,36 +25,56 @@
 
     <!-- Header Section -->
     <div class="flex justify-between items-center mb-8">
-      <nav class="text-gray-600 text-sm">
+    <nav class="text-gray-600 text-sm">
         <span>Home / Trade vehicle / </span><span class="font-bold text-blue-600">Sport</span>
-      </nav>
-      <div class="flex items-center space-x-4">
-        <input type="text" id="carSearchInput"  placeholder="Search" class="rounded-lg border border-gray-300 px-4 py-2 w-64">
-        <select class="rounded-lg border border-gray-300 px-4 py-2">
-          <option>Sport</option>
+    </nav>
+    <div class="flex items-center space-x-4">
+        <input type="text" id="carSearchInput" placeholder="Search" class="rounded-lg border border-gray-300 px-4 py-2 w-64">
+        
+        <!-- Select Engine Type -->
+        <select id="engineTypeFilter" class="rounded-lg border border-gray-300 px-4 py-2">
+            <option value="">All Engine Types</option>
+            @foreach ($engineTypes as $type)
+                <option value="{{ $type }}">{{ $type }}</option>
+            @endforeach
         </select>
-        <select class="rounded-lg border border-gray-300 px-4 py-2">
-          <option>Sort</option>
+
+        <!-- Select Seat Capacity -->
+        <select id="seatCapacityFilter" class="rounded-lg border border-gray-300 px-4 py-2">
+            <option value="">All Seat Capacities</option>
+            @foreach ($seatCapacities as $capacity)
+                <option value="{{ $capacity }}">{{ $capacity }}</option>
+            @endforeach
         </select>
-      </div>
+
+        <!-- Select Brand -->
+        <select id="brandFilter" class="rounded-lg border border-gray-300 px-4 py-2">
+            <option value="">All Brands</option>
+            @foreach ($brands as $brand)
+                <option value="{{ $brand }}">{{ $brand }}</option>
+            @endforeach
+        </select>
     </div>
+</div>
+
 
     <div id="carsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
     @foreach ($cars as $index => $car)
         <div class="car-item border bg-white shadow-lg p-4 rounded-lg text-center" data-index="{{ $index }}">
-            <h2 class="text-2xl font-bold">{{ $car->name }}</h2>
-            <p class="text-lg text-gray-500">{{ $car->brand }} - {{ $car->model }}</p>
-            <p class="text-sm text-gray-400">Year: {{ $car->year }}</p>
-            <img src="{{ $car->image_url }}" alt="{{ $car->name }}" class="w-full h-auto my-4 rounded-lg">
-            <p class="text-gray-600">Seats: {{ $car->seat_capacity }}</p>
-            <p class="text-gray-600">Max Speed: {{ $car->max_speed }} km/h</p>
-            @if ($car->sale)
-                <p class="text-gray-600">Price: ${{ number_format($car->sale->sale_price, 2) }}</p>
-                <p class="text-gray-600">Status: {{ $car->sale->availability_status }}</p>
-            @endif
-            <div class="mt-4 flex justify-center space-x-4">
-                <a href="#" class="text-blue-500 hover:underline">Vehicle Details</a>
-                <a href="#" class="text-blue-500 hover:underline">Build & Buy</a>
+              <h2 class="text-2xl font-bold">{{ $car->name }}</h2>
+              <p class="text-lg text-gray-500">{{ $car->brand }} - {{ $car->model }}</p>
+              <p class="text-sm text-gray-400">Year: {{ $car->year }}</p>
+              <img src="{{ $car->image_url }}" alt="{{ $car->name }}" class="w-full h-auto my-4 rounded-lg">
+              <p class="text-gray-600">Seats: {{ $car->seat_capacity }}</p>
+              <p class="text-gray-600">Engine Type: {{ $car->engine_type }}</p> <!-- Thêm engine_type -->
+              <p class="text-gray-600">Max Speed: {{ $car->max_speed }} km/h</p>
+              @if ($car->sale)
+                  <p class="text-gray-600">Price: ${{ number_format($car->sale->sale_price, 2) }}</p>
+                  <p class="text-gray-600">Status: {{ $car->sale->availability_status }}</p>
+              @endif
+              <div class="mt-4 flex justify-center space-x-4 mb-25px">
+                <a href="{{ route('cars.details', $car->car_id) }}"><button id="viewAllButton" class="text-blue-500 text-sm font-semibold hover:underline">View Details→</button></a>
+                <a href=""><button type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Buy</button></a>
             </div>
         </div>
     @endforeach
@@ -67,7 +87,7 @@
 
 
 </div>
-
+</div>
 <script src="{{ asset('assets/js/custom/carJS.js') }}">
 </script>
 

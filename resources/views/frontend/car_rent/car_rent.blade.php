@@ -85,89 +85,72 @@
             <div id="carsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach ($rental_car as $car)
                     @if ($car->rentalCars->isNotEmpty())
-                        <div class="car-item bg-white/80 backdrop-blur-sm border border-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
-                            <!-- Header Information -->
-                            <div class="h-16 text-center">
-                                <h2 class="text-lg font-bold text-gray-800 mb-1">{{ $car->name }}</h2>
-                                <p class="text-sm text-gray-600 mb-1">{{ $car->brand }} - {{ $car->model }}</p>
-                                <p class="text-xs text-gray-500">Year: {{ $car->year }}</p>
-                            </div>
-
-                            <!-- Car Image -->
-                            <div class="h-32 flex items-center justify-center my-4">
-                                <img src="{{ $car->image_url }}" alt="{{ $car->name }}" 
-                                    class="max-h-full w-auto rounded-lg transform hover:scale-105 transition duration-300">
-                            </div>
-
-                            <!-- Specifications -->
-                            <div class="h-20 space-y-1">
-                                <p class="text-gray-700 flex items-center justify-center gap-2 text-sm">
-                                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-                                    </svg>
-                                    Seats: {{ $car->seat_capacity }}
-                                </p>
-                                <p class="text-gray-700 flex items-center justify-center gap-2 text-sm">
-                                    <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
-                                    </svg>
-                                    Max Speed: {{ $car->max_speed }} km/h
-                                </p>
-                            </div>
-
-                            <!-- Rental Information -->
-                            <div class="h-24 mt-2 space-y-1 text-center">
-                                @if ($car->rentalCars->isNotEmpty())
-                                    @foreach ($car->rentalCars as $rentalCar)
+                        @foreach ($car->rentalCars as $rentalCar)
+                            @if ($rentalCar->availability_status === 'Available') <!-- Chỉ hiển thị xe có trạng thái 'Available' -->
+                                <div class="car-item bg-white/80 backdrop-blur-sm border border-gray-100 p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+                                    <!-- Header Information -->
+                                    <div class="h-16 text-center">
+                                        <h2 class="text-lg font-bold text-gray-800 mb-1">{{ $car->name }}</h2>
+                                        <p class="text-sm text-gray-600 mb-1">{{ $car->brand }} - {{ $car->model }}</p>
+                                        <p class="text-xs text-gray-500">Year: {{ $car->year }}</p>
+                                    </div>
+            
+                                    <!-- Car Image -->
+                                    <div class="h-32 flex items-center justify-center my-4">
+                                        <img src="{{ $car->image_url }}" alt="{{ $car->name }}" 
+                                            class="max-h-full w-auto rounded-lg transform hover:scale-105 transition duration-300">
+                                    </div>
+            
+                                    <!-- Specifications -->
+                                    <div class="h-20 space-y-1">
+                                        <p class="text-gray-700 flex items-center justify-center gap-2 text-sm">
+                                            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
+                                            </svg>
+                                            Seats: {{ $car->seat_capacity }}
+                                        </p>
+                                        <p class="text-gray-700 flex items-center justify-center gap-2 text-sm">
+                                            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+                                            </svg>
+                                            Max Speed: {{ $car->max_speed }} km/h
+                                        </p>
+                                    </div>
+            
+                                    <!-- Rental Information -->
+                                    <div class="h-24 mt-2 space-y-1 text-center">
                                         <div class="text-sm space-y-2">
                                             <p class="text-gray-600">License plates: {{ $rentalCar->license_plate_number }}</p>
                                             <p class="text-lg font-bold text-gray-900">{{ number_format($rentalCar->rental_price_per_day, 0) }} VNĐ/day</p>
                                             <p>
-                                                @if ($rentalCar->availability_status === 'Available')
-                                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                        Ready
-                                                    </span>
-                                                @else
-                                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                        Rented
-                                                    </span>
-                                                @endif
+                                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                    Ready
+                                                </span>
                                             </p>
                                         </div>
-                                    @endforeach
-                                @else
-                                    <p class="text-red-500 font-medium text-center">No rental information available.</p>
-                                @endif
-                            </div>
-
-                            <!-- Action Button -->
-                            <div class="flex justify-center gap-4 mt-4">
-                                @if ($rentalCar->availability_status === 'Available')
-                                    <!-- Rent Now Button -->
-                                    <a href="#"
-                                        class="w-1/2 py-3 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300 text-center font-medium rent-now-button"
-                                        data-car-id="{{ $rentalCar->car_id }}">
-                                        Rent Now
-                                    </a>
-
-                            
-                                    <!-- View Details Button -->
-                                    <a href="#"
-                                        class="w-1/2 py-3 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-300 text-center font-medium">
-                                        View Details
-                                    </a>
-                                @else
-                                    <!-- Only View Details Button -->
-                                    <a href="#"
-                                        class="w-full py-3 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-300 text-center font-medium">
-                                        View Details
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
+                                    </div>
+            
+                                    <!-- Action Button -->
+                                    <div class="flex justify-center gap-4 mt-4">
+                                        <!-- Rent Now Button -->
+                                        <a href="#"
+                                            class="w-1/2 py-3 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300 text-center font-medium rent-now-button"
+                                            data-car-id="{{ $rentalCar->car_id }}">
+                                            Rent Now
+                                        </a>
+            
+                                        <!-- View Details Button -->
+                                        <a href="#"
+                                            class="w-1/2 py-3 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-300 text-center font-medium">
+                                            View Details
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
                     @endif
                 @endforeach
-            </div>
+            </div>            
         </div>
 
         <!-- Modal Xác Nhận -->

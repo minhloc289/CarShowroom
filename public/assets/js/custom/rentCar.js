@@ -117,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = `/car-rent/${selectedCarId}`;
         }
     });
+
 });
 
 

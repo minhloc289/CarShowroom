@@ -27,7 +27,7 @@
                                     {{ number_format($rentalCar->rental_price_per_day, 0) }} VNĐ
                                 </span>
                             </div>
-
+                    
                             <div class="space-y-4">
                                 <div class="flex items-center space-x-2">
                                     <div class="p-2 bg-blue-50 rounded-lg">
@@ -46,7 +46,7 @@
                                     <span class="text-gray-600">Free Cancellation</span>
                                 </div>
                             </div>
-
+                    
                             <div class="flex items-center space-x-3">
                                 <div class="flex text-yellow-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
@@ -56,16 +56,19 @@
                                 </div>
                             </div>
                         </div>
-
-                        <button class="mt-6 w-full px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold shadow-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 transition duration-300 ease-in-out transform hover:-translate-y-1">
-                            Check Availability
-                        </button>
+                    
+                        <!-- Thay đổi nút thành nút hấp dẫn hơn -->
+                        <a href="#rentForm">
+                            <button class="mt-6 w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white rounded-xl font-semibold shadow-lg hover:from-blue-700 hover:to-blue-900 focus:ring-4 focus:ring-blue-200 transition duration-300 ease-in-out transform hover:scale-105">
+                                Finalize Your Info & Get Started
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>
 
             {{-- Rental Form Section --}}
-            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden" id="rentForm">
                 <div class="p-8">
                     <div class="flex items-center justify-center space-x-4 mb-8">
                         <div class="h-0.5 w-12 bg-blue-600"></div>
@@ -216,7 +219,7 @@
                             </div>
 
                             {{-- Total Price Card --}}
-                            <div class="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl p-6 shadow-xl">
+                            <div class="bg-gradient-to-r from-[#3279CB] to-[#2A5ABA] rounded-xl p-6 shadow-xl">
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <p class="text-blue-100 text-sm uppercase tracking-wide">Total Price</p>
@@ -255,7 +258,7 @@
 
                             {{-- Submit Button --}}
                             <button type="submit"
-                                class="w-full flex justify-center items-center px-8 py-4 text-lg font-semibold rounded-xl text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-xl hover:from-blue-700 hover:to-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-200 transition duration-300 ease-in-out transform hover:-translate-y-1">
+                                class="w-full flex justify-center items-center px-8 py-4 text-lg font-semibold rounded-xl text-white bg-gradient-to-r from-[#3279CB] to-[#2A5ABA] shadow-xl hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-200 transition duration-300 ease-in-out transform hover:-translate-y-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>

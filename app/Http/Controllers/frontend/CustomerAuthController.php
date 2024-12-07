@@ -40,30 +40,36 @@ class CustomerAuthController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
 
-    public function login(Request $request)
+     public function login(Request $request)
     {
         // Xác thực dữ liệu đầu vào
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-    
+
         // Thử đăng nhập với guard 'account'
         if (Auth::guard('account')->attempt($credentials)) {
-            // Nếu đăng nhập thành công, lấy thông tin người dùng và chuyển hướng
+            // Lấy thông tin người dùng và lưu vào session
             $user = Auth::guard('account')->user();
             session(['login_account' => $user]);
+
             toastr()->success("Đăng nhập thành công");
-    
-            return redirect()->route('CustomerDashBoard.index');
+
+            // Kiểm tra xem có URL được lưu trong session không
+            $redirectUrl = session('redirect_after_login', route('CustomerDashBoard.index'));
+            session()->forget('redirect_after_login'); // Xóa URL sau khi sử dụng
+
+            // Chuyển hướng đến URL được lưu hoặc về trang chủ
+            return redirect($redirectUrl);
         }
-    
+
         // Nếu đăng nhập thất bại, chuyển hướng về trang đăng nhập với thông báo lỗi
         toastr()->error("Tài khoản hoặc mật khẩu không đúng");
         return redirect()->back()->withInput();
     }
-    
 
+     
 
     /**
      * Xử lý đăng ký.

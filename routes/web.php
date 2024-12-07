@@ -100,6 +100,10 @@ Route::get('/api/accessories', [CustomerDashBoardController::class, 'getAccessor
 Route::get('/api/accessories/sorted', [CustomerDashBoardController::class, 'getSortedAccessories']);
 Route::get('/accessory/{id}', [CustomerDashBoardController::class, 'showAccessory'])->name('accessory.show');
 
+Route::middleware(['auth:account'])->group(function () {
+    Route::get('/accessories/cart', [CustomerDashBoardController::class, 'showCart'])->name('show.cart');
+});
+
 
 //Car rent
 Route::get('/car-rent', [RentCarController::class, 'carRent'])->name('rent.car');

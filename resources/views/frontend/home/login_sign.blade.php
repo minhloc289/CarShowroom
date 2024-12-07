@@ -105,7 +105,7 @@
         const signUpLink = document.getElementById('signUpLink'); // Link "Sign Up" in login form
         const backToLoginLink = document.getElementById('backToLoginLink'); // Link "Login here" in sign-up form
         const backToLoginLinkFG = document.getElementById('backToLoginLinkFG'); // Link "Login here" in sign-up form
-
+    
         // Show login overlay with fade-in effect
         loginLink.addEventListener('click', function (event) {
             event.preventDefault();
@@ -176,4 +176,6 @@
             }
         });
     });
+
+    
 </script>

@@ -2,6 +2,9 @@
 
 @section('content')
 <script src="{{asset('/assets/js/custom/accessories.js')}}"></script>
+{{-- <script>
+    const isAuthenticated = @json(Auth::check());
+</script> --}}
 <link rel="stylesheet" href="{{asset('/assets/css/accessories.css')}}"> 
 <div class="bg-white"> 
     <div class="w-screen h-[700px] relative flex items-center bg-gradient-to-r from-white via-gray-300 to-black">
@@ -108,14 +111,17 @@
         
                 <!-- Cart Button -->
                 <div>
-                    <button class="relative bg-white border border-gray-300 text-gray-800 rounded-lg p-2 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-gray-200">
+                    <a href="{{ route('show.cart') }}">
+                    <button type="button" id="cart-button" 
+                            class="relative bg-white border border-gray-300 text-gray-800 p-2 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-gray-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 6h14M9 17a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z" />
                         </svg>
-                        <span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">
+                        <span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center" id="cart-count">
                             0
                         </span>
                     </button>
+                    </a>
                 </div>
             </div>
         </div>

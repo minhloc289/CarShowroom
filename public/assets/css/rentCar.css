@@ -1,0 +1,31 @@
+
+img:hover {
+    filter: brightness(1.2);
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+}
+
+#error-toast {
+    z-index: 50; /* Đảm bảo toast luôn hiển thị trên các phần tử khác */
+    opacity: 0; /* Ban đầu toast ẩn */
+    transform: translateX(100%); /* Vị trí ban đầu của toast ra ngoài màn hình (phải) */
+    transition: transform 0.5s ease-out, opacity 0.5s ease-in-out; /* Hiệu ứng trượt vào và mờ dần */
+}
+
+/* Khi toast hiển thị (trượt vào từ phải) */
+#error-toast.show {
+    transform: translateX(0); /* Di chuyển vào trong màn hình */
+    opacity: 1; /* Hiển thị toast */
+}
+
+/* Khi toast biến mất (trượt ra ngoài và mờ dần) */
+#error-toast.hide {
+    transform: translateX(100%); /* Di chuyển ra ngoài màn hình */
+    opacity: 0; /* Mờ dần */
+}
+
+
+
+
+
+

@@ -126,5 +126,31 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const cartButton = document.getElementById('cart-button');
+        const loginOverlay = document.getElementById('login-overlay');
+    
+        // Kiểm tra trạng thái đăng nhập khi nhấn vào giỏ hàng
+        cartButton.addEventListener('click', function () {
+            // Gửi yêu cầu kiểm tra trạng thái đăng nhập
+            fetch('/accessories/cart')
+                .then(response => {
+                    if (response.status === 401) {
+                        // Nếu chưa đăng nhập, hiển thị overlay login
+                        loginOverlay.classList.remove('overlay-hidden');
+                        loginOverlay.classList.add('show');
+                    } else if (response.ok) {
+                        // Nếu đã đăng nhập, chuyển đến trang giỏ hàng
+                        window.location.href = '/accessories/cart';  // Chuyển hướng đến trang giỏ hàng
+                    } else {
+                        console.error('Unexpected response:', response);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    });
 });
 

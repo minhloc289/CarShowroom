@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Account; // Đảm bảo đã import
 use App\Models\Accessories;
 use App\Models\RentalCar;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
@@ -75,18 +76,30 @@ public function getSortedAccessories(Request $request)
     return response()->json($accessories); // Trả về JSON
 }
 
-
 public function showAccessory($id)
 {
     $accessory = Accessories::where('accessory_id', $id)->firstOrFail();
     return view('frontend.accessories.accessories_detail', compact('accessory'));
 }
 
+public function showCart()
+{
+    if (!Auth::guard('account')->check()) {
+        return redirect()->route('customer.login')->with('error', 'You must be logged in to view your cart.');
+    }
+
+    $user = Auth::guard('account')->user();
+    $cartItems = Cart::with('accessory')->where('account_id', $user->id)->get();
+
+
+    return view('frontend.accessories.cart', compact('cartItems'));
+}
+
+
 //Car rent
     public function carRent(){
         $rental_car = CarDetails::with('rentalCars')->get();
         return view("frontend.car_rent.car_rent", compact('rental_car'));
     }
-    
 
 }

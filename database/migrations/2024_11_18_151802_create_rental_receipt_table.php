@@ -9,7 +9,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+     public function up(): void
     {
         Schema::create('rental_receipt', function (Blueprint $table) {
             $table->id('receipt_id'); // Khóa chính tự động tăng
@@ -19,6 +19,10 @@ return new class extends Migration
             $table->dateTime('rental_end_date')->notNullable(); // Ngày kết thúc thuê
             $table->decimal('rental_price_per_day', 10, 2)->notNullable(); // Giá thuê mỗi ngày
             $table->decimal('total_cost', 10, 2)->notNullable(); // Tổng chi phí thuê
+            $table->decimal('deposit_amount', 10, 2)->default(0); // Số tiền đặt cọc đã thanh toán
+            $table->decimal('remaining_amount', 10, 2)->default(0); // Số tiền còn lại
+            $table->enum('deposit_status', ['Paid', 'Pending'])->default('Pending'); // Trạng thái thanh toán cọc
+            $table->enum('payment_status', ['Paid', 'Unpaid'])->default('Unpaid'); // Trạng thái thanh toán tổng thể
             $table->enum('status', ['Active', 'Completed', 'Canceled'])->default('Active'); // Trạng thái
             $table->timestamps(); // Thời gian tạo và cập nhật
             
@@ -27,7 +31,6 @@ return new class extends Migration
 
             // Thêm khóa ngoại cho car_id
             $table->foreign('car_id')->references('rental_id')->on('rental_cars')->onDelete('cascade');
-            
         });
     }
 

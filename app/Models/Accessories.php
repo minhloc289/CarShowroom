@@ -29,4 +29,8 @@ class Accessories extends Model
         return $this->hasMany(InvoiceDetail::class, 'accessory_id', 'accessory_id');
     }
     
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'accessory_id', 'accessory_id');
+    }
 }

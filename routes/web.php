@@ -72,6 +72,11 @@ Route::prefix('password')->group(function () {
 // Route view profile
 Route::get('/view-profile', [ProfileController::class, 'viewprofile'])->name('view.profile');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+// Rout view reset password
+Route::get('/view-profile/resetpass', [ProfileController::class, 'showResetPass'])->name('view.resetpass');
+// Xử lý yêu cầu đổi mật khẩu
+Route::post('/view-profile/resetpass', [CustomerAuthController::class, 'resetPassword'])->name('reset.password.submit');
+
 
 // Route logout
 Route::middleware('auth')->group(function () {

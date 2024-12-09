@@ -87,5 +87,6 @@ public function showAccessory($id)
         $rental_car = CarDetails::with('rentalCars')->get();
         return view("frontend.car_rent.car_rent", compact('rental_car'));
     }
+    
 
 }

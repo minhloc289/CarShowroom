@@ -11,6 +11,9 @@ class ProfileController extends Controller
     function viewprofile(Request $request){
         return view("frontend.profilepage.informationuser");
     }
+    function showResetPass(Request $request){
+        return view("frontend.profilepage.resetpass");
+    }
     public function update(Request $request)
     {
         // Lấy thông tin người dùng từ session

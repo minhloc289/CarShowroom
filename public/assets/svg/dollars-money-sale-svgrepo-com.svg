@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg width="800px" height="800px" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>.cls-1{fill:#fff200;}.cls-2{fill:#414042;}.cls-3{fill:#231f20;}.cls-4{fill:#ffbe00;}</style>
+</defs>
+<title/>
+<g id="dollars-money">
+<rect class="cls-1" height="58" rx="2" width="18" x="7" y="3"/>
+<path class="cls-2" d="M59,5V59a2.06,2.06,0,0,1-2.11,2H22.11A2.06,2.06,0,0,1,20,59V5a2.06,2.06,0,0,1,2.11-2H56.89A2.06,2.06,0,0,1,59,5Z"/>
+<path class="cls-3" d="M59,5V59a2.06,2.06,0,0,1-2.11,2H38V3H56.89A2.06,2.06,0,0,1,59,5Z"/>
+<path class="cls-1" d="M40,30H38a2,2,0,0,1,0-4h5a2,2,0,0,0,0-4H42V21a2,2,0,0,0-4,0v1a6,6,0,0,0,0,12h2a2,2,0,0,1,2,2v1a2,2,0,0,1-2,2H35a2,2,0,0,0,0,4h1v1a2,2,0,0,0,4,0V43a6,6,0,0,0,6-6V36A6,6,0,0,0,40,30Z"/>
+<path class="cls-4" d="M45,24a2,2,0,0,0-2-2H42V21a2,2,0,0,0-4,0v5h5A2,2,0,0,0,45,24Z"/>
+<path class="cls-4" d="M40,30H38v4h2a2,2,0,0,1,2,2v1a2,2,0,0,1-2,2H38v7a2,2,0,0,0,2-2V43a6,6,0,0,0,6-6V36A6,6,0,0,0,40,30Z"/>
+<rect class="cls-4" height="58" width="3" x="15" y="3"/>
+<rect class="cls-4" height="58" width="3" x="9" y="3"/>
+</g>
+</svg>

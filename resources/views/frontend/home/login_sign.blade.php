@@ -84,16 +84,16 @@
     // public/js/customize.js
 
     // public/js/customize.js
-    document.addEventListener('DOMContentLoaded', function () {
-        const registerOverlay = document.getElementById('register-overlay');
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const registerOverlay = document.getElementById('register-overlay');
 
-        // Kiểm tra nếu có lỗi trong session
-        @if ($errors->any())
-            // Hiển thị form đăng ký nếu có lỗi
-            registerOverlay.classList.remove('overlay-hidden');
-            registerOverlay.classList.add('show');
-        @endif
-    });
+    //     // Kiểm tra nếu có lỗi trong session
+    //     @if ($errors->any())
+    //         // Hiển thị form đăng ký nếu có lỗi
+    //         registerOverlay.classList.remove('overlay-hidden');
+    //         registerOverlay.classList.add('show');
+    //     @endif
+    // });
 
     document.addEventListener('DOMContentLoaded', function () {
         const loginOverlay = document.getElementById('login-overlay');

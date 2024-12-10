@@ -1,0 +1,46 @@
+/* Canh chỉnh các thẻ td trong bảng */
+table td {
+    vertical-align: middle;
+    padding: 10px;
+}
+
+/* Canh chỉnh checkbox */
+.checkbox-all, .product-checkbox {
+    margin: 0;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+/* Canh chỉnh sản phẩm */
+td img {
+    margin-right: 10px; /* Khoảng cách giữa hình ảnh và tên sản phẩm */
+}
+
+/* Canh chỉnh nút giảm và tăng số lượng */
+.decrease-quantity, .increase-quantity {
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.quantity-input {
+    width: 50px;
+    text-align: center;
+    padding: 5px;
+    margin: 0 10px;
+}
+
+/* Căn chỉnh các phần tử trong bảng hàng */
+.table-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Dòng text "Select All" */
+label {
+    margin-left: 5px;
+    font-size: 14px;
+    font-weight: normal;
+}

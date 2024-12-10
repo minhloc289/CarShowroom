@@ -1,0 +1,6 @@
+#terms-content h3 {
+    font-size: 1.25rem; /* Kích thước chữ lớn hơn */
+    font-weight: 700;   /* Đậm hơn */
+    color: #2563eb;     /* Màu xanh dương đậm (Tailwind's blue-600) */
+    margin-bottom: 1rem; /* Khoảng cách phía dưới */
+}

@@ -64,12 +64,11 @@
                     @include('frontend.signed.signed')
                 @else
                     {{-- Nếu người dùng chưa đăng nhập, hiển thị nút đăng nhập --}}
-                    <a id="loginLink" href="{{ route('customer.login') }}"
+                    <a id="loginLink" href=""
                         class="font-semibold text-gray-900 md:hover:text-green-700">Log in <span
                             aria-hidden="true">&rarr;</span></a>
                 @endif
             </div>
-
         </nav>
     </div>
     <!-- Mobile menu -->

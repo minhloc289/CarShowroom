@@ -53,6 +53,11 @@ class Account extends Authenticatable
         return $this->hasMany(SalesInvoice::class, 'user_id', 'id');
     }
 
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'account_id', 'id');
+    }
+
     /**
      * Boot method - Tạo ID tự động với tiền tố ACC
      */

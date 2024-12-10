@@ -1,6 +1,7 @@
 @extends('frontend.profilepage.viewprofile')
 @php
-    $user = session('login_account');
+    use Illuminate\Support\Facades\Auth;
+    $user = Auth::guard('account')->user();
 @endphp
 @section('main')
 <main class="flex-1 p-8 mt-[-30px]">
@@ -33,8 +34,11 @@
             <div class="mt-4">
                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Cập
                     nhật</button>
+                    <a href="{{route('view.resetpass')}}" class="text-blue-600 hover:text-blue-800">Đổi mật khẩu</a>
             </div>
         </form>
+
+        <!-- Thêm thẻ a để đổi mật khẩu -->
     </div>
 </main>
 @endsection

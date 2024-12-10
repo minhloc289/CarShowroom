@@ -84,16 +84,16 @@
     // public/js/customize.js
 
     // public/js/customize.js
-    document.addEventListener('DOMContentLoaded', function () {
-        const registerOverlay = document.getElementById('register-overlay');
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const registerOverlay = document.getElementById('register-overlay');
 
-        // Kiểm tra nếu có lỗi trong session
-        @if ($errors->any())
-            // Hiển thị form đăng ký nếu có lỗi
-            registerOverlay.classList.remove('overlay-hidden');
-            registerOverlay.classList.add('show');
-        @endif
-    });
+    //     // Kiểm tra nếu có lỗi trong session
+    //     @if ($errors->any())
+    //         // Hiển thị form đăng ký nếu có lỗi
+    //         registerOverlay.classList.remove('overlay-hidden');
+    //         registerOverlay.classList.add('show');
+    //     @endif
+    // });
 
     document.addEventListener('DOMContentLoaded', function () {
         const loginOverlay = document.getElementById('login-overlay');
@@ -105,7 +105,7 @@
         const signUpLink = document.getElementById('signUpLink'); // Link "Sign Up" in login form
         const backToLoginLink = document.getElementById('backToLoginLink'); // Link "Login here" in sign-up form
         const backToLoginLinkFG = document.getElementById('backToLoginLinkFG'); // Link "Login here" in sign-up form
-
+    
         // Show login overlay with fade-in effect
         loginLink.addEventListener('click', function (event) {
             event.preventDefault();
@@ -176,4 +176,16 @@
             }
         });
     });
+
+// Khi người dùng nhấn ngoài form để đóng overlay
+    document.getElementById('login-overlay').addEventListener('click', function(event) {
+        if (event.target === this) {  // Kiểm tra nếu người dùng nhấn ra ngoài form
+            this.classList.add('hide');  // Thêm lớp ẩn đi
+            setTimeout(() => {
+                this.classList.remove('show', 'hide');
+                this.classList.add('overlay-hidden');
+            }, 500); // Đợi 500ms để animation fade-out hoàn tất
+        }
+    });
+
 </script>

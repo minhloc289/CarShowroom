@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Account; // Đảm bảo đã import
 use App\Models\Accessories;
 use App\Models\RentalCar;
+use App\Models\Cart;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
@@ -80,6 +81,36 @@ public function showAccessory($id)
     $accessory = Accessories::where('accessory_id', $id)->firstOrFail();
     return view('frontend.accessories.accessories_detail', compact('accessory'));
 }
+
+public function showCart()
+{
+    // Kiểm tra người dùng đã đăng nhập chưa
+    if (!Auth::guard('account')->check()) {
+        return redirect()->route('customer.login')->with('error', 'You must be logged in to view your cart.');
+    }
+
+    // Lấy thông tin người dùng đã đăng nhập
+    $user = Auth::guard('account')->user();
+
+    // Lấy các sản phẩm trong giỏ hàng của người dùng
+    $cartItems = Cart::with('accessory')
+                     ->where('account_id', $user->id)
+                     ->get();
+
+    // Tính tổng tiền của giỏ hàng
+    $totalPrice = $cartItems->sum(function ($item) {
+        return $item->accessory->price * $item->quantity;
+    });
+
+    // Tính tổng số lượng sản phẩm trong giỏ hàng
+    $cartCount = $cartItems->sum('quantity');
+
+    
+    // Trả về view và truyền dữ liệu giỏ hàng và số lượng
+    return view('frontend.accessories.cart', compact('cartItems', 'totalPrice', 'cartCount'));
+}
+
+
 
 //Car rent
     public function carRent(){

@@ -3,9 +3,9 @@
 @section('content')
 
 <section class="py-8 bg-white md:py-16 dark:bg-gray-900 antialiased">
-    <div class="max-w-screen-xl px-4 mx-auto 2xl:px-0">
+<div class="max-w-screen-xl px-4 mx-auto 2xl:px-0" style="padding-top: 1rem;">
       <div class="lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-16">
-        <div class="shrink-0 max-w-md lg:max-w-lg mx-auto">
+        <div class="shrink-0 max-w-md lg:max-w-lg mx-auto" style="padding-top: 125px;">
           <img class="w-full dark:hidden" src="{{ $car->image_url }}" alt="{{ $car->name }}" />
           <img class="w-full hidden dark:block" src="{{ $car->image_url }}" alt="{{ $car->name }}" />
         </div>
@@ -50,17 +50,11 @@
               >
                 (4.8)
               </p>
-              <a
-                href="#"
-                class="text-sm font-medium leading-none text-gray-900 underline hover:no-underline dark:text-white"
-              >
-                124 Reviews
-              </a>
             </div>
           </div>
 
           <div class="mt-6 sm:gap-4 sm:items-center sm:flex sm:mt-8">
-            <button type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Buy</button>
+            <button type="button"  class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Buy</button>
           </div>
 
           <hr class="my-6 md:my-8 border-gray-200 dark:border-gray-800" />
@@ -70,12 +64,16 @@
           </p>
           <br><br>
           <p class="text-gray-500 dark:text-gray-400">
-            Engine Type: {{ $car->engine_type }}<br><br> Seats: {{ $car->seat_capacity }}<br><br>
-            Max Speed: {{ $car->max_speed }} km/h<br><br> Trunk Capacity: {{ $car->trunk_capacity }}
+            <span class="font-semibold text-gray-900 dark:text-white">Engine Type:</span> {{ $car->engine_type }}<br><br>
+            <span class="font-semibold text-gray-900 dark:text-white">Seats:</span> {{ $car->seat_capacity }}<br><br>
+            <span class="font-semibold text-gray-900 dark:text-white">Max Speed:</span> {{ $car->max_speed }} km/h<br><br>
+            <span class="font-semibold text-gray-900 dark:text-white">Trunk Capacity:</span> {{ $car->trunk_capacity }}
           </p>
         </div>
       </div>
     </div>
   </section>
-
+            <div class="content flex-grow w-full mb-10">
+                @yield('content')
+            </div>
 @endsection

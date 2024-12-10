@@ -15,7 +15,7 @@ use App\Http\Controllers\frontend\ProfileController;
 
 use App\Http\Controllers\frontend\RentCarController;
 
-use App\Http\Controllers\frontend\AccessoryController;
+use App\Http\Controllers\frontend\CartController;
 
 
 
@@ -76,6 +76,11 @@ Route::prefix('password')->group(function () {
 // Route view profile
 Route::get('/view-profile', [ProfileController::class, 'viewprofile'])->name('view.profile');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+// Rout view reset password
+Route::get('/view-profile/resetpass', [ProfileController::class, 'showResetPass'])->name('view.resetpass');
+// Xử lý yêu cầu đổi mật khẩu
+Route::post('/view-profile/resetpass', [CustomerAuthController::class, 'resetPassword'])->name('reset.password.submit');
+
 
 // Route logout
 Route::middleware('auth')->group(function () {
@@ -99,6 +104,34 @@ Route::get('/accessories', [CustomerDashBoardController::class, 'accessories'])-
 Route::get('/api/accessories', [CustomerDashBoardController::class, 'getAccessories'])->name('api.accessories');
 Route::get('/api/accessories/sorted', [CustomerDashBoardController::class, 'getSortedAccessories']);
 Route::get('/accessory/{id}', [CustomerDashBoardController::class, 'showAccessory'])->name('accessory.show');
+
+Route::middleware(['auth:account'])->group(function () {
+    Route::get('/accessories/cart', [CustomerDashBoardController::class, 'showCart'])->name('show.cart');
+});
+Route::post('/cart/add', [CartController::class, 'addToCart'])
+    ->name('cart.add') // Giữ tên route
+    ->middleware('auth:account'); // Thêm middleware 'auth:account'
+
+
+// Kiểm tra trạng thái đăng nhập
+Route::get('/api/check-login', function () {
+    return response()->json(['logged_in' => Auth::check()]);
+});
+
+Route::get('/check-login-status', function () {
+    if (Auth::check()) {
+        return response()->json(['loggedIn' => true]);
+    }
+    return response()->json(['loggedIn' => false]);
+});
+// cart
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart/count', [CartController::class, 'getCartCount'])->name('cart.count');
+Route::post('/cart/update/quantity', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
+Route::get('/cart/total-price', [CartController::class, 'getTotalPrice'])->name('cart.total.price');
+Route::delete('/cart/remove/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
+Route::get('/cart/items', [CartController::class, 'getCartItems'])->name('cart.items');
+
 
 
 //Car rent

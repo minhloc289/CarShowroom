@@ -1,6 +1,8 @@
 @php
-    $user = session('login_account');
+    use Illuminate\Support\Facades\Auth;
+    $user = Auth::guard('account')->user();
 @endphp
+
 <div class="relative font-[sans-serif] w-max mx-auto" style=" left: 230px;">
     <button type="button" id="dropdownToggle"
         class="px-4 py-2 flex items-center rounded-full text-[#333] text-sm border border-gray-300 outline-none hover:bg-gray-100">

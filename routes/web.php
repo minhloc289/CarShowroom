@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\frontend\paymentcontroller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AuthController;
 use Illuminate\Support\Facades\Auth;
@@ -9,6 +10,7 @@ use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\frontend\CustomerDashBoardController;
 use App\Http\Controllers\frontend\CarController;
+use App\Http\Controllers\frontend\BuyCarController;
 use App\Http\Controllers\frontend\ForgetPasswordManager;
 use App\Http\Controllers\frontend\CustomerAuthController;
 use App\Http\Controllers\frontend\ProfileController;
@@ -138,7 +140,13 @@ Route::get('/cart/items', [CartController::class, 'getCartItems'])->name('cart.i
 Route::get('/car-rent', [RentCarController::class, 'carRent'])->name('rent.car');
 Route::get('/api/cars/{id}', [RentCarController::class, 'show']);
 Route::get('/car-rent/{id}', [RentCarController::class, 'showRentForm'])->name('rent.form');
+
 Route::post('/car-rent/{id}', [RentCarController::class, 'rentCar'])->name('rent.submit');
+//Car buy
+Route::get('/car/{id}/buy', [BuyCarController::class, 'showBuyForm'])->name('car.buy');
+Route::post('/vnpay_payment', [paymentcontroller::class, 'vnpay_payment']);
+
+
 
 // Trang chủ
 Route::get('/home', function () {    

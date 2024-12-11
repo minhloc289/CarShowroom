@@ -17,7 +17,7 @@ use App\Http\Controllers\frontend\ProfileController;
 
 use App\Http\Controllers\frontend\RentCarController;
 
-use App\Http\Controllers\frontend\AccessoryController;
+use App\Http\Controllers\frontend\CartController;
 
 
 
@@ -110,6 +110,30 @@ Route::get('/accessory/{id}', [CustomerDashBoardController::class, 'showAccessor
 Route::middleware(['auth:account'])->group(function () {
     Route::get('/accessories/cart', [CustomerDashBoardController::class, 'showCart'])->name('show.cart');
 });
+Route::post('/cart/add', [CartController::class, 'addToCart'])
+    ->name('cart.add') // Giữ tên route
+    ->middleware('auth:account'); // Thêm middleware 'auth:account'
+
+
+// Kiểm tra trạng thái đăng nhập
+Route::get('/api/check-login', function () {
+    return response()->json(['logged_in' => Auth::check()]);
+});
+
+Route::get('/check-login-status', function () {
+    if (Auth::check()) {
+        return response()->json(['loggedIn' => true]);
+    }
+    return response()->json(['loggedIn' => false]);
+});
+// cart
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart/count', [CartController::class, 'getCartCount'])->name('cart.count');
+Route::post('/cart/update/quantity', [CartController::class, 'updateQuantity'])->name('cart.update.quantity');
+Route::get('/cart/total-price', [CartController::class, 'getTotalPrice'])->name('cart.total.price');
+Route::delete('/cart/remove/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
+Route::get('/cart/items', [CartController::class, 'getCartItems'])->name('cart.items');
+
 
 
 //Car rent

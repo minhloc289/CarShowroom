@@ -138,8 +138,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 .then(response => {
                     if (response.status === 401) {
                         // Nếu chưa đăng nhập, hiển thị overlay login
-                        loginOverlay.classList.remove('overlay-hidden');
-                        loginOverlay.classList.add('show');
+                        openLoginOverlay();
                     } else if (response.ok) {
                         // Nếu đã đăng nhập, chuyển đến trang giỏ hàng
                         window.location.href = '/accessories/cart';  // Chuyển hướng đến trang giỏ hàng
@@ -154,3 +153,36 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 });
 
+// Hiển thị overlay đăng nhập (nếu cần)
+function openLoginOverlay() {
+    const loginOverlay = document.getElementById('login-overlay');
+    loginOverlay.classList.remove('overlay-hidden'); // Đảm bảo overlay không ẩn
+    loginOverlay.classList.add('show'); // Thêm lớp `show` để hiển thị overlay
+}
+
+
+ // Lấy số lượng giỏ hàng
+function updateCartCount() {
+    // Gọi API để lấy số lượng sản phẩm trong giỏ
+    fetch("{{ route('cart.count') }}") 
+        .then(response => {
+            // Kiểm tra nếu response trả về không phải JSON
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json(); // Chuyển dữ liệu thành JSON
+        })
+        .then(data => {
+            console.log(data); // Kiểm tra dữ liệu trả về
+            const cartCount = data.cart_count; // Lấy số lượng từ response
+            // Cập nhật lên nút giỏ hàng
+            document.getElementById("cart-count").innerText = cartCount;
+        })
+        .catch(error => {
+            // Xử lý lỗi nếu có
+            console.error("Error fetching cart count:", error);
+        });
+}
+
+// Gọi hàm để cập nhật số lượng giỏ hàng khi trang được tải
+document.addEventListener('DOMContentLoaded', updateCartCount);

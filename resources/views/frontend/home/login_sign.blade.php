@@ -177,5 +177,15 @@
         });
     });
 
-    
+// Khi người dùng nhấn ngoài form để đóng overlay
+    document.getElementById('login-overlay').addEventListener('click', function(event) {
+        if (event.target === this) {  // Kiểm tra nếu người dùng nhấn ra ngoài form
+            this.classList.add('hide');  // Thêm lớp ẩn đi
+            setTimeout(() => {
+                this.classList.remove('show', 'hide');
+                this.classList.add('overlay-hidden');
+            }, 500); // Đợi 500ms để animation fade-out hoàn tất
+        }
+    });
+
 </script>

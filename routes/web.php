@@ -138,6 +138,7 @@ Route::get('/cart/items', [CartController::class, 'getCartItems'])->name('cart.i
 Route::get('/car-rent', [RentCarController::class, 'carRent'])->name('rent.car');
 Route::get('/api/cars/{id}', [RentCarController::class, 'show']);
 Route::get('/car-rent/{id}', [RentCarController::class, 'showRentForm'])->name('rent.form');
+Route::post('/car-rent/{id}', [RentCarController::class, 'rentCar'])->name('rent.submit');
 
 // Trang chủ
 Route::get('/home', function () {    

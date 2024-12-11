@@ -77,4 +77,8 @@ class RentCarController extends Controller
         return view('frontend.car_rent.rentForm', compact('car', 'rentalCar'));
     }
 
+    public function rentCar($id) {
+        
+    }
+
 }

@@ -78,6 +78,7 @@
     .show {
         display: flex !important;
         animation: fadeIn 0.7s ease forwards;
+        /* display: block; Hiển thị overlay - long làm */
     }
 </style>
 <script>

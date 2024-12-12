@@ -143,6 +143,8 @@ Route::get('/car-rent/{id}', [RentCarController::class, 'showRentForm'])->name('
 //Car buy
 Route::get('/car/{id}/buy', [BuyCarController::class, 'showBuyForm'])->name('car.buy');
 Route::post('/vnpay_payment', [paymentcontroller::class, 'vnpay_payment']);
+//payment route
+Route::get('/payment/vnpay-return', [PaymentController::class, 'vnpay_return']);
 
 
 

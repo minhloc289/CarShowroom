@@ -4,10 +4,10 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
 <div class="container mx-auto py-8">
-    <h1 class="text-2xl font-bold mb-6">Your Cart</h1>
+    <h1 class="text-2xl font-bold mb-6">Your wishlist</h1>
 
     @if($cartItems->isEmpty())
-        <p class="text-gray-600">Your cart is empty.</p>
+        <p class="text-gray-600">Your wishlist is empty.</p>
     @else
         <form id="cart-form">
             <table class="table-auto w-full text-left border-collapse">
@@ -65,21 +65,11 @@
             <div aria-hidden="true" class="fixed inset-0 w-full h-full bg-black/50 cursor-pointer"></div>
             <div class="relative w-full cursor-pointer pointer-events-none transition my-auto p-4">
                 <div class="w-full py-2 bg-white cursor-default pointer-events-auto relative rounded-xl mx-auto max-w-sm">
-                    <!-- Nút đóng overlay -->
-                    <button tabindex="-1" type="button" class="absolute top-2 right-2" id="close-overlay">
-                        <svg title="Close" tabindex="-1" class="h-4 w-4 cursor-pointer text-black"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414 1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
-
                     <!-- Nội dung overlay -->
                     <div class="space-y-2 p-2">
                         <div class="p-4 space-y-2 text-center">
-                            <h2 class="text-xl font-bold tracking-tight text-black" id="overlay-title"></h2>
-                            <p class="text-gray-700">Are you sure you want to remove this item?</p>
+                            <h2 class="text-2xl font-bold tracking-tight text-black" id="overlay-title"></h2>
+                            <p class="text-lg text-black">Are you sure you want to remove this item?</p>
                         </div>
                     </div>
 

@@ -36,11 +36,59 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    // Tìm nút Add to Cart và gắn sự kiện click vào nút đó
+document.addEventListener('DOMContentLoaded', function () {
+    const cartButton = document.getElementById('cart-button');
+
+    cartButton.addEventListener('click', function (event) {
+        event.preventDefault(); // Ngăn chặn hành vi mặc định
+
+        // Gửi yêu cầu kiểm tra trạng thái đăng nhập
+        fetch('/accessories/cart')
+            .then(response => {
+                if (response.status === 401) {
+                    // Nếu chưa đăng nhập, hiển thị overlay login
+                    openLoginOverlay();
+                } else if (response.ok) {
+                    // Nếu đã đăng nhập, chuyển hướng đến trang giỏ hàng
+                    window.location.href = '/accessories/cart';
+                } else {
+                    console.error('Unexpected response:', response);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const cartCountElement = document.getElementById('cart-count');
     const addToCartButton = document.getElementById('add-to-cart-button');
+
+    // Hàm lấy số lượng sản phẩm trong giỏ hàng
+    function updateCartCount() {
+        fetch('/cart/count', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (cartCountElement) {
+                cartCountElement.textContent = data.cart_count;
+            }
+        })
+        .catch(error => console.error('Error fetching cart count:', error));
+    }
+
+    // Gọi hàm để cập nhật số lượng ngay khi trang load
+    updateCartCount();
+
+    // Hàm xử lý khi nhấn nút "Add to Cart"
     if (addToCartButton) {
-        addToCartButton.addEventListener('click', function() {
+        addToCartButton.addEventListener('click', function () {
             const accessoryId = this.getAttribute('data-accessory-id');
             const quantityInput = document.getElementById('quantity');
             const quantity = parseInt(quantityInput.value, 10);
@@ -50,24 +98,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // Sử dụng axios để gửi yêu cầu POST
+            // Gửi yêu cầu thêm vào giỏ hàng
             axios.post('/cart/add', {
                 accessory_id: accessoryId,
                 quantity: quantity
             })
             .then(response => {
-                // Nếu thêm sản phẩm thành công
-                toastr.success(response.data.message);
-                document.getElementById('cart-count').innerText = response.data.cart_count;
+                showOverlayMessage('Product added to cart successfully!');
+
+                // Cập nhật bộ đếm bằng cách gọi lại hàm `updateCartCount`
+                updateCartCount();
             })
             .catch(error => {
                 if (error.response && error.response.status === 401) {
-                    // Nếu chưa đăng nhập (status 401), thông báo và chuyển hướng tới trang đăng nhập
-                    toastr.warning('You need to log in first!');
-                    // window.location.href = '/login'; // Điều chỉnh lại đường dẫn trang đăng nhập của bạn
-                    openLoginOverlay();
+                    openLoginOverlay(); // Hiển thị login overlay
                 } else {
-                    // Xử lý các lỗi khác
                     console.error('Error:', error);
                     toastr.error('An error occurred. Please try again.');
                 }
@@ -76,35 +121,43 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-// Hiển thị overlay đăng nhập (nếu cần)
+
+// Hiển thị overlay login
 function openLoginOverlay() {
     const loginOverlay = document.getElementById('login-overlay');
-    loginOverlay.classList.remove('overlay-hidden'); // Đảm bảo overlay không ẩn
-    loginOverlay.classList.add('show'); // Thêm lớp `show` để hiển thị overlay
+    if (loginOverlay) {
+        loginOverlay.classList.remove('overlay-hidden'); // Bỏ lớp ẩn
+        loginOverlay.classList.add('show'); // Hiển thị overlay
+    } else {
+        console.error('Login overlay not found!');
+    }
 }
 
-// Lấy số lượng giỏ hàng
-function updateCartCount() {
-    // Gọi API để lấy số lượng sản phẩm trong giỏ
-    fetch("{{ route('cart.count') }}") 
-        .then(response => {
-            // Kiểm tra nếu response trả về không phải JSON
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json(); // Chuyển dữ liệu thành JSON
-        })
-        .then(data => {
-            console.log(data); // Kiểm tra dữ liệu trả về
-            const cartCount = data.cart_count; // Lấy số lượng từ response
-            // Cập nhật lên nút giỏ hàng
-            document.getElementById("cart-count").innerText = cartCount;
-        })
-        .catch(error => {
-            // Xử lý lỗi nếu có
-            console.error("Error fetching cart count:", error);
-        });
-}
+// Hàm hiển thị overlay thông báo
+function showOverlayMessage(message) {
+    // Tạo overlay nếu chưa tồn tại
+    let overlay = document.getElementById('notification-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'notification-overlay';
+        overlay.className = 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden';
+        overlay.innerHTML = `
+            <div class="bg-white rounded-lg p-4 shadow-lg text-center">
+                <p id="notification-message" class="text-lg font-bold text-green-600"></p>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+    }
 
-// Gọi hàm để cập nhật số lượng giỏ hàng khi trang được tải
-document.addEventListener('DOMContentLoaded', updateCartCount);
+    // Cập nhật nội dung thông báo
+    const messageElement = document.getElementById('notification-message');
+    messageElement.textContent = message;
+
+    // Hiển thị overlay
+    overlay.classList.remove('hidden');
+
+    // Tự động ẩn overlay sau 1 giây
+    setTimeout(() => {
+        overlay.classList.add('hidden');
+    }, 1000);
+}

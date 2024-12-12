@@ -17,11 +17,15 @@ class RentalReceipt extends Model
 
     protected $fillable = [
         'user_id',
-        'car_id',
+        'rental_id',
         'rental_start_date',
         'rental_end_date',
         'rental_price_per_day',
         'total_cost',
+        'deposit_amount',
+        'remaining_amount',
+        'deposit_status',
+        'payment_status',
         'status',
     ];
 
@@ -38,6 +42,6 @@ class RentalReceipt extends Model
      */
     public function rentalCar()
     {
-        return $this->belongsTo(RentalCars::class, 'car_id', 'rental_id');
+        return $this->belongsTo(RentalCars::class, 'rental_id', 'rental_id');
     }
 }

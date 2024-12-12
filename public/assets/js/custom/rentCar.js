@@ -95,6 +95,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let selectedCarId = null; // Lưu trữ ID của xe được chọn
 
+    //Xử lí đăng nhập
+    const app = document.getElementById('app');
+    const isAuthenticated = app.dataset.authenticated === 'true';
+
+
+
     // Hiển thị modal khi nhấn "Rent Now"
     rentNowButtons.forEach((button) => {
         button.addEventListener('click', (event) => {
@@ -111,9 +117,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Chuyển hướng khi nhấn "Confirm"
+
     confirmButton.addEventListener('click', () => {
-        if (selectedCarId) {
-            // Chuyển hướng đến trang hiển thị form thuê
+        if (!isAuthenticated) {
+            // Nếu chưa đăng nhập, hiển thị thông báo và chuyển hướng đến trang đăng nhập
+            alert('Bạn cần đăng nhập để thuê xe!');
+            window.location.href = '/login'; // Chuyển hướng đến trang đăng nhập
+        } else if (selectedCarId) {
+            // Nếu đã đăng nhập, chuyển hướng đến trang thuê xe
             window.location.href = `/car-rent/${selectedCarId}`;
         }
     });

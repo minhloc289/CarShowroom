@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use App\Models\CarDetails;
+use App\Models\RentalCars;
 
 class CustomerDashBoardController extends Controller
 {
@@ -110,7 +111,11 @@ public function showCart()
     return view('frontend.accessories.cart', compact('cartItems', 'totalPrice', 'cartCount'));
 }
 
+//Terms
+    public function terms(){
 
+        return view("frontend.terms.terms");
+    }
 
 //Car rent
     public function carRent(){

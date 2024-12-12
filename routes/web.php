@@ -147,6 +147,8 @@ Route::post('/car-rent/{id}', [RentCarController::class, 'rentCar'])->name('rent
 //Car buy
 Route::get('/car/{id}/buy', [BuyCarController::class, 'showBuyForm'])->name('car.buy');
 Route::post('/vnpay_payment', [paymentcontroller::class, 'vnpay_payment']);
+//payment route
+Route::get('/payment/vnpay-return', [PaymentController::class, 'vnpay_return']);
 
 //Terms
 Route::get('/terms', [CustomerDashBoardController::class, 'terms'])->name('CustomerDashBoard.terms');

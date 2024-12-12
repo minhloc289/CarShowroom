@@ -95,13 +95,13 @@
                         <div class="border-t border-gray-300 my-2"></div>
                 
                         <!-- Thông tin thanh toán -->
-<div class="space-y-2">
-    <h3 class="text-lg font-semibold text-blue-600">Giá xe</h3>
-    <p class="text-gray-700">Giá xe: <span id="payment-car-price">{{ number_format($car->sale->sale_price ?? $car->price, 0) }}</span> VNĐ</p>
-    <p class="text-gray-700">Tiền cọc (15%): <span id="payment-deposit-amount" name="payment-deposit-amount"></span> VNĐ</p>
-    <p class="text-gray-700">Còn lại: <span id="payment-remaining-amount"></span> VNĐ</p>
-    <p class="text-lg font-bold text-blue-600 mt-4">Tổng cộng: <span id="payment-total-price">{{ number_format($car->sale->sale_price ?? $car->price, 0) }}</span> VNĐ</p>
-</div>
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-semibold text-blue-600">Giá xe</h3>
+                            <p class="text-gray-700">Giá xe: <span id="payment-car-price">{{ number_format($car->sale->sale_price ?? $car->price, 0) }}</span> VNĐ</p>
+                            <p class="text-gray-700">Tiền cọc (15%): <span id="payment-deposit-amount" name="payment-deposit-amount"></span> VNĐ</p>
+                            <p class="text-gray-700">Còn lại: <span id="payment-remaining-amount"></span> VNĐ</p>
+                            <p class="text-lg font-bold text-blue-600 mt-4">Tổng cộng: <span id="payment-total-price">{{ number_format($car->sale->sale_price ?? $car->price, 0) }}</span> VNĐ</p>
+                        </div>
 
                         <div class="border-t border-gray-300 my-2"></div>
                 
@@ -109,6 +109,9 @@
                         <div class="flex justify-center mt-6">
                             <form action={{url('/vnpay_payment')}} method="POST">
                                 @csrf
+                                <input type="hidden" name="sale_id" value="{{ $car->car_id }}">
+                                <input type="hidden" name="total-price" value="{{ $car->sale->sale_price }}">
+                                <input type="hidden" name="remaining_amount" id="payment-remaining-amount-input">
                                 <input type="hidden" name="payment_deposit_amount" id="payment-deposit-amount-input">
                                 <button  type="submit" name="redirect" class="px-10 py-3 bg-green-600 text-white font-bold rounded-md hover:bg-green-700 shadow-md transition-all">
                                     Xác nhận thanh toán
@@ -201,6 +204,7 @@
     document.getElementById('payment-deposit-amount').textContent = depositAmount.toLocaleString();
     document.getElementById('payment-deposit-amount-input').value = depositAmount.toLocaleString();
     document.getElementById('payment-remaining-amount').textContent = remainingAmount.toLocaleString();
+    document.getElementById('payment-remaining-amount-input').value = remainingAmount.toLocaleString();
 
 }
 

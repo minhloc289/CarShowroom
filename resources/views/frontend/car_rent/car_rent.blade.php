@@ -94,13 +94,13 @@
                                         <p class="text-sm text-gray-600 mb-1">{{ $car->brand }} - {{ $car->model }}</p>
                                         <p class="text-xs text-gray-500">Year: {{ $car->year }}</p>
                                     </div>
-            
+                                    
                                     <!-- Car Image -->
                                     <div class="h-32 flex items-center justify-center my-4">
                                         <img src="{{ $car->image_url }}" alt="{{ $car->name }}" 
                                             class="max-h-full w-auto rounded-lg transform hover:scale-105 transition duration-300">
                                     </div>
-            
+                                    
                                     <!-- Specifications -->
                                     <div class="h-20 space-y-1">
                                         <p class="text-gray-700 flex items-center justify-center gap-2 text-sm">
@@ -131,7 +131,7 @@
                                     </div>
             
                                     <!-- Action Button -->
-                                    <div class="flex justify-center gap-4 mt-4">
+                                    <div class="flex justify-center gap-4 mt-4" id="app" data-authenticated="{{ auth('account')->check() ? 'true' : 'false' }}">
                                         <!-- Rent Now Button -->
                                         <a href="#"
                                             class="w-1/2 py-3 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300 text-center font-medium rent-now-button"

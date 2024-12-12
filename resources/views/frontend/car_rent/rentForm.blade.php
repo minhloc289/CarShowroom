@@ -38,8 +38,9 @@
 
         <!-- Rental Form (3 phần) -->
         <div class="col-span-12 md:col-span-5 bg-white shadow-md rounded-none flex flex-col justify-between mt-4">
-            <form action="#" method="POST" id="rental-form" class="flex flex-col justify-between h-[80%]">
+            <form action="{{route('rent.submit', ['id' => $rentalCar->rental_id])}}" method="POST" id="rental-form" class="flex flex-col justify-between h-[80%]">
                 <!-- Tabs -->
+                @csrf
                 <div class="flex justify-between bg-gray-100">
                     <button type="button" id="info-tab" class="w-full text-center py-4 px-4 font-medium text-gray-700 hover:bg-gray-200 focus:outline-none" onclick="showTab('info')">Thông tin</button>
                     <button type="button" id="terms-tab" class="w-full text-center py-4 px-4 font-medium text-gray-700 hover:bg-gray-200 focus:outline-none" onclick="showTab('terms')" disabled>Đặt cọc</button>
@@ -49,6 +50,8 @@
                 <div id="error-message" class="hidden fixed top-4 right-4 bg-red-600 text-white px-6 py-3 rounded-lg shadow-md transition-all duration-300 opacity-100">
                     Vui lòng nhập đầy đủ thông tin!
                 </div>
+
+
 
                 <!-- Tab content -->
                 <div id="info-content" class="tab-content px-6 pt-2 pb-2">
@@ -138,9 +141,12 @@
                         <div class="flex justify-start items-center space-x-2 mt-6">
                             <input type="checkbox" id="agree-terms" class="w-5 h-5 border-gray-300 focus:ring-blue-500" required>
                             <label for="agree-terms" class="text-gray-700">
-                                Tôi đồng ý với các <a href="/terms" target="_blank" class="text-blue-500 hover:underline">Điều khoản & Dịch vụ</a> của Merus.
+                                Tôi đồng ý với các <a href="{{ route('CustomerDashBoard.terms') }}" target="_blank" class="text-blue-500 hover:underline">Điều khoản & Dịch vụ</a> của Merus.
                             </label>
                         </div>
+
+                        <input type="hidden" name="total_cost" id="hidden-total-cost">
+                        <input type="hidden" name="deposit_amount" id="hidden-deposit-amount">
                 
                         <!-- Nút xác nhận thanh toán -->
                         <div class="flex justify-center mt-6">
@@ -158,17 +164,20 @@
         // Tính tổng chi phí khi thay đổi số ngày thuê
         function calculateTotal() {
             const days = document.getElementById('rental_days').value || 0;
-            const pricePerDay = {{ $rentalCar->rental_price_per_day }}; // Giá thuê mỗi ngày
+            const pricePerDay = {{ $rentalCar->rental_price_per_day }};
             const totalPrice = days * pricePerDay;
+            const depositAmount = totalPrice * 0.3;
 
-            // Cập nhật UI thông tin tổng tiền ở phần thông tin
+            // Cập nhật thông tin hiển thị
             document.getElementById('total_days').textContent = days;
             document.getElementById('total_price').textContent = new Intl.NumberFormat('vi-VN').format(totalPrice);
-
-            // Cập nhật thông tin tổng tiền ở phần điều khoản và dịch vụ
             document.getElementById('terms-total-days').textContent = days;
             document.getElementById('terms-total-pay').textContent = new Intl.NumberFormat('vi-VN').format(totalPrice);
-            document.getElementById('terms-deposit-amount').textContent = new Intl.NumberFormat('vi-VN').format(totalPrice * 0.3); // 30% tiền đặt cọc
+            document.getElementById('terms-deposit-amount').textContent = new Intl.NumberFormat('vi-VN').format(depositAmount);
+
+            // Cập nhật các trường input ẩn
+            document.getElementById('hidden-total-cost').value = totalPrice;
+            document.getElementById('hidden-deposit-amount').value = depositAmount;
         }
 
         // Cập nhật tab "Điều khoản và dịch vụ" với thông tin từ tab "Thông tin"

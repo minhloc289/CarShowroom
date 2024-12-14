@@ -9,7 +9,7 @@
   <!-- Announcement Section -->
   <div class="hidden sm:mb-[2vh] sm:flex sm:justify-center">
     <div
-      class="relative h-[3vh] mt-[-20vh] rounded-full px-[2vw] py-[0.5vh] text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+      class="relative h-[6vh] mt-[-20vh] rounded-full px-[2vw] py-[0.5vh] text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
       Announcing our next round of funding.
       <a href="javascript:void(0)" class="font-semibold text-indigo-600">
         Read more <span aria-hidden="true">&rarr;</span>

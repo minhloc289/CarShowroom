@@ -10,10 +10,11 @@ class Kernel extends ConsoleKernel
     /**
      * Define the application's command schedule.
      */
+    
     protected function schedule(Schedule $schedule): void
     {
         // Đặt lịch cho các lệnh
-        $schedule->command('payment:update-status')->daily();
+        $schedule->command('rental:expire-payments')->everyFiveMinutes();
     }
 
     /**
@@ -22,7 +23,7 @@ class Kernel extends ConsoleKernel
     protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
-
+        
         require base_path('routes/console.php');
     }
 }

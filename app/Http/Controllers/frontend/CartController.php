@@ -19,9 +19,8 @@ class CartController extends Controller
             if (!$user) {
                 return response()->json([
                     'message' => 'You must be logged in to add items to the cart.',
-                    'redirect_url' => route('customer.login'), // Chuyển hướng tới trang login
                 ], 401);
-            }
+            }   
 
             // Kiểm tra dữ liệu gửi lên (accessory_id và quantity)
             $validated = $request->validate([
@@ -32,9 +31,8 @@ class CartController extends Controller
             // Lấy thông tin sản phẩm từ cơ sở dữ liệu (chỉ lấy tên và giá)
             $accessory = Accessories::find($validated['accessory_id']);
             if (!$accessory) {
-                return response()->json([
-                    'message' => 'Accessory not found.',
-                ], 404);
+                toastr()->error('Accessory not found.');
+                return redirect()->back();
             }
 
             // Kiểm tra giỏ hàng trong database
@@ -56,37 +54,33 @@ class CartController extends Controller
             }
 
             // Tính tổng số lượng trong giỏ hàng từ database
+
             $cartCount = Cart::where('account_id', $user->id)->sum('quantity');
 
-            return response()->json([
-                'message' => 'Product added to cart.',
-                'cart_count' => $cartCount,
-            ]);
+            toastr()->success("Product added to cart successfully!");
 
+            return redirect()->back();
         } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'An error occurred while adding to the cart.',
-                'error' => $e->getMessage(),
-            ], 500);
+            toastr()->error('An error occurred while adding to the cart.');
+            return redirect()->back();
         }
-    }
+    }     
     
 public function getCartCount()
-{
-    // Kiểm tra người dùng đã đăng nhập chưa
-    if (!Auth::guard('account')->check()) {
-        return response()->json([
-            'cart_count' => 0,
-        ]);
+    {
+        // Lấy thông tin người dùng hiện tại
+        $user = Auth::guard('account')->user();
+    
+        if (!$user) {
+            return response()->json(['cart_count' => 0]); // Trả về 0 nếu chưa đăng nhập
+        }
+    
+        // Đếm số lượng sản phẩm trong giỏ hàng của người dùng
+        $cartCount = Cart::where('account_id', $user->id)->count();
+    
+        // Trả về số lượng
+        return response()->json(['cart_count' => $cartCount]);
     }
-
-    $user = Auth::guard('account')->user();
-    $cartCount = Cart::where('account_id', $user->id)->sum('quantity');
-
-    return response()->json([
-        'cart_count' => $cartCount,
-    ]);
-}
 
 public function updateQuantity(Request $request)
 {

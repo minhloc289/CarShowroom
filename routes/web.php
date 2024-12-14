@@ -9,6 +9,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\carSalesController;
 use App\Http\Controllers\frontend\CustomerDashBoardController;
 use App\Http\Controllers\frontend\CarController;
 use App\Http\Controllers\frontend\BuyCarController;
@@ -34,6 +35,15 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
 
     /* USERS */
     Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
+    // //////////////////////////////////////////////////////////////// Back end
+    //Carsales
+    Route::get('/carsales', [carSalesController::class, 'loadCarsales'])->name('Carsales');
+    //cardetails back end
+    Route::get('car/{carId}/details', [carSalesController::class, 'show_details_Car'])->name('show.car.details');
+    //edit car
+    Route::get('car/{carId}/edit', [carSalesController::class, 'show_edit_car'])->name('show.car.edit');
+    Route::put('car/{carId}/update', [carSalesController::class, 'update_car_edit'])->name('car.update');
+
 
     /* USER CRUD */
     Route::get('/user/create', [AdminController::class, 'loadUserCreatePage'])->name('user.create');
@@ -42,6 +52,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/user/edit/{id}', [AdminController::class, 'editUser'])->name('user.update'); // Unique name for POST
     Route::delete('/user/delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete'); // Use DELETE method;
     Route::get('user/details/{id}', [AdminController::class, 'loadUserDetails'])->name('user.details');
+
 
 });
 
@@ -56,6 +67,7 @@ Route::get('/booking-form', [CustomerDashBoardController::class, 'Bookingform'])
 Route::get('/cars', [CarController::class, 'index'])->name('CarController.index');
 //details car
 Route::get('/cars/{car_id}', [CarController::class, 'show'])->name('cars.details');
+
 
 Route::prefix('customer')->group(function () {
     Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');
@@ -107,9 +119,8 @@ Route::get('/api/accessories', [CustomerDashBoardController::class, 'getAccessor
 Route::get('/api/accessories/sorted', [CustomerDashBoardController::class, 'getSortedAccessories']);
 Route::get('/accessory/{id}', [CustomerDashBoardController::class, 'showAccessory'])->name('accessory.show');
 
-Route::middleware(['auth:account'])->group(function () {
-    Route::get('/accessories/cart', [CustomerDashBoardController::class, 'showCart'])->name('show.cart');
-});
+Route::get('/accessories/cart', [CustomerDashBoardController::class, 'showCart'])->name('show.cart');
+
 Route::post('/cart/add', [CartController::class, 'addToCart'])
     ->name('cart.add') // Giữ tên route
     ->middleware('auth:account'); // Thêm middleware 'auth:account'

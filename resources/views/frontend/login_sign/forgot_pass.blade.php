@@ -1,68 +1,41 @@
-<main id="content" role="main" class="w-full max-w-md mx-auto p-6">
-  <div class="mt-7 bg-white rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700 border-2 border-indigo-300">
-    <div class="p-4 sm:p-7">
+<main id="content" role="main" class="w-full h-[90%] max-w-lg mx-auto p-6">
+  <div class="mt-7 bg-white rounded-lg shadow-lg border border-gray-300 h-full flex items-center justify-center">
+    <div class="p-6 space-y-4 h-[80%] flex flex-col justify-center">
+      <!-- Title -->
       <div class="text-center">
-        <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Forgot password?</h1>
-        <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        <h1 class="text-2xl font-bold text-gray-900">Forgot password?</h1>
+        <p class="my-2 text-sm text-gray-600">
           Remember your password?
         </p>
-        <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+        <div class="text-sm my-2  font-medium text-gray-600">
           Already have an account? 
-          <a id="backToLoginLinkFG" class="text-primary-600 hover:underline dark:text-primary-500">Login here</a>
+          <a id="backToLoginLinkFG" href="#" class="text-indigo-600 hover:underline">Login here</a>
         </div>
       </div>
 
-      <form action="{{ route('forget.password.post') }}" method="POST">
+      <!-- Form -->
+      <form action="{{ route('forget.password.post') }}" method="POST" class="space-y-4">
         @csrf
-        <div class="grid gap-y-4">
-          <div>
-            <label for="email" class="block text-sm font-bold ml-1 mb-2 dark:text-white">Email address</label>
-            <div class="relative">
-              <input
-                type="email"
-                id="email"
-                name="email"
-                class="py-3 px-4 block w-full border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 shadow-sm"
-                required
-                aria-describedby="email-error"
-              >
-            </div>
-          </div>
-          <button
-            type="submit"
-            class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">
-            Reset password
-          </button>
+        <!-- Email field -->
+        <div>
+          <label for="email" class="block text-sm mb-2 font-medium text-gray-900">Email address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            class="block w-full rounded-md border border-gray-300 py-2 px-3 text-gray-900 shadow-sm focus:border-indigo-600 focus:ring-indigo-600 sm:text-sm"
+            required
+            aria-describedby="email-error"
+          >
         </div>
+
+        <!-- Submit button -->
+        <button
+          type="submit"
+          class="flex w-full justify-center rounded-md bg-black px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
+          Reset password
+        </button>
       </form>
     </div>
   </div>
-
-  <p class="mt-3 flex justify-center items-center text-center divide-x divide-gray-300 dark:divide-gray-700">
-    <a
-      class="pr-3.5 inline-flex items-center gap-x-2 text-sm text-gray-600 decoration-2 hover:underline hover:text-blue-600 dark:text-gray-500 dark:hover:text-gray-200"
-      href="#"
-      target="_blank"
-    >
-      <svg
-        class="w-3.5 h-3.5"
-        xmlns="http://www.w3.org/2000/svg"
-        width="16"
-        height="16"
-        fill="currentColor"
-        viewBox="0 0 16 16"
-      >
-        <path
-          d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-        />
-      </svg>
-      View Github
-    </a>
-    <a
-      class="pl-3 inline-flex items-center gap-x-2 text-sm text-gray-600 decoration-2 hover:underline hover:text-blue-600 dark:text-gray-500 dark:hover:text-gray-200"
-      href="#"
-    >
-      Contact us!
-    </a>
-  </p>
 </main>

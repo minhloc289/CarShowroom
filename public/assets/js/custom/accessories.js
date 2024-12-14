@@ -126,63 +126,63 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
     });
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const cartButton = document.getElementById('cart-button');
-        const loginOverlay = document.getElementById('login-overlay');
-    
-        // Kiểm tra trạng thái đăng nhập khi nhấn vào giỏ hàng
-        cartButton.addEventListener('click', function () {
-            // Gửi yêu cầu kiểm tra trạng thái đăng nhập
-            fetch('/accessories/cart')
-                .then(response => {
-                    if (response.status === 401) {
-                        // Nếu chưa đăng nhập, hiển thị overlay login
-                        openLoginOverlay();
-                    } else if (response.ok) {
-                        // Nếu đã đăng nhập, chuyển đến trang giỏ hàng
-                        window.location.href = '/accessories/cart';  // Chuyển hướng đến trang giỏ hàng
-                    } else {
-                        console.error('Unexpected response:', response);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-    });
 });
 
-// Hiển thị overlay đăng nhập (nếu cần)
+document.addEventListener('DOMContentLoaded', function () {
+    const cartButton = document.getElementById('cart-button');
+
+    // Kiểm tra trạng thái đăng nhập khi nhấn vào giỏ hàng
+    cartButton.addEventListener('click', function (event) {
+        event.preventDefault(); // Ngăn hành vi mặc định (chuyển trang)
+
+        fetch('/accessories/cart')
+            .then(response => {
+                if (response.status === 401) {
+                    // Nếu chưa đăng nhập, hiển thị overlay login
+                    openLoginOverlay();
+                } else if (response.ok) {
+                    // Nếu đã đăng nhập, chuyển đến trang giỏ hàng
+                    window.location.href = '/accessories/cart';
+                } else {
+                    console.error('Unexpected response:', response);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    });
+});
 function openLoginOverlay() {
     const loginOverlay = document.getElementById('login-overlay');
-    loginOverlay.classList.remove('overlay-hidden'); // Đảm bảo overlay không ẩn
-    loginOverlay.classList.add('show'); // Thêm lớp `show` để hiển thị overlay
+    if (loginOverlay) {
+        loginOverlay.classList.remove('overlay-hidden'); // Bỏ lớp ẩn
+        loginOverlay.classList.add('show'); // Hiển thị overlay
+    } else {
+        console.error('Login overlay not found!');
+    }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+    const cartCountElement = document.getElementById('cart-count');
 
- // Lấy số lượng giỏ hàng
-function updateCartCount() {
-    // Gọi API để lấy số lượng sản phẩm trong giỏ
-    fetch("{{ route('cart.count') }}") 
-        .then(response => {
-            // Kiểm tra nếu response trả về không phải JSON
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+    // Hàm lấy số lượng sản phẩm trong giỏ hàng
+    function updateCartCount() {
+        fetch('/cart/count', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
             }
-            return response.json(); // Chuyển dữ liệu thành JSON
         })
+        .then(response => response.json())
         .then(data => {
-            console.log(data); // Kiểm tra dữ liệu trả về
-            const cartCount = data.cart_count; // Lấy số lượng từ response
-            // Cập nhật lên nút giỏ hàng
-            document.getElementById("cart-count").innerText = cartCount;
+            if (cartCountElement) {
+                cartCountElement.textContent = data.cart_count;
+            }
         })
-        .catch(error => {
-            // Xử lý lỗi nếu có
-            console.error("Error fetching cart count:", error);
-        });
-}
+        .catch(error => console.error('Error fetching cart count:', error));
+    }
 
-// Gọi hàm để cập nhật số lượng giỏ hàng khi trang được tải
-document.addEventListener('DOMContentLoaded', updateCartCount);
+    // Gọi hàm để cập nhật số lượng ngay khi trang load
+    updateCartCount();
+});

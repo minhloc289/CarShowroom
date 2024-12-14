@@ -16,6 +16,7 @@ class SalesCars extends Model
     protected $fillable = [
         'car_id',
         'sale_price',
+        'quantity',
         'availability_status',
         'warranty_period',
         'sale_conditions',

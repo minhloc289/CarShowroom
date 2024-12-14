@@ -23,5 +23,15 @@ Breadcrumbs::for('user.edit', function (BreadcrumbTrail $trail) {
     $trail->parent('user'); // Parent breadcrumb
     $trail->push('Chỉnh sửa nhân viên');
 });
-
-
+Breadcrumbs::for('carsales', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí sản phẩm', route('Carsales'));
+    $trail->push('Quản lý xe bán', route('Carsales'));
+});
+Breadcrumbs::for('carsales.details', function (BreadcrumbTrail $trail) {
+    $trail->parent('carsales'); // Parent breadcrumb
+    $trail->push('Chi tiết xe');
+});
+Breadcrumbs::for('carsales.edit', function (BreadcrumbTrail $trail) {
+    $trail->parent('carsales'); // Parent breadcrumb
+    $trail->push('Chỉnh sửa thông tin xe');
+});

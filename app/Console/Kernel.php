@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         // Đặt lịch cho các lệnh
         $schedule->command('rental:expire-payments')->everyFiveMinutes();
     }
+    
 
     /**
      * Register the commands for the application.

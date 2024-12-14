@@ -671,16 +671,16 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Widgets</span>
+                        <span class="menu-title">Quản lý sản phẩm</span>
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
                         <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/widgets/lists.html">
+                            <a class="menu-link" href="{{route('Carsales')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Lists</span>
+                                <span class="menu-title">Quản lý xe bán</span>
                             </a>
                         </div>
                         <div class="menu-item">

@@ -11,31 +11,41 @@ class Payment extends Model
 
     protected $table = 'payments'; // Tên bảng
     protected $primaryKey = 'payment_id'; // Khóa chính
-
-    public $incrementing = true; // ID tự động tăng
-    public $timestamps = true; // Bật timestamps
+    public $incrementing = false; // Không tự động tăng
+    protected $keyType = 'string'; // Loại khóa chính là string
 
     protected $fillable = [
-        'account_id',        // ID tài khoản
-        'status',            // Trạng thái thanh toán
-        'payment_detail_id', // ID chi tiết thanh toán
-        'transaction_code',  // Mã giao dịch
-        'total_amount',      // Tổng số tiền giao dịch
+        'payment_id',
+        'order_id',
+        'VNPAY_ID',
+        'payment_deposit_date',
+        'status_deposit',
+        'status_payment_all',
+        'deposit_amount',
+        'remaining_amount',
+        'total_amount',
+        'deposit_deadline',
+        'payment_deadline',
     ];
-
     /**
-     * Quan hệ với bảng Account
+     * Quan hệ với Order
      */
-    public function account()
+    public function order()
     {
-        return $this->belongsTo(Account::class, 'account_id', 'id');
+        return $this->belongsTo(Order::class, 'order_id', 'order_id');
     }
 
     /**
-     * Quan hệ với bảng PaymentDetails
+     * Boot method - Tạo ID tự động với tiền tố PAY
      */
-    public function paymentDetail()
+    protected static function boot()
     {
-        return $this->belongsTo(PaymentDetails::class, 'payment_detail_id', 'payment_details_id');
+        parent::boot();
+
+        static::creating(function ($model) {
+            $lastPayment = Payment::orderBy('payment_id', 'desc')->first();
+            $nextId = $lastPayment ? ((int)substr($lastPayment->payment_id, 3)) + 1 : 1;
+            $model->payment_id = 'PAY' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
+        });
     }
 }

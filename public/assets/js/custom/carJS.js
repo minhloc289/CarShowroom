@@ -18,8 +18,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Hiển thị thêm xe khi nhấn "View All"
     viewAllButton.addEventListener('click', function () {
-        currentItemCount += 10;
-        hideExtraCars();
+        // Kiểm tra xem còn xe nào chưa được hiển thị không
+        console.log('clickok')
+        if (currentItemCount < totalItems) {
+            currentItemCount += 10; // Mỗi lần nhấn sẽ thêm 10 xe
+            hideExtraCars();
+        } else {
+            viewAllButton.style.display = 'none'; // Ẩn nút khi tất cả xe đã được hiển thị
+        }
     });
 
     // Hàm lọc xe
@@ -52,7 +58,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Nếu không có bộ lọc nào được áp dụng, hiển thị số xe theo trạng thái ban đầu
         if (!searchText && !selectedEngineType && !selectedSeatCapacity && !selectedBrand) {
-
             hideExtraCars();
         }
     };

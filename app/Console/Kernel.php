@@ -12,9 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // Đặt lịch cho các lệnh
-        $schedule->command('payment:update-status')->daily();
+        $schedule->command('payment:check-status')->daily();
     }
+    
 
     /**
      * Register the commands for the application.

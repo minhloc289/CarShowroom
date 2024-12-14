@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\frontend\paymentcontroller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AuthController;
 use Illuminate\Support\Facades\Auth;
@@ -7,8 +8,10 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\Backend\AdminController;
+use App\Http\Controllers\Backend\carSalesController;
 use App\Http\Controllers\frontend\CustomerDashBoardController;
 use App\Http\Controllers\frontend\CarController;
+use App\Http\Controllers\frontend\BuyCarController;
 use App\Http\Controllers\frontend\ForgetPasswordManager;
 use App\Http\Controllers\frontend\CustomerAuthController;
 use App\Http\Controllers\frontend\ProfileController;
@@ -32,6 +35,15 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
 
     /* USERS */
     Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
+    // //////////////////////////////////////////////////////////////// Back end
+    //Carsales
+    Route::get('/carsales', [carSalesController::class, 'loadCarsales'])->name('Carsales');
+    //cardetails back end
+    Route::get('car/{carId}/details', [carSalesController::class, 'show_details_Car'])->name('show.car.details');
+    //edit car
+    Route::get('car/{carId}/edit', [carSalesController::class, 'show_edit_car'])->name('show.car.edit');
+    Route::put('car/{carId}/update', [carSalesController::class, 'update_car_edit'])->name('car.update');
+
 
     /* USER CRUD */
     Route::get('/user/create', [AdminController::class, 'loadUserCreatePage'])->name('user.create');
@@ -40,6 +52,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/user/edit/{id}', [AdminController::class, 'editUser'])->name('user.update'); // Unique name for POST
     Route::delete('/user/delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete'); // Use DELETE method;
     Route::get('user/details/{id}', [AdminController::class, 'loadUserDetails'])->name('user.details');
+
 
 });
 
@@ -54,6 +67,7 @@ Route::get('/booking-form', [CustomerDashBoardController::class, 'Bookingform'])
 Route::get('/cars', [CarController::class, 'index'])->name('CarController.index');
 //details car
 Route::get('/cars/{car_id}', [CarController::class, 'show'])->name('cars.details');
+
 
 Route::prefix('customer')->group(function () {
     Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');
@@ -137,6 +151,18 @@ Route::get('/cart/items', [CartController::class, 'getCartItems'])->name('cart.i
 Route::get('/car-rent', [RentCarController::class, 'carRent'])->name('rent.car');
 Route::get('/api/cars/{id}', [RentCarController::class, 'show']);
 Route::get('/car-rent/{id}', [RentCarController::class, 'showRentForm'])->name('rent.form');
+Route::post('/car-rent/{id}', [RentCarController::class, 'rentCar'])->name('rent.submit');
+
+
+
+//Car buy
+Route::get('/car/{id}/buy', [BuyCarController::class, 'showBuyForm'])->name('car.buy');
+Route::post('/vnpay_payment', [paymentcontroller::class, 'vnpay_payment']);
+//payment route
+Route::get('/payment/vnpay-return', [PaymentController::class, 'vnpay_return']);
+
+//Terms
+Route::get('/terms', [CustomerDashBoardController::class, 'terms'])->name('CustomerDashBoard.terms');
 
 // Trang chủ
 Route::get('/home', function () {    

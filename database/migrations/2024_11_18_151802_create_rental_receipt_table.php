@@ -9,12 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-     public function up(): void
+    public function up(): void
     {
         Schema::create('rental_receipt', function (Blueprint $table) {
             $table->id('receipt_id'); // Khóa chính tự động tăng
             $table->string('user_id'); // user_id với kiểu string để phù hợp với id trong bảng accounts
-            $table->unsignedBigInteger('car_id'); // car_id mà không có ràng buộc khóa ngoại
+            $table->unsignedBigInteger('rental_id'); // car_id mà không có ràng buộc khóa ngoại
             $table->dateTime('rental_start_date')->notNullable(); // Ngày bắt đầu thuê
             $table->dateTime('rental_end_date')->notNullable(); // Ngày kết thúc thuê
             $table->decimal('rental_price_per_day', 10, 2)->notNullable(); // Giá thuê mỗi ngày
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('accounts')->onDelete('cascade');
 
             // Thêm khóa ngoại cho car_id
-            $table->foreign('car_id')->references('rental_id')->on('rental_cars')->onDelete('cascade');
+            $table->foreign('rental_id')->references('rental_id')->on('rental_cars')->onDelete('cascade');
         });
     }
 
@@ -39,11 +39,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rental_receipt');
         Schema::table('rental_receipt', function (Blueprint $table) {
             // Xóa khóa ngoại
             $table->dropForeign(['user_id']);
-            $table->dropForeign(['car_id']);
+            $table->dropForeign(['rental_id']);
         });
+        Schema::dropIfExists('rental_receipt');
+        
     }
 };

@@ -5,6 +5,10 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\CarDetails;
+use App\Models\RentalCars;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class RentCarController extends Controller
 {
@@ -75,6 +79,40 @@ class RentCarController extends Controller
 
         // Trả về thông tin chi tiết xe và thông tin thuê
         return view('frontend.car_rent.rentForm', compact('car', 'rentalCar'));
+    }
+
+    public function rentCar(Request $request)
+    {
+        $request->validate([
+            'rental_id' => 'required|exists:rental_cars,rental_id',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|min:10|max:15',
+            'start_date' => 'required|date|after_or_equal:today',
+            'total_cost' => 'required|numeric|min:0',
+            'deposit_amount' => 'required|numeric|min:0',
+            'rental_price_per_day' => 'required|numeric|min:0', // Thêm validation
+        ]);
+
+
+        // Lưu dữ liệu vào bảng rental_receipt
+        DB::table('rental_receipt')->insert([
+            'user_id' => auth('account')->id(),
+            'rental_id' => $request->rental_id, // Lấy rental_id từ form
+            'rental_start_date' => $request->start_date,
+            'rental_end_date' => Carbon::parse($request->start_date)->addDays($request->rental_days - 1),
+            'rental_price_per_day' => $request->rental_price_per_day,
+            'total_cost' => $request->total_cost,
+            'deposit_amount' => $request->deposit_amount,
+            'remaining_amount' => $request->total_cost - $request->deposit_amount,
+            'deposit_status' => 'Pending',
+            'payment_status' => 'Unpaid',
+            'status' => 'Active',
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        
+        return redirect()->route('rent.car')->with('success', 'Thuê xe thành công!');
     }
 
 }

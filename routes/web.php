@@ -43,6 +43,11 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     //edit car
     Route::get('car/{carId}/edit', [carSalesController::class, 'show_edit_car'])->name('show.car.edit');
     Route::put('car/{carId}/update', [carSalesController::class, 'update_car_edit'])->name('car.update');
+    Route::post('car/{carId}/destroy', [carSalesController::class, 'destroy'])->name('sales.cars.destroy');
+    Route::get('/cars/create', [carSalesController::class, 'create'])->name('car.create');
+    Route::post('/cars/store', [carSalesController::class, 'store'])->name('car.store');
+    Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
+    Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
 
 
     /* USER CRUD */
@@ -165,7 +170,7 @@ Route::get('/payment/vnpay-return', [PaymentController::class, 'vnpay_return']);
 Route::get('/terms', [CustomerDashBoardController::class, 'terms'])->name('CustomerDashBoard.terms');
 
 // Trang chủ
-Route::get('/home', function () {    
+Route::get('/home', function () {
     return view('home');
 })->name('home');
 

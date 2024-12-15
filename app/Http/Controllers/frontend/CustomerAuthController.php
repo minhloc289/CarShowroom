@@ -40,13 +40,14 @@ class CustomerAuthController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
 
-     public function login(Request $request)
+    public function login(Request $request)
     {
         // Xác thực dữ liệu đầu vào
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
+
 
         // Thử đăng nhập với guard 'account'
         if (Auth::guard('account')->attempt($credentials)) {
@@ -87,6 +88,7 @@ class CustomerAuthController extends Controller
             'email' => 'required|email|unique:accounts,email', // Email phải là duy nhất
             'password' => 'required|min:6|confirmed', // Mật khẩu xác nhận
         ]);
+
     
         // Lưu thông tin người dùng vào bảng accounts
         Account::create([
@@ -136,36 +138,37 @@ public function logout(Request $request)
     $request->session()->regenerateToken(); // Tạo lại token CSRF
 
     return redirect()->route('CustomerDashBoard.index');
-}public function resetPassword(Request $request)
-{
-    // Xác thực dữ liệu nhập vào
-    $request->validate([
-        'old_password' => 'required', // Mật khẩu cũ là bắt buộc
-        'password' => 'required|string|min:6|confirmed', // Mật khẩu mới phải trùng khớp với password_confirmation
-        'password_confirmation' => 'required', // Trường xác nhận mật khẩu không được để trống
-    ]);
-
-    // Lấy thông tin người dùng đang đăng nhập
-    $user = Auth::guard('account')->user();
-
-    // Kiểm tra mật khẩu cũ
-    if ($request->password !== $request->password_confirmation) {
-        toastr()->error('Mật khẩu cũ mới và mật khẩu xác minh không trùng khớp');
-        return redirect()->back(); // Quay lại trang đổi mật khẩu
-    }
-    if (!Hash::check($request->old_password, $user->password)) {
-        toastr()->error('Mật khẩu cũ không chính xác');
-        return redirect()->back(); // Quay lại trang đổi mật khẩu
-    }
-
-
-    // Cập nhật mật khẩu mới
-    $user->password = Hash::make($request->password);
-    $user->save();
-
-    // Thông báo thành công
-    toastr()->success('Mật khẩu đã được thay đổi thành công');
-    return redirect()->route('view.resetpass'); // Chuyển hướng sau khi đổi mật khẩu
 }
+// public function resetPassword(Request $request)
+// {
+//     // Xác thực dữ liệu nhập vào
+//     $request->validate([
+//         'old_password' => 'required', // Mật khẩu cũ là bắt buộc
+//         'password' => 'required|string|min:6|confirmed', // Mật khẩu mới phải trùng khớp với password_confirmation
+//         'password_confirmation' => 'required', // Trường xác nhận mật khẩu không được để trống
+//     ]);
+
+//     // Lấy thông tin người dùng đang đăng nhập
+//     $user = Auth::guard('account')->user();
+
+//     // Kiểm tra mật khẩu cũ
+//     if ($request->password !== $request->password_confirmation) {
+//         toastr()->error('Mật khẩu cũ mới và mật khẩu xác minh không trùng khớp');
+//         return redirect()->back(); // Quay lại trang đổi mật khẩu
+//     }
+//     if (!Hash::check($request->old_password, $user->password)) {
+//         toastr()->error('Mật khẩu cũ không chính xác');
+//         return redirect()->back(); // Quay lại trang đổi mật khẩu
+//     }
+
+
+//     // Cập nhật mật khẩu mới
+//     $user->password = Hash::make($request->password);
+//     $user->save();
+
+//     // Thông báo thành công
+//     toastr()->success('Mật khẩu đã được thay đổi thành công');
+//     return redirect()->route('view.resetpass'); // Chuyển hướng sau khi đổi mật khẩu
+// }
 }
 

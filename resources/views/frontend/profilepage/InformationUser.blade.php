@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="mt-4">
-                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Cập
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 mr-4">Cập
                     nhật</button>
                     <a href="{{route('view.resetpass')}}" class="text-blue-600 hover:text-blue-800">Đổi mật khẩu</a>
             </div>

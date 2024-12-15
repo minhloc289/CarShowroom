@@ -46,14 +46,14 @@ class CarDetails extends Model
     {
         return $this->hasMany(TestDriveRegistration::class, 'car_id', 'car_id');
     }
-    
+
     public function invoiceDetails()
     {
         return $this->hasMany(InvoiceDetail::class, 'car_id', 'car_id');
     }
     public function sale()
-{
-    return $this->hasOne(SalesCars::class, 'car_id', 'car_id');
-}
+    {
+        return $this->hasOne(SalesCars::class, 'car_id', 'car_id');
+    }
 
 }

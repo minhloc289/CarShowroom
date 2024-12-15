@@ -15,7 +15,7 @@
         </h1>
 
         <!-- Form -->
-        <form class="space-y-4 md:space-y-6" action="{{ route('sign_up') }}" method="POST">
+        <form class="space-y-4 md:space-y-6" action="{{route('sign_up')}}" method="POST">
           @csrf
           <!-- Flex container for two columns -->
           <div class="flex flex-col md:flex-row gap-6">

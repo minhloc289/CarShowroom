@@ -20,6 +20,7 @@ use App\Http\Controllers\frontend\ProfileController;
 use App\Http\Controllers\frontend\RentCarController;
 
 use App\Http\Controllers\frontend\CartController;
+use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 
 /* BACKEND ROUTES */
@@ -175,3 +176,19 @@ Route::get('/home', function () {
 })->name('home');
 
 
+Route::get('/verify-email/{token}', function ($token) {
+    $account = Account::where('email_verification_token', $token)->first();
+
+    if (!$account) {
+        toastr()->error('Liên kết xác thực không hợp lệ hoặc đã hết hạn.');
+        return redirect()->route('sign_up');
+    }
+
+    $account->update([
+        'is_verified' => 1,
+        'email_verification_token' => null,
+    ]);
+
+    toastr()->success('Xác thực tài khoản thành công! Bạn có thể đăng nhập.');
+    return redirect()->route('CustomerDashBoard.index');
+})->name('verify.email');

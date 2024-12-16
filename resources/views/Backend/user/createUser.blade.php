@@ -46,7 +46,7 @@
                     <div>
                         <label for="level" class="block text-gray-700 font-semibold">Level</label>
                         <select id="level" name="level" required class="w-full p-3 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="Employee" {{ old('level') == 'Employee' ? 'selected' : '' }}>Employee</option>
+                            <option value="Nhân viên" {{ old('level') == 'Nhân viên' ? 'selected' : '' }}>Nhân viên</option>
                             <option value="Admin" {{ old('level') == 'Admin' ? 'selected' : '' }}>Admin</option>
                         </select>
                     </div>

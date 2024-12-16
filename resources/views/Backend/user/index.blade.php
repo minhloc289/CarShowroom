@@ -16,18 +16,37 @@
                                 <span class="text-muted mt-1 fw-bold fs-7">Số lượng nhân viên | {{$employees->count()}}</span>
                             </h3>
                             <div class="card-toolbar" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="hover" title="Click to add a user">
-                                <a href="{{ route('user.create') }}" class="btn btn-sm btn-light btn-active-primary d-flex align-items-center gap-1">
-                                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
-                                    <span class="svg-icon svg-icon-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="black" />
-                                            <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black" />
-                                        </svg>
-                                    </span>
-                                    <!--end::Svg Icon-->
-                                    <span class="text-muted">New Member</span>
-                                </a>
-                            </div>                            
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-light btn-active-primary dropdown-toggle d-flex align-items-center gap-1" 
+                                            type="button" 
+                                            id="newMemberDropdown" 
+                                            data-bs-toggle="dropdown" 
+                                            aria-expanded="false">
+                                        <!--begin::Svg Icon-->
+                                        <span class="svg-icon svg-icon-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1" transform="rotate(-90 11.364 20.364)" fill="black" />
+                                                <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="black" />
+                                            </svg>
+                                        </span>
+                                        <!--end::Svg Icon-->
+                                        <span class="text-muted">New Member</span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="newMemberDropdown">
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('user.create') }}">
+                                                Thêm nhân viên
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{route('user.record.create')}}">
+                                                Thêm bản ghi
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                                                      
                         </div>
                         <!--end::Header-->
                         <!--begin::Body-->

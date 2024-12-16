@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\frontend\paymentcontroller;
-use App\Http\Controllers\frontend\RentalPayment;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AuthController;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +15,7 @@ use App\Http\Controllers\frontend\BuyCarController;
 use App\Http\Controllers\frontend\ForgetPasswordManager;
 use App\Http\Controllers\frontend\CustomerAuthController;
 use App\Http\Controllers\frontend\ProfileController;
-
 use App\Http\Controllers\frontend\RentCarController;
-
 use App\Http\Controllers\frontend\CartController;
 use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
@@ -58,7 +55,10 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/user/edit/{id}', [AdminController::class, 'editUser'])->name('user.update'); // Unique name for POST
     Route::delete('/user/delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete'); // Use DELETE method;
     Route::get('user/details/{id}', [AdminController::class, 'loadUserDetails'])->name('user.details');
-
+    Route::get('user/record/create', [AdminController::class, 'loadExcel'])->name('user.record.create');
+    Route::post('/users/import', [AdminController::class, 'importExcel'])->name('users.import');
+    Route::get('/download/user-template', [AdminController::class, 'downloadTemplate'])->name('user.download.template');
+    
 
 });
 

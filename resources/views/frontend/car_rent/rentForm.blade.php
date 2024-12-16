@@ -1,5 +1,7 @@
 @extends('frontend.layouts.app')
-
+@php
+    $user = Auth::guard('account')->user();
+@endphp
 @section('content')
     <link rel="stylesheet" href="/assets/css/rentForm.css">
     <script src="{{ asset('/assets/js/custom/rentForm.js') }}"></script>
@@ -61,13 +63,13 @@
                         <!-- Họ và tên -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Họ và tên</label>
-                            <input type="text" name="name" id="name" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="Nguyễn Văn A">
+                            <input type="text" name="name" id="name" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="Nguyễn Văn A" value="{{ $user->name }}">
                         </div>
 
                         <!-- Email -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                            <input type="email" name="email" id="email" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="nguyenvana@example.com">
+                            <input type="email" name="email" id="email" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="nguyenvana@example.com" value="{{ $user->email }}">
                         </div>
 
                         <!-- Ngày bắt đầu thuê -->
@@ -79,7 +81,7 @@
                         <!-- Số điện thoại -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Số điện thoại</label>
-                            <input type="tel" name="phone" id="phone" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="+84 123 456 789">
+                            <input type="tel" name="phone" id="phone" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="+84 123 456 789" value="{{ $user->phone }}">
                         </div>
 
                         <!-- Số ngày thuê -->

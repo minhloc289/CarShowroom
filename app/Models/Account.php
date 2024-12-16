@@ -23,6 +23,8 @@ class Account extends Authenticatable
         'name',       // Họ tên
         'address',    // Địa chỉ
         'phone',      // Số điện thoại
+        'is_verified', // Trạng thái xác thực tài khoản
+        'email_verification_token', // Token xác minh email
     ];
 
     protected $hidden = [

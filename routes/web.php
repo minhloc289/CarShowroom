@@ -15,12 +15,10 @@ use App\Http\Controllers\frontend\BuyCarController;
 use App\Http\Controllers\frontend\ForgetPasswordManager;
 use App\Http\Controllers\frontend\CustomerAuthController;
 use App\Http\Controllers\frontend\ProfileController;
-
 use App\Http\Controllers\frontend\RentCarController;
-
 use App\Http\Controllers\frontend\CartController;
-
-
+use App\Models\Account;
+use App\Http\Controllers\frontend\RentalPaymentController;
 
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
@@ -59,7 +57,10 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/user/edit/{id}', [AdminController::class, 'editUser'])->name('user.update'); // Unique name for POST
     Route::delete('/user/delete/{id}', [AdminController::class, 'deleteUser'])->name('user.delete'); // Use DELETE method;
     Route::get('user/details/{id}', [AdminController::class, 'loadUserDetails'])->name('user.details');
-
+    Route::get('user/record/create', [AdminController::class, 'loadExcel'])->name('user.record.create');
+    Route::post('/users/import', [AdminController::class, 'importExcel'])->name('users.import');
+    Route::get('/download/user-template', [AdminController::class, 'downloadTemplate'])->name('user.download.template');
+    
 
 });
 
@@ -159,8 +160,8 @@ Route::get('/car-rent', [RentCarController::class, 'carRent'])->name('rent.car')
 Route::get('/api/cars/{id}', [RentCarController::class, 'show']);
 Route::get('/car-rent/{id}', [RentCarController::class, 'showRentForm'])->name('rent.form');
 Route::post('/car-rent/{id}', [RentCarController::class, 'rentCar'])->name('rent.submit');
-
-
+Route::get('/rental/payment/vnpay', [RentalPaymentController::class, 'vnpay_payment'])->name('rental.payment.vnpay');
+Route::get('/rental/payment/vnpay-return', [RentalPaymentController::class, 'vnpay_return'])->name('rental.payment.vnpay_return');
 
 //Car buy
 Route::get('/car/{id}/buy', [BuyCarController::class, 'showBuyForm'])->name('car.buy');
@@ -177,3 +178,19 @@ Route::get('/home', function () {
 })->name('home');
 
 
+Route::get('/verify-email/{token}', function ($token) {
+    $account = Account::where('email_verification_token', $token)->first();
+
+    if (!$account) {
+        toastr()->error('Liên kết xác thực không hợp lệ hoặc đã hết hạn.');
+        return redirect()->route('sign_up');
+    }
+
+    $account->update([
+        'is_verified' => 1,
+        'email_verification_token' => null,
+    ]);
+
+    toastr()->success('Xác thực tài khoản thành công! Bạn có thể đăng nhập.');
+    return redirect()->route('CustomerDashBoard.index');
+})->name('verify.email');

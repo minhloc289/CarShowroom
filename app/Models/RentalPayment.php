@@ -12,28 +12,21 @@ class RentalPayment extends Model
     protected $table = 'rental_payments'; // Tên bảng
     protected $primaryKey = 'payment_id'; // Khóa chính
 
-    // Các trường có thể gán giá trị hàng loạt
     protected $fillable = [
-        'account_id',
-        'receipt_id',
-        'status',
-        'transaction_code',
+        'order_id',
+        'status_deposit',
+        'full_payment_status',
+        'deposit_amount',
         'total_amount',
+        'remaining_amount',
+        'due_date',
+        'payment_date',
+        'transaction_code',
     ];
 
-    /**
-     * Quan hệ với bảng RentalReceipt
-     */
-    public function receipt()
+    // Quan hệ với RentalOrder (một giao dịch thanh toán thuộc về một đơn hàng)
+    public function rentalOrder()
     {
-        return $this->belongsTo(RentalReceipt::class, 'receipt_id', 'receipt_id');
-    }
-
-    /**
-     * Quan hệ với bảng RentalPaymentDetails
-     */
-    public function paymentDetails()
-    {
-        return $this->hasMany(RentalPaymentDetail::class, 'payment_id', 'payment_id');
+        return $this->belongsTo(RentalOrder::class, 'order_id');
     }
 }

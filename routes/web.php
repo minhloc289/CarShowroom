@@ -46,6 +46,8 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/cars/store', [carSalesController::class, 'store'])->name('car.store');
     Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
     Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
+    Route::get('/download/car-add-template', [carSalesController::class, 'downloadTemplate'])->name('caradd.download.template');
+
 
 
     /* USER CRUD */

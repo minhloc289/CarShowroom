@@ -8,7 +8,7 @@
 
 	<!-- Liên kết tải về file mẫu -->
 	<div class="mb-3">
-		<a href="{{ asset('public\assets\excel\caradd.xlsx') }}" class="btn btn-secondary" download>
+		<a href="{{ route('caradd.download.template')}}" class="btn btn-secondary" download>
 			Tải về file mẫu Excel
 		</a>
 	</div>

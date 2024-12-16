@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\CarExport;
 use App\Http\Controllers\Controller;
 use App\Models\CarDetails;
 use App\Models\SalesCars;
@@ -239,5 +240,9 @@ class carSalesController extends Controller
         toastr()->error('Vui lòng kiểm tra lại file');
 
         return back();
+    }
+    public function downloadTemplate()
+    {
+        return Excel::download(new CarExport, 'car_add_template.xlsx');
     }
 }

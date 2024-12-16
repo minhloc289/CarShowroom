@@ -23,7 +23,14 @@ Breadcrumbs::for('user.edit', function (BreadcrumbTrail $trail) {
     $trail->parent('user'); // Parent breadcrumb
     $trail->push('Chỉnh sửa nhân viên');
 });
-//Carsales
+
+Breadcrumbs::for('user.record.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('user'); // Parent breadcrumb
+    $trail->push('Thêm mới bằng bản ghi');
+});
+
+
+  //Carsales
 Breadcrumbs::for('carsales', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí sản phẩm', route('Carsales'));
     $trail->push('Quản lý xe bán', route('Carsales'));

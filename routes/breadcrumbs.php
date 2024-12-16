@@ -29,6 +29,8 @@ Breadcrumbs::for('user.record.create', function (BreadcrumbTrail $trail) {
     $trail->push('Thêm mới bằng bản ghi');
 });
 
+
+  //Carsales
 Breadcrumbs::for('carsales', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí sản phẩm', route('Carsales'));
     $trail->push('Quản lý xe bán', route('Carsales'));
@@ -45,4 +47,20 @@ Breadcrumbs::for('carsales.create', function (BreadcrumbTrail $trail) {
     $trail->parent('carsales'); // Parent breadcrumb
     $trail->push('Thêm thông tin xe');
 });
-
+//Accessories
+Breadcrumbs::for('Accessories', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí sản phẩm', route('Carsales'));
+    $trail->push('Quản lý phụ kiện', route('accessories.index'));
+});
+Breadcrumbs::for('accessories.details', function (BreadcrumbTrail $trail) {
+    $trail->parent('Accessories'); // Parent breadcrumb
+    $trail->push('Chi tiết phụ kiện');
+});
+Breadcrumbs::for('accessories.edit', function (BreadcrumbTrail $trail) {
+    $trail->parent('Accessories'); // Parent breadcrumb
+    $trail->push('Chỉnh sửa thông tin phụ kiện');
+});
+Breadcrumbs::for('accessories.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('Accessories'); // Parent breadcrumb
+    $trail->push('Thêm phụ kiện mới');
+});

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\frontend\paymentcontroller;
+use App\Http\Controllers\frontend\RentalPayment;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Backend\AuthController;
 use Illuminate\Support\Facades\Auth;
@@ -19,8 +20,7 @@ use App\Http\Controllers\frontend\ProfileController;
 use App\Http\Controllers\frontend\RentCarController;
 
 use App\Http\Controllers\frontend\CartController;
-
-
+use App\Http\Controllers\frontend\RentalPaymentController;
 
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
@@ -43,6 +43,11 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     //edit car
     Route::get('car/{carId}/edit', [carSalesController::class, 'show_edit_car'])->name('show.car.edit');
     Route::put('car/{carId}/update', [carSalesController::class, 'update_car_edit'])->name('car.update');
+    Route::post('car/{carId}/destroy', [carSalesController::class, 'destroy'])->name('sales.cars.destroy');
+    Route::get('/cars/create', [carSalesController::class, 'create'])->name('car.create');
+    Route::post('/cars/store', [carSalesController::class, 'store'])->name('car.store');
+    Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
+    Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
 
 
     /* USER CRUD */
@@ -152,8 +157,8 @@ Route::get('/car-rent', [RentCarController::class, 'carRent'])->name('rent.car')
 Route::get('/api/cars/{id}', [RentCarController::class, 'show']);
 Route::get('/car-rent/{id}', [RentCarController::class, 'showRentForm'])->name('rent.form');
 Route::post('/car-rent/{id}', [RentCarController::class, 'rentCar'])->name('rent.submit');
-
-
+Route::get('/rental/payment/vnpay', [RentalPaymentController::class, 'vnpay_payment'])->name('rental.payment.vnpay');
+Route::get('/rental/payment/vnpay-return', [RentalPaymentController::class, 'vnpay_return'])->name('rental.payment.vnpay_return');
 
 //Car buy
 Route::get('/car/{id}/buy', [BuyCarController::class, 'showBuyForm'])->name('car.buy');
@@ -165,7 +170,7 @@ Route::get('/payment/vnpay-return', [PaymentController::class, 'vnpay_return']);
 Route::get('/terms', [CustomerDashBoardController::class, 'terms'])->name('CustomerDashBoard.terms');
 
 // Trang chủ
-Route::get('/home', function () {    
+Route::get('/home', function () {
     return view('home');
 })->name('home');
 

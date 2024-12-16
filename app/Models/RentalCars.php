@@ -29,4 +29,9 @@ class RentalCars extends Model
     {
         return $this->hasMany(RentalReceipt::class, 'car_id', 'rental_id');
     }
+
+    public function rentalOrders()
+    {
+        return $this->hasMany(RentalOrder::class, 'car_id');
+    }
 }

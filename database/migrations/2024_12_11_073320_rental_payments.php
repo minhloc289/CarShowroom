@@ -12,17 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rental_payments', function (Blueprint $table) {
-            $table->id('payment_id'); // Khóa chính
-            $table->string('account_id', 6); // ID tài khoản từ bảng accounts
-            $table->unsignedBigInteger('receipt_id'); // Liên kết với bảng rental_receipt
-            $table->unsignedTinyInteger('status')->default(0); // 0: Pending, 1: Paid, 2: Cancelled
-            $table->string('transaction_code')->nullable(); // Mã giao dịch
-            $table->decimal('total_amount', 15, 2)->nullable(); // Tổng tiền thanh toán
+            $table->id('payment_id'); // Khóa chính tự động tăng
+            $table->unsignedBigInteger('order_id'); // Liên kết với đơn hàng
+            $table->enum('status_deposit', ['Pending', 'Successful', 'Canceled'])->default('Pending')->nullable(); // Trạng thái thanh toán cọc (nullable)
+            $table->enum('full_payment_status', ['Pending', 'Successful', 'Canceled'])->default('Pending'); // Trạng thái thanh toán toàn bộ
+            $table->decimal('deposit_amount', 10, 2)->nullable(); // Số tiền cọc (nullable)
+            $table->decimal('total_amount', 10, 2); // Tổng số tiền thanh toán
+            $table->decimal('remaining_amount', 10, 2); // Số tiền còn lại
+            $table->date('due_date'); // Ngày đến hạn thanh toán
+            $table->timestamp('payment_date')->nullable(); // Ngày thanh toán
+            $table->string('transaction_code', 255); // Mã giao dịch
             $table->timestamps();
-    
-            // Khóa ngoại
-            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-            $table->foreign('receipt_id')->references('receipt_id')->on('rental_receipt')->onDelete('cascade');
+
+            // Khóa ngoại cho order_id
+            $table->foreign('order_id')->references('order_id')->on('rental_orders')->onDelete('cascade');
         });
     }
 
@@ -32,8 +35,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('rental_payments', function (Blueprint $table) {
-            $table->dropForeign(['account_id']);
-            $table->dropForeign(['receipt_id']);
+            // Xóa khóa ngoại
+            $table->dropForeign(['order_id']); 
         });
 
         Schema::dropIfExists('rental_payments');

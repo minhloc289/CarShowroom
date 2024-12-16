@@ -35,3 +35,8 @@ Breadcrumbs::for('carsales.edit', function (BreadcrumbTrail $trail) {
     $trail->parent('carsales'); // Parent breadcrumb
     $trail->push('Chỉnh sửa thông tin xe');
 });
+Breadcrumbs::for('carsales.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('carsales'); // Parent breadcrumb
+    $trail->push('Thêm thông tin xe');
+});
+

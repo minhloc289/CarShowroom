@@ -17,6 +17,7 @@ class SalesCars extends Model
         'car_id',
         'sale_price',
         'quantity',
+        'is_deleted',
         'availability_status',
         'warranty_period',
         'sale_conditions',
@@ -28,8 +29,8 @@ class SalesCars extends Model
         return $this->belongsTo(CarDetails::class, 'car_id', 'car_id');
     }
     public function paymentDetails()
-{
-    return $this->hasMany(PaymentDetails::class, 'sale_id', 'sale_id');
-}
+    {
+        return $this->hasMany(PaymentDetails::class, 'sale_id', 'sale_id');
+    }
 
 }

@@ -76,6 +76,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::put('/customer/update/{customerId}', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customer/delete/{customerId}', [CustomerController::class, 'delete'])->name('customer.destroy');
 
+
 });
 
 // Accessories Backend
@@ -88,6 +89,9 @@ Route::prefix('admin/accessories')->group(function () {
     Route::post('/{id}/destroy', [AccessoryController::class, 'destroy'])->name('accessories.destroy');
     Route::get('details/{id}', [AccessoryController::class, 'showDetails'])->name('accessories.details');
     Route::get('/upload', [AccessoryController::class, 'showUploadForm'])->name('accessories.upload');
+    Route::post('/import', [AccessoryController::class, 'import'])->name('accessories.import');
+    Route::get('/template', [AccessoryController::class, 'downloadTemplate'])->name('accessories.template');
+    Route::post('/bulk-delete', [AccessoryController::class, 'bulkDelete'])->name('accessories.bulkDelete');
 });
 
 

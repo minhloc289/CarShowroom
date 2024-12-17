@@ -20,7 +20,7 @@
         <p class="mt-4 text-lg drop-shadow-lg">
             Experience the future of driving with our luxury and performance cars.
         </p>
-        <a href="#learnMore" class="mt-6 px-6 py-3 bg-blue-600 rounded-full text-white hover:bg-orange-700 transition">
+        <a href="#learnMore" class="mt-6 px-6 py-3 bg-blue-600 rounded-full text-white hover:bg-blue-800 transition">
             Learn More
         </a>
     </div>

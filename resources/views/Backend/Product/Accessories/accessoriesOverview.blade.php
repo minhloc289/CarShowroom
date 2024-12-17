@@ -15,14 +15,22 @@
     <div id="kt_content_container" class="container-xxl">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Manage Accessories</h1>
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" id="addAccessoryButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    Add
+            <div class="d-flex justify-content-end">
+                <!-- Delete Selected Button -->
+                <button type="submit" form="bulkDeleteForm" id="deleteSelected" class=" me-2 btn btn-danger" style="display: none;">
+                    <i class="fas fa-trash-alt"></i>
+                    Delete Selected
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="addAccessoryButton">
-                    <li><a class="dropdown-item" href="{{ route('accessories.create') }}">Add One Accessory</a></li>
-                    <li><a class="dropdown-item" href="{{ route('accessories.upload') }}">Add Multiple Accessories</a></li>
-                </ul>
+                <!-- Add Dropdown -->
+                <div class="dropdown me-2">
+                    <button class="btn btn-primary dropdown-toggle" id="addAccessoryButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Add
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="addAccessoryButton">
+                        <li><a class="dropdown-item" href="{{ route('accessories.create') }}">Add One Accessory</a></li>
+                        <li><a class="dropdown-item" href="{{ route('accessories.upload') }}">Add Multiple Accessories</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -41,46 +49,53 @@
         </div>
 
         <div id="accessoriesContainer" class="container">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Image</th>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($accessories as $index => $accessory)
-                        <tr class="accessory-item">
-                            <td>{{ $loop->iteration }}</td>
-                            <td>
-                                <img src="{{ $accessory->image_url }}" class="rounded-lg" alt="{{ $accessory->name }}" 
-                                     style="width: 80px; height: auto;">
-                            </td>
-                            <td style="font-family: 'Baloo 2', Arial, sans-serif; font-weight: bold; font-size: 1.35rem;">
-                                {{ $accessory->name }}
-                            </td>
-                            <td>{{ $accessory->category }}</td>
-                            <td style="font-weight: bold; color: #007bff; font-size: 1.25rem;">
-                                {{ number_format($accessory->price) }} VNĐ
-                            </td>
-                            <td>{{ $accessory->quantity }}</td>
-                            <td>
-                                <a href="{{ route('accessories.details', ['id' => $accessory->accessory_id]) }}" class="btn btn-primary btn-sm">View Details</a>
-                                <a href="{{ route('accessories.edit', ['id' => $accessory->accessory_id]) }}" class="btn btn-warning btn-sm">Edit</a>
-                                <form action="{{ route('accessories.destroy', ['id' => $accessory->accessory_id]) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </td>
+            <form id="bulkDeleteForm" action="{{ route('accessories.bulkDelete') }}" method="POST">
+                @csrf
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>#</th>
+                            <th>Image</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($accessories as $index => $accessory)
+                            <tr class="accessory-item">
+                                <td>
+                                    <input type="checkbox" name="selected[]" value="{{ $accessory->accessory_id }}">
+                                </td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>
+                                    <img src="{{ $accessory->image_url }}" class="rounded-lg" alt="{{ $accessory->name }}" 
+                                        style="width: 80px; height: auto;">
+                                </td>
+                                <td style="font-family: 'Baloo 2', Arial, sans-serif; font-weight: bold; font-size: 1.35rem;">
+                                    {{ $accessory->name }}
+                                </td>
+                                <td>{{ $accessory->category }}</td>
+                                <td style="font-weight: bold; color: #007bff; font-size: 1.25rem;">
+                                    {{ number_format($accessory->price) }} VNĐ
+                                </td>
+                                <td>{{ $accessory->quantity }}</td>
+                                <td>
+                                    <a href="{{ route('accessories.details', ['id' => $accessory->accessory_id]) }}" class="btn btn-primary btn-sm">View Details</a>
+                                    <a href="{{ route('accessories.edit', ['id' => $accessory->accessory_id]) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <form action="{{ route('accessories.destroy', ['id' => $accessory->accessory_id]) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </form>    
         </div>
         
         <!-- View More Button -->
@@ -92,80 +107,112 @@
     </div>
 </div>
 
-
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectAll = document.getElementById('selectAll'); // Checkbox chọn tất cả
+        const checkboxes = document.querySelectorAll('input[name="selected[]"]'); // Các checkbox trong bảng
+        const deleteSelected = document.getElementById('deleteSelected'); // Nút Delete Selected
+
+        // Hàm kiểm tra checkbox để hiện/ẩn nút Delete
+        const toggleDeleteButton = () => {
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            deleteSelected.style.display = anyChecked ? 'inline-block' : 'none'; // Hiện nếu có checkbox được chọn
+        };
+
+        // Xử lý khi thay đổi trạng thái checkbox
+        selectAll.addEventListener('change', () => {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+            toggleDeleteButton();
+        });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', toggleDeleteButton);
+        });
+
+        // Ẩn nút khi trang được load lần đầu
+        toggleDeleteButton();
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('accessorySearchInput'); // Ô tìm kiếm
         const categoryFilter = document.getElementById('categoryFilter'); // Dropdown danh mục
         const accessoryRows = document.querySelectorAll('.accessory-item'); // Tất cả hàng phụ kiện
         const viewMoreButton = document.getElementById('viewMoreButton'); // Nút View More
+        const selectAll = document.getElementById('selectAll'); // Checkbox chọn tất cả
+        const checkboxes = document.querySelectorAll('input[name="selected[]"]'); // Các checkbox trong bảng
+        const deleteSelected = document.getElementById('deleteSelected'); // Nút xóa hàng loạt
+        const bulkDeleteForm = document.getElementById('bulkDeleteForm'); // Form submit xóa hàng loạt
 
         let visibleCount = 10; // Số dòng hiển thị mặc định ban đầu
 
-        // Ẩn các dòng ngoài phạm vi hiển thị
+        // Hàm ẩn/hiển các dòng ngoài phạm vi hiển thị
         const hideExtraRows = () => {
-            let visibleRows = 0; // Đếm số dòng hiển thị thực tế
-
-            accessoryRows.forEach((row) => {
-                // Kiểm tra nếu dòng không bị ẩn do tìm kiếm hoặc lọc
+            let visibleRows = 0;
+            accessoryRows.forEach(row => {
                 if (row.dataset.visible === "true") {
                     if (visibleRows < visibleCount) {
-                        row.style.display = ""; // Hiển thị dòng trong phạm vi
+                        row.style.display = ""; // Hiển thị dòng
                         visibleRows++;
                     } else {
-                        row.style.display = "none"; // Ẩn các dòng vượt phạm vi
+                        row.style.display = "none"; // Ẩn dòng vượt phạm vi
+                        row.querySelector('input[type="checkbox"]').checked = false;
                     }
                 } else {
-                    row.style.display = "none"; // Ẩn các dòng không khớp tìm kiếm/lọc
+                    row.style.display = "none"; // Ẩn dòng không khớp
+                    row.querySelector('input[type="checkbox"]').checked = false;
                 }
             });
 
-            // Hiển thị hoặc ẩn nút View More
-            if (visibleRows >= accessoryRows.length || visibleCount >= accessoryRows.length) {
-                viewMoreButton.style.display = "none"; // Ẩn nút nếu tất cả dòng đã hiển thị
-            } else {
-                viewMoreButton.style.display = "block"; // Hiển thị nút nếu còn dòng bị ẩn
-            }
+            // Ẩn/hiển nút View More
+            viewMoreButton.style.display = visibleRows >= accessoryRows.length ? "none" : "block";
         };
 
         // Xử lý khi nhấn nút View More
-        viewMoreButton.addEventListener("click", function () {
-            visibleCount += 10; // Tăng số dòng hiển thị thêm 10
-            hideExtraRows(); // Cập nhật lại hiển thị
+        viewMoreButton.addEventListener("click", () => {
+            visibleCount += 10; // Tăng giới hạn hiển thị
+            hideExtraRows();
         });
 
-        // Hàm lọc phụ kiện
+        // Hàm lọc phụ kiện dựa trên tìm kiếm và danh mục
         const filterAccessories = () => {
-            const searchQuery = searchInput.value.toLowerCase(); // Lấy giá trị tìm kiếm
-            const selectedCategory = categoryFilter.value.toLowerCase(); // Lấy danh mục đã chọn
+            const searchQuery = searchInput.value.toLowerCase();
+            const selectedCategory = categoryFilter.value.toLowerCase();
 
             accessoryRows.forEach(row => {
-                const name = row.querySelector("td:nth-child(3)").textContent.toLowerCase(); // Tên phụ kiện
-                const category = row.querySelector("td:nth-child(4)").textContent.toLowerCase(); // Danh mục
+                const name = row.querySelector("td:nth-child(4)").textContent.toLowerCase();
+                const category = row.querySelector("td:nth-child(5)").textContent.toLowerCase();
 
-                const matchesSearchQuery = name.includes(searchQuery); // Khớp với tìm kiếm
-                const matchesCategory = selectedCategory ? category.includes(selectedCategory) : true; // Khớp với danh mục
-
-                // Cập nhật trạng thái dòng
-                if (matchesSearchQuery && matchesCategory) {
-                    row.dataset.visible = "true"; // Đánh dấu dòng phù hợp
-                } else {
-                    row.dataset.visible = "false"; // Đánh dấu dòng không phù hợp
-                }
+                row.dataset.visible = name.includes(searchQuery) && (!selectedCategory || category.includes(selectedCategory)) ? "true" : "false";
             });
 
-            visibleCount = 10; // Reset lại số dòng hiển thị sau khi lọc
-            hideExtraRows(); // Cập nhật lại hiển thị
+            visibleCount = 10; // Reset số dòng hiển thị
+            hideExtraRows();
         };
 
-        // Gắn sự kiện cho tìm kiếm và lọc danh mục
-        searchInput.addEventListener("input", filterAccessories); // Lọc khi nhập tìm kiếm
-        categoryFilter.addEventListener("change", filterAccessories); // Lọc khi chọn danh mục
+        // Gắn sự kiện lọc cho input tìm kiếm và dropdown danh mục
+        searchInput.addEventListener('input', filterAccessories);
+        categoryFilter.addEventListener('change', filterAccessories);
 
-        // Ẩn các dòng dư thừa khi load trang
-        accessoryRows.forEach(row => row.dataset.visible = "true"); // Đặt mặc định tất cả dòng đều hiển thị
+        // Xử lý checkbox chọn tất cả
+        selectAll.addEventListener('change', () => {
+            checkboxes.forEach(checkbox => checkbox.checked = selectAll.checked);
+        });
+
+        // Xử lý nút xóa các dòng được chọn
+        deleteSelected.addEventListener('click', () => {
+            const checkedBoxes = document.querySelectorAll('input[name="selected[]"]:checked');
+            if (checkedBoxes.length === 0) {
+                alert('Please select at least one accessory to delete.');
+            } else {
+                bulkDeleteForm.submit();
+            }
+        });
+
+        // Khởi tạo trạng thái hiển thị ban đầu
+        accessoryRows.forEach(row => row.dataset.visible = "true");
         hideExtraRows();
     });
-
 </script>
 @endsection

@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Accessories;
+use App\Models\Cart;
 use Illuminate\Http\Request;
+use App\Imports\AccessoriesImport;
+use App\Exports\AccessoriesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AccessoryController extends Controller
 {
@@ -75,10 +79,22 @@ class AccessoryController extends Controller
 
     public function destroy($id)
     {
-        $accessory = Accessories::findOrFail($id);
-        $accessory->delete();
+        try {
+            // Tìm phụ kiện cần xóa
+            $accessory = Accessories::findOrFail($id);
 
-        toastr()->success('Xóa phụ kiện thành công!');
+            // Xóa các dòng liên quan trong bảng Cart
+            $accessory->carts()->delete();
+
+            // Xóa phụ kiện
+            $accessory->delete();
+
+            toastr()->success('Xóa phụ kiện và các mục liên quan trong giỏ hàng thành công!');
+        } catch (\Exception $e) {
+            // Xử lý lỗi nếu có
+            toastr()->error('Có lỗi xảy ra khi xóa phụ kiện: ' . $e->getMessage());
+        }
+
         return redirect()->route('accessories.index');
     }
 
@@ -109,15 +125,51 @@ class AccessoryController extends Controller
 
     public function showUploadForm()
     {
-        return view('Backend.Product.Accessories.Upload');
+        return view('Backend.Product.Accessories.accessoriesUpload');
     }
 
     public function showDetails($id)
-{
-    // Lấy phụ kiện từ database theo ID
-    $accessory = Accessories::findOrFail($id);
+    {
+        // Lấy phụ kiện từ database theo ID
+        $accessory = Accessories::findOrFail($id);
 
-    // Trả về view hiển thị chi tiết phụ kiện
-    return view('Backend.Product.Accessories.accessoriesDetails', compact('accessory'));
-}
+        // Trả về view hiển thị chi tiết phụ kiện
+        return view('Backend.Product.Accessories.accessoriesDetails', compact('accessory'));
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls',
+        ]);
+
+        Excel::import(new AccessoriesImport, $request->file('file'));
+
+        toastr()->success('Accessories imported successfully!');
+        return redirect()->back();
+    }
+
+    public function downloadTemplate()
+    {
+        return Excel::download(new AccessoriesExport, 'accessories_template.xlsx');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('selected'); // Lấy danh sách ID được chọn
+
+        if ($ids) {
+            // Xóa các dòng trong bảng Cart liên quan đến phụ kiện
+            Cart::whereIn('accessory_id', $ids)->delete();
+
+            // Xóa phụ kiện trong bảng Accessories
+            Accessories::whereIn('accessory_id', $ids)->delete();
+
+            toastr()->success('Selected accessories deleted successfully!');
+        } else {
+            toastr()->error('No accessories were selected for deletion.');
+        }
+
+        return redirect()->route('accessories.index');
+    }
 }

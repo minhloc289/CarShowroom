@@ -19,6 +19,7 @@ use App\Http\Controllers\frontend\CustomerAuthController;
 use App\Http\Controllers\frontend\ProfileController;
 use App\Http\Controllers\frontend\RentCarController;
 use App\Http\Controllers\frontend\CartController;
+use App\Http\Controllers\frontend\TransactionController;
 use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
@@ -66,8 +67,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/users/import', [AdminController::class, 'importExcel'])->name('users.import');
     Route::get('/download/user-template', [AdminController::class, 'downloadTemplate'])->name('user.download.template');
     Route::delete('/users/mass-delete', [AdminController::class, 'massDelete'])->name('user.mass_delete');
-    
-
+  
     /*CUSTOMER CRUD*/
     Route::get('/customer', [CustomerController::class, 'loadCustomerPage'])->name('customer');
     Route::get('/customer/create', [CustomerController::class, 'loadCustomerCreatePage'])->name('customer.create');
@@ -75,6 +75,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/customer/edit/{customerId}', [CustomerController::class, 'loadEditPage'])->name('customer.edit');
     Route::put('/customer/update/{customerId}', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customer/delete/{customerId}', [CustomerController::class, 'delete'])->name('customer.destroy');
+
 
 });
 
@@ -88,6 +89,9 @@ Route::prefix('admin/accessories')->group(function () {
     Route::post('/{id}/destroy', [AccessoryController::class, 'destroy'])->name('accessories.destroy');
     Route::get('details/{id}', [AccessoryController::class, 'showDetails'])->name('accessories.details');
     Route::get('/upload', [AccessoryController::class, 'showUploadForm'])->name('accessories.upload');
+    Route::post('/import', [AccessoryController::class, 'import'])->name('accessories.import');
+    Route::get('/template', [AccessoryController::class, 'downloadTemplate'])->name('accessories.template');
+    Route::post('/bulk-delete', [AccessoryController::class, 'bulkDelete'])->name('accessories.bulkDelete');
 });
 
 
@@ -126,10 +130,14 @@ Route::prefix('password')->group(function () {
 // Route view profile
 Route::get('/view-profile', [ProfileController::class, 'viewprofile'])->name('view.profile');
 Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
 // Rout view reset password
 Route::get('/view-profile/resetpass', [ProfileController::class, 'showResetPass'])->name('view.resetpass');
 // Xử lý yêu cầu đổi mật khẩu
 Route::post('/view-profile/resetpass', [CustomerAuthController::class, 'resetPassword'])->name('reset.password.submit');
+//transactionHistory
+Route::get('/transaction-history', [TransactionController::class, 'index'])->name('transaction.history');
+Route::get('/transactionHistory/{orderId}', [TransactionController::class, 'orderDetails'])->name('transactionHistory.details');
 
 
 // Route logout

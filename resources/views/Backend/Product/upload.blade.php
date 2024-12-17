@@ -23,5 +23,14 @@
 
 		<button type="submit" class="btn btn-primary mt-3">Tải lên và Thêm Xe</button>
 	</form>
+
+	<div class="alert alert-info mt-3">
+		<p><strong>Hướng dẫn:</strong></p>
+		<ul>
+			<li>1. Tải về file mẫu Excel bằng cách nhấn vào nút <strong>"Tải về file mẫu Excel"</strong>.</li>
+			<li>2. Điền thông tin xe vào file Excel theo đúng định dạng.</li>
+			<li>3. Chọn file Excel đã hoàn thành và nhấn <strong>"Tải lên và Thêm Xe"</strong>.</li>
+		</ul>
+	</div>
 </div>
 @endsection

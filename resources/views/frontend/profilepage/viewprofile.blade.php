@@ -9,10 +9,11 @@
 
     <!-- Main Content -->
     <main class="flex-1 p-8">
+
         <body>
             <div class="bg-white">
                 <!-- main -->
-                <div class="content flex-grow w-full pt-[80px] mb-10">
+                <div class="content">
                     @yield('main')
                 </div>
             </div>

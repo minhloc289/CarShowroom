@@ -19,6 +19,8 @@ use App\Http\Controllers\frontend\RentCarController;
 use App\Http\Controllers\frontend\CartController;
 use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
+use App\Http\Controllers\Backend\CustomerController;
+
 
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
@@ -59,6 +61,14 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/users/import', [AdminController::class, 'importExcel'])->name('users.import');
     Route::get('/download/user-template', [AdminController::class, 'downloadTemplate'])->name('user.download.template');
     
+
+    /*CUSTOMER CRUD*/
+    Route::get('/customer', [CustomerController::class, 'loadCustomerPage'])->name('customer');
+    Route::get('/customer/create', [CustomerController::class, 'loadCustomerCreatePage'])->name('customer.create');
+    Route::post('/customer/create', [CustomerController::class, 'createCustomer'])->name('customer.store');
+    Route::get('/customer/edit/{customerId}', [CustomerController::class, 'loadEditPage'])->name('customer.edit');
+    Route::put('/customer/update/{customerId}', [CustomerController::class, 'update'])->name('customer.update');
+    Route::delete('/customer/delete/{customerId}', [CustomerController::class, 'delete'])->name('customer.destroy');
 
 });
 

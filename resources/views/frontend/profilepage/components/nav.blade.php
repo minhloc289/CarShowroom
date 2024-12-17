@@ -11,10 +11,10 @@
         </div>
         <div class="flex flex-col leading-none">
             <p class="text-sm text-gray-500 truncate">Xin chào,</p>
-            <p class="text-base font-semibold text-gray-800 truncate">Cái Ngọc Minh Lộc</p>
+            <p class="text-base font-semibold text-gray-800 truncate">{{ $user->name }}</p>
         </div>
     </div>
-    
+
     <div class="h-1 bg-gradient-to-r from-blue-500 via-gray-300 to-blue-500 my-4"></div>
 
 
@@ -32,7 +32,8 @@
     <h2 class="text-lg font-semibold text-gray-800 mt-6">ĐẶT HÀNG VÀ DỊCH VỤ</h2>
     <ul class="mt-4 space-y-2">
         <li>
-            <a href="" class="flex items-center text-gray-600 hover:text-blue-600" data-section="lich-su-giao-dich">
+            <a href="{{route('transaction.history')}}" class="flex items-center text-gray-600 hover:text-blue-600"
+                data-section="lich-su-giao-dich">
                 <i class="fas fa-file-invoice-dollar mr-3"></i> Lịch sử giao dịch
             </a>
         </li>

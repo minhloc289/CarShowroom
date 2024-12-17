@@ -9,6 +9,8 @@ use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\carSalesController;
+use App\Http\Controllers\Backend\AccessoryController;
+
 use App\Http\Controllers\frontend\CustomerDashBoardController;
 use App\Http\Controllers\frontend\CarController;
 use App\Http\Controllers\frontend\BuyCarController;
@@ -20,6 +22,7 @@ use App\Http\Controllers\frontend\CartController;
 use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
+
 
 
 /* BACKEND ROUTES */
@@ -48,6 +51,8 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/cars/store', [carSalesController::class, 'store'])->name('car.store');
     Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
     Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
+    Route::get('/download/car-add-template', [carSalesController::class, 'downloadTemplate'])->name('caradd.download.template');
+
 
 
     /* USER CRUD */
@@ -71,6 +76,20 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::delete('/customer/delete/{customerId}', [CustomerController::class, 'delete'])->name('customer.destroy');
 
 });
+
+// Accessories Backend
+Route::prefix('admin/accessories')->group(function () {
+    Route::get('/', [AccessoryController::class, 'index'])->name('accessories.index');
+    Route::get('/create', [AccessoryController::class, 'create'])->name('accessories.create');
+    Route::post('/store', [AccessoryController::class, 'store'])->name('accessories.store');
+    Route::get('/edit/{id}', [AccessoryController::class, 'edit'])->name('accessories.edit');
+    Route::post('/update/{id}', [AccessoryController::class, 'update'])->name('accessories.update');
+    Route::post('/{id}/destroy', [AccessoryController::class, 'destroy'])->name('accessories.destroy');
+    Route::get('details/{id}', [AccessoryController::class, 'showDetails'])->name('accessories.details');
+    Route::get('/upload', [AccessoryController::class, 'showUploadForm'])->name('accessories.upload');
+});
+
+
 
 
 /* FRONTEND ROUTES */

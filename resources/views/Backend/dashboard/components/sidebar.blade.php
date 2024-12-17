@@ -40,7 +40,7 @@
                             </span>
                             <!--end::Svg Icon-->
                     </span>
-                        <span class="menu-title">Quản lí nhân viên</span>
+                        <span class="menu-title">Personnel Management</span>
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
@@ -49,7 +49,7 @@
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Quản lí nhóm nhân viên</span>
+                                <span class="menu-title">Employees' Group Management</span>
                             </a>
                             <span class="menu-arrow"></span>
                         </div>
@@ -66,7 +66,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                    <span class="menu-title">Quản lý khách hàng</span>
+                    <span class="menu-title">Customer Management</span>
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
@@ -622,7 +622,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Quản lý sản phẩm</span>
+                        <span class="menu-title">Service Management</span>
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
@@ -631,15 +631,15 @@
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Quản lý xe bán</span>
+                                <span class="menu-title">Sales Car Management</span>
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/widgets/statistics.html">
+                            <a class="menu-link" href="{{route('accessories.index')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Statistics</span>
+                                <span class="menu-title">Accessories Management</span>
                             </a>
                         </div>
                         <div class="menu-item">

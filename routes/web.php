@@ -66,8 +66,8 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('user/record/create', [AdminController::class, 'loadExcel'])->name('user.record.create');
     Route::post('/users/import', [AdminController::class, 'importExcel'])->name('users.import');
     Route::get('/download/user-template', [AdminController::class, 'downloadTemplate'])->name('user.download.template');
-
-
+    Route::delete('/users/mass-delete', [AdminController::class, 'massDelete'])->name('user.mass_delete');
+  
     /*CUSTOMER CRUD*/
     Route::get('/customer', [CustomerController::class, 'loadCustomerPage'])->name('customer');
     Route::get('/customer/create', [CustomerController::class, 'loadCustomerCreatePage'])->name('customer.create');

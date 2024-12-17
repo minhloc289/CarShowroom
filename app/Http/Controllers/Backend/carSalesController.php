@@ -17,7 +17,9 @@ class carSalesController extends Controller
         $engineTypes = CarDetails::distinct()->pluck('engine_type'); // Lấy danh sách engine_type duy nhất
         $seatCapacities = CarDetails::distinct()->pluck('seat_capacity'); // Lấy danh sách seat_capacity duy nhất
         $brands = CarDetails::distinct()->pluck('brand'); // Lấy danh sách brand duy nhất    
-        $cars = CarDetails::with('sale')->get(); // Lấy dữ liệu từ bảng `car_details` và liên kết với `sales_cars`
+        $cars = CarDetails::whereHas('salesCars', function ($query) {
+            $query->where('is_deleted', 0);
+        })->with('sale')->get(); // Lấy dữ liệu từ bảng `car_details` và liên kết với `sales_cars`
         return view('Backend.Product.CarSales', compact('cars', 'engineTypes', 'seatCapacities', 'brands'));
     }
     public function create()
@@ -122,17 +124,62 @@ class carSalesController extends Controller
         // Tìm dòng dựa trên carId hoặc trả về lỗi 404 nếu không tìm thấy
         $saleCar = SalesCars::findOrFail($carId);
 
-        // Thực hiện xóa dòng
-        if ($saleCar->delete()) {
-            // Xóa thành công
-            toastr()->success('Xóa thành công');
-            return response()->json(['success' => true, 'message' => 'Xóa thành công']);
+        // Cập nhật is_deleted thành 1
+        $saleCar->is_deleted = 1;
+
+        if ($saleCar->save()) {
+            // Cập nhật thành công
+            toastr()->success('Đã xóa thành công xe.');
+            return redirect()->back();
         }
 
-        // Xóa thất bại
-        toastr()->error('Xóa thất bại');
-        return response()->json(['success' => false, 'message' => 'Xóa thất bại'], 500);
+        // Cập nhật thất bại
+        toastr()->error('Xóa xe không thành công');
+        return redirect()->back();
+
     }
+
+    public function destroySelected(Request $request)
+    {
+        // Kiểm tra xem có ít nhất một carId trong request không
+        $carIds = $request->input('car_ids');
+
+        if (empty($carIds)) {
+            toastr()->error('Không có xe nào được chọn');
+            return redirect()->route('Carsales');
+        }
+
+        // Chuyển đổi chuỗi carIds thành mảng nếu nó là chuỗi
+        $carIdsArray = explode(',', $carIds[0]);
+
+        // Biến đếm số lượng xe được cập nhật
+        $updatedCount = 0;
+
+        // Dùng vòng lặp để cập nhật trạng thái is_deleted của từng xe
+        foreach ($carIdsArray as $carId) {
+            // Tìm từng xe trong bảng SalesCars
+            $saleCar = SalesCars::where('car_id', $carId)->first();
+
+            if ($saleCar) {
+                // Cập nhật is_deleted thành 1
+                $saleCar->is_deleted = 1;
+
+                if ($saleCar->save()) {
+                    $updatedCount++;
+                }
+            }
+        }
+
+        // Kiểm tra và hiển thị thông báo
+        if ($updatedCount > 0) {
+            toastr()->success("Đã chuyển trạng thái 'đã xóa' cho {$updatedCount} xe thành công.");
+        } else {
+            toastr()->error('Không thể cập nhật trạng thái cho xe nào.');
+        }
+
+        return redirect()->route('Carsales');
+    }
+
     public function store(Request $request)
     {
         // Xác thực dữ liệu
@@ -155,10 +202,10 @@ class carSalesController extends Controller
             'availability_status' => 'required|boolean',
             'warranty_period' => 'nullable|integer|min:0',
             'sale_conditions' => 'nullable|string',
-            'image_url' => 'required|url',  // Xác thực URL hình ảnh
+            'image_url' => 'required|url', // Xác thực URL hình ảnh
         ]);
 
-        // Kiểm tra xem xe đã có trong bảng CarDetails chưa
+        // Kiểm tra xem xe đã tồn tại trong CarDetails chưa
         $carDetail = CarDetails::where([
             ['brand', '=', $request->brand],
             ['name', '=', $request->name],
@@ -166,16 +213,17 @@ class carSalesController extends Controller
             ['year', '=', $request->year]
         ])->first();
 
-        // Nếu xe đã tồn tại trong CarDetails
         if ($carDetail) {
+            // Nếu xe đã tồn tại trong CarDetails
             // Kiểm tra xem xe đã có thông tin bán (SalesCars) chưa
             $salesCar = SalesCars::where('car_id', $carDetail->car_id)
                 ->where('sale_price', '=', $request->sale_price)
                 ->first();
 
-            // Nếu đã có thông tin bán xe, cập nhật số lượng
             if ($salesCar) {
-                $salesCar->quantity += $request->quantity;  // Cộng thêm số lượng vào
+                // Nếu đã có thông tin bán xe, cập nhật quantity và is_deleted
+                $salesCar->quantity += $request->quantity;
+                $salesCar->is_deleted = 0; // Đặt lại is_deleted về 0
                 $salesCar->save();
             } else {
                 // Nếu không có thông tin bán xe, tạo mới thông tin bán xe
@@ -186,10 +234,11 @@ class carSalesController extends Controller
                     'availability_status' => $request->availability_status,
                     'warranty_period' => $request->warranty_period,
                     'sale_conditions' => $request->sale_conditions,
+                    'is_deleted' => 0, // Đảm bảo is_deleted là 0 cho xe mới
                 ]);
             }
         } else {
-            // Nếu không có thông tin xe trong CarDetails, tạo mới cả CarDetails và SalesCars
+            // Nếu xe không tồn tại trong CarDetails, tạo mới cả CarDetails và SalesCars
             $carDetail = CarDetails::create([
                 'brand' => $request->brand,
                 'name' => $request->name,
@@ -204,10 +253,10 @@ class carSalesController extends Controller
                 'width' => $request->width,
                 'height' => $request->height,
                 'description' => $request->description,
-                'image_url' => $request->image_url,  // Lưu URL hình ảnh vào bảng CarDetails
+                'image_url' => $request->image_url, // Lưu URL hình ảnh vào CarDetails
             ]);
 
-            // Sau khi tạo mới CarDetails, tạo mới SalesCars và liên kết với CarDetails
+            // Tạo mới thông tin bán xe và liên kết với CarDetails
             SalesCars::create([
                 'car_id' => $carDetail->car_id,
                 'sale_price' => $request->sale_price,
@@ -215,12 +264,14 @@ class carSalesController extends Controller
                 'availability_status' => $request->availability_status,
                 'warranty_period' => $request->warranty_period,
                 'sale_conditions' => $request->sale_conditions,
+                'is_deleted' => 0, // Đảm bảo is_deleted là 0 cho xe mới
             ]);
         }
-        toastr()->success('Them thanh cong xe moi');
-        // Quay lại trang danh sách xe với thông báo thành công
+
+        toastr()->success('Thêm thành công xe mới.');
         return redirect()->back();
     }
+
     public function showUploadForm()
     {
         return view('Backend.Product.upload');

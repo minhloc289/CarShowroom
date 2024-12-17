@@ -28,7 +28,7 @@ class CreateRequest extends FormRequest
             'address' => 'nullable|string|max:255',
             'birthday' => 'nullable|date',
             'description' => 'nullable|string',
-            'level' => 'required|string|in:Employee,Admin',
+            'level' => 'required|string|in:Nhân viên,Admin',
             'image' => 'nullable|string|max:255', // Xử lý upload ảnh
         ];
     }

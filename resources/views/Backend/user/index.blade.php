@@ -46,77 +46,84 @@
                                     </ul>
                                 </div>
                             </div>
-                                                      
                         </div>
                         <!--end::Header-->
                         <!--begin::Body-->
                         <div class="card-body py-3">
                             <!--begin::Table container-->
-                            <div class="table-responsive">
-                                <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
-                                    <thead>
-                                        <tr class="fw-bolder text-muted">
-                                            <th class="w-25px">
-                                                <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="checkbox" value="1" />
-                                                </div>
-                                            </th>
-                                            <th class="min-w-150px">Tên nhân viên</th>
-                                            <th class="min-w-140px hidden sm:table-cell">Vị trí</th>
-                                            <th class="min-w-120px hidden lg:table-cell">Trạng thái</th>
-                                            <th class="min-w-100px text-end">Thao tác</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($employees as $employee)
-                                        <tr>
-                                            <td>
-                                                <div class="form-check form-check-sm form-check-custom form-check-solid">
-                                                    <input class="form-check-input" type="checkbox" />
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="symbol symbol-30px symbol-md-40px me-3">
-                                                        <img src="{{ $employee->image ? asset('storage/' . $employee->image) : '/assets/media/avatars/150-11.jpg' }}" 
-                                                             alt="user" class="w-full h-full object-cover rounded-full" />
+                            <form action="{{ route('user.mass_delete') }}" method="POST" onsubmit="return confirm('Xác nhận xóa các nhân viên đã chọn?');">
+                                @csrf
+                                @method('DELETE')
+                                <div class="table-responsive">
+                                    <table class="table table-row-dashed table-row-gray-300 align-middle gs-0 gy-4">
+                                        <thead>
+                                            <tr class="fw-bolder text-muted">
+                                                <th class="w-25px">
+                                                    <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                        <input class="form-check-input" type="checkbox" id="checkAll" />
                                                     </div>
-                                                    <div>
-                                                        <a href="javascript:void(0);" 
-                                                           class="text-dark fw-bolder text-hover-primary fs-6"
-                                                           onclick="showEmployeeDetails({{ $employee->id }})">
-                                                           {{ $employee->name }}
-                                                        </a>
-                                                        <span class="text-muted d-block fs-7">{{ $employee->description ?? 'Chưa cập nhật thông tin' }}</span>
+                                                </th>
+                                                <th class="min-w-150px">Tên nhân viên</th>
+                                                <th class="min-w-140px hidden sm:table-cell">Chức vụ</th>
+                                                <th class="min-w-120px hidden lg:table-cell text-end">Địa chỉ</th>
+                                                <th class="min-w-100px text-end">Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($employees as $employee)
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check form-check-sm form-check-custom form-check-solid">
+                                                        <input class="form-check-input employee-checkbox" type="checkbox" name="employee_ids[]" value="{{ $employee->id }}" />
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td class="hidden sm:table-cell">
-                                                <span class="text-dark fw-bolder text-hover-primary d-block fs-6">
-                                                    {{ $employee->is_quanly ? 'Quản lý' : 'Nhân viên' }}
-                                                </span>
-                                                <span class="text-muted d-block fs-7">{{ $employee->position }}</span>
-                                            </td>
-                                            <td class="hidden lg:table-cell text-end">
-                                                <div class="progress h-6px w-100">
-                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex justify-content-end">
-                                                    <a href="{{route('user.edit', $employee->id)}}" class="btn btn-sm btn-light me-2">Edit</a>
-                                                    <form action="{{ route('user.delete', $employee->id) }}" method="POST" onsubmit="return confirm('Xác nhận xóa nhân viên này?');" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-light">Delete</button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="symbol symbol-30px symbol-md-40px me-3">
+                                                            <img src="{{ $employee->image ? asset('storage/' . $employee->image) : '/assets/media/avatars/150-11.jpg' }}" 
+                                                                 alt="user" class="w-full h-full object-cover rounded-full" />
+                                                        </div>
+                                                        <div>
+                                                            <a href="javascript:void(0);" 
+                                                               class="text-dark fw-bolder text-hover-primary fs-6"
+                                                               onclick="showEmployeeDetails({{ $employee->id }})">
+                                                               {{ $employee->name }}
+                                                            </a>
+                                                            <span class="text-muted d-block fs-7">{{ $employee->description ?? 'Chưa cập nhật thông tin' }}</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="hidden sm:table-cell">
+                                                    <span class="text-dark fw-bolder text-hover-primary d-block fs-6">
+                                                        {{ $employee->is_quanly ? 'Quản lý' : 'Nhân viên' }}
+                                                    </span>
+                                                    <span class="text-muted d-block fs-7">{{ $employee->position }}</span>
+                                                </td>
+                                                <td class="hidden sm:table-cell text-end">
+                                                    <span class="text-dark fw-bolder text-hover-primary d-block fs-6">
+                                                        {{ $employee->address ?? 'Chưa có địa chỉ' }}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex justify-content-end">
+                                                        <a href="{{route('user.edit', $employee->id)}}" class="btn btn-sm btn-light me-2">Edit</a>
+                                                        <form action="{{ route('user.delete', $employee->id) }}" method="POST" onsubmit="return confirm('Xác nhận xóa nhân viên này?');" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-light">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    <div class="text-end mt-3">
+                                        <button type="submit" class="btn btn-danger btn-sm">Xóa các nhân viên đã chọn</button>
+                                    </div>                                    
+                                </div>
+                            </form>
+                            
                             
                             <!-- Employee Detail Modal -->
                             <div class="modal fade" id="employeeDetailModal" tabindex="-1" aria-labelledby="employeeDetailModalLabel" aria-hidden="true">
@@ -176,4 +183,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('checkAll').addEventListener('change', function () {
+            let checkboxes = document.querySelectorAll('.employee-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+    </script>
+        
 @endsection

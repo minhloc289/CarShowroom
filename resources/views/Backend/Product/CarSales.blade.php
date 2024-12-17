@@ -76,7 +76,7 @@
                             </form>
                         </div>
                     </div>
-                @endif <!-- Kết thúc kiểm tra nếu car->sale tồn tại -->
+                @endif
             @endforeach
 
         </div>

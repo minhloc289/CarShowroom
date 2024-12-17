@@ -4,7 +4,7 @@
     $user = Auth::guard('account')->user();
 @endphp
 @section('main')
-<main class="flex-1 p-8 mt-[-30px]">
+<main class="flex-1 p-8 mt-[50px]">
     <h1 class="text-2xl font-semibold text-gray-800">Thông tin cá nhân</h1>
     <div class="mt-8 bg-white p-6 rounded-lg shadow-md">
         <form action="{{ route('profile.update') }}" method="POST" class="space-y-4">
@@ -34,7 +34,7 @@
             <div class="mt-4">
                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 mr-4">Cập
                     nhật</button>
-                    <a href="{{route('view.resetpass')}}" class="text-blue-600 hover:text-blue-800">Đổi mật khẩu</a>
+                <a href="{{route('view.resetpass')}}" class="text-blue-600 hover:text-blue-800">Đổi mật khẩu</a>
             </div>
         </form>
 

@@ -6,11 +6,11 @@
 			<div class="d-flex border-bottom mb-3">
 				<button class="tablinks active px-4 py-2" onclick="openTab(event, 'carsContainer')"
 					style="border: none; font-size: 18px; color: #007bff; font-weight: bold; border-bottom: 3px solid #007bff; background-color: transparent;">
-					Xe ô tô
+					Xe ô tô - Xe máy điện
 				</button>
 				<button class="tablinks px-4 py-2" onclick="openTab(event, 'accessoryContainer')"
 					style="border: none; font-size: 18px; color: #6c757d; background-color: transparent;">
-					Xe ô tô thuê
+					Phụ kiện xe
 				</button>
 			</div>
 
@@ -71,10 +71,6 @@
 										</div>
 							@endif
 				@endforeach
-			</div>
-			<!-- Phụ kiện xe -->
-			<div id="accessoryContainer" class="tabcontent d-flex flex-column" style="display: none;">
-				<p>Hiển thị lịch sử phụ kiện xe ở đây.</p>
 			</div>
 		</div>
 	</div>

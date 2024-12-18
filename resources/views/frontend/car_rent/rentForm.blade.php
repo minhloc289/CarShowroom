@@ -1,5 +1,7 @@
 @extends('frontend.layouts.app')
-
+@php
+    $user = Auth::guard('account')->user();
+@endphp
 @section('content')
     <link rel="stylesheet" href="/assets/css/rentForm.css">
     <script src="{{ asset('/assets/js/custom/rentForm.js') }}"></script>
@@ -40,6 +42,7 @@
         <div class="col-span-12 md:col-span-5 bg-white shadow-md rounded-none flex flex-col justify-between mt-4">
             <form action="{{route('rent.submit', ['id' => $rentalCar->rental_id])}}" method="POST" id="rental-form" class="flex flex-col justify-between h-[80%]">
                 <!-- Tabs -->
+                <input type="hidden" name="rental_id" value="{{ $rentalCar->rental_id }}">
                 @csrf
                 <div class="flex justify-between bg-gray-100">
                     <button type="button" id="info-tab" class="w-full text-center py-4 px-4 font-medium text-gray-700 hover:bg-gray-200 focus:outline-none" onclick="showTab('info')">Thông tin</button>
@@ -60,13 +63,13 @@
                         <!-- Họ và tên -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Họ và tên</label>
-                            <input type="text" name="name" id="name" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="Nguyễn Văn A">
+                            <input type="text" name="name" id="name" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="Nguyễn Văn A" value="{{ $user->name }}">
                         </div>
 
                         <!-- Email -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                            <input type="email" name="email" id="email" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="nguyenvana@example.com">
+                            <input type="email" name="email" id="email" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="nguyenvana@example.com" value="{{ $user->email }}">
                         </div>
 
                         <!-- Ngày bắt đầu thuê -->
@@ -78,7 +81,7 @@
                         <!-- Số điện thoại -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">Số điện thoại</label>
-                            <input type="tel" name="phone" id="phone" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="+84 123 456 789">
+                            <input type="tel" name="phone" id="phone" required class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2" placeholder="+84 123 456 789" value="{{ $user->phone }}">
                         </div>
 
                         <!-- Số ngày thuê -->
@@ -147,7 +150,9 @@
 
                         <input type="hidden" name="total_cost" id="hidden-total-cost">
                         <input type="hidden" name="deposit_amount" id="hidden-deposit-amount">
-                
+                        <input type="hidden" name="rental_price_per_day" id="hidden-rental-price-per-day" value="{{ $rentalCar->rental_price_per_day }}">
+
+
                         <!-- Nút xác nhận thanh toán -->
                         <div class="flex justify-center mt-6">
                             <button type="button" id="confirm-payment" class="px-10 py-3 bg-green-600 text-white font-bold rounded-md hover:bg-green-700 shadow-md transition-all" onclick="confirmPayment()">
@@ -178,6 +183,7 @@
             // Cập nhật các trường input ẩn
             document.getElementById('hidden-total-cost').value = totalPrice;
             document.getElementById('hidden-deposit-amount').value = depositAmount;
+            document.getElementById('hidden-rental-price-per-day').value = pricePerDay;
         }
 
         // Cập nhật tab "Điều khoản và dịch vụ" với thông tin từ tab "Thông tin"

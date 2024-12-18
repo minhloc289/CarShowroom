@@ -8,6 +8,7 @@ use App\Models\CarDetails;
 use App\Models\RentalCars;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class RentCarController extends Controller
 {
@@ -83,31 +84,60 @@ class RentCarController extends Controller
     public function rentCar(Request $request)
     {
         $request->validate([
+            'rental_id' => 'required|exists:rental_cars,rental_id',
             'name' => 'required|string|max:255',
             'phone' => 'required|string|min:10|max:15',
             'start_date' => 'required|date|after_or_equal:today',
+            'rental_days' => 'required|integer|min:1', // Số ngày thuê
             'total_cost' => 'required|numeric|min:0',
             'deposit_amount' => 'required|numeric|min:0',
+            'rental_price_per_day' => 'required|numeric|min:0',
         ]);
 
-        // Lưu dữ liệu vào bảng rental_receipt
-        DB::table('rental_receipt')->insert([
-            'user_id' => auth('account')->id(),
-            'rental_id' => $request->rental_id, 
-            'rental_start_date' => $request->start_date,
-            'rental_end_date' => Carbon::parse($request->start_date)->addDays($request->rental_days - 1),
-            'rental_price_per_day' => $request->rental_price_per_day,
-            'total_cost' => $request->total_cost,
-            'deposit_amount' => $request->deposit_amount,
-            'remaining_amount' => $request->total_cost - $request->deposit_amount,
-            'deposit_status' => 'Pending',
-            'payment_status' => 'Unpaid',
-            'status' => 'Active',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        DB::beginTransaction();
+        try {
+            // Tạo đơn hàng (rental_order)
+            $orderId = DB::table('rental_orders')->insertGetId([
+                'user_id' => auth('account')->id(),
+                'rental_id' => $request->rental_id, // Lấy rental_id từ form
+                'status' => 'Pending', // Trạng thái ban đầu là 'Pending'
+                'order_date' => now(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
 
-        return redirect()->route('frontend.car_rent.car_rent')->with('success', 'Thuê xe thành công!');
+            // Tính ngày kết thúc thuê
+            $rental_end_date = Carbon::parse($request->start_date)->addDays($request->rental_days - 1);
+
+            // Lưu dữ liệu vào bảng rental_receipt
+            DB::table('rental_receipt')->insert([
+                'order_id' => $orderId, // Lấy ID của đơn hàng vừa tạo
+                'rental_id' => $request->rental_id,
+                'rental_start_date' => $request->start_date,
+                'rental_end_date' => $rental_end_date,
+                'rental_price_per_day' => $request->rental_price_per_day,
+                'total_cost' => $request->total_cost,
+                'status' => 'Active', // Trạng thái ban đầu là 'Active'
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            DB::commit();
+
+            // Chuyển hướng sang trang thanh toán VNPAY
+            return redirect()->route('rental.payment.vnpay', [
+                'order_id' => $orderId,
+                'total_amount' => $request->total_cost,
+                'payment_deposit_amount' => $request->deposit_amount
+            ]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Rental order creation failed: ' . $e->getMessage());
+
+            toastr()->error('Có lỗi xảy ra. Vui lòng thử lại.');
+            return redirect()->back()->withInput();
+        }
     }
 
 

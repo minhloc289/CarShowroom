@@ -17,12 +17,16 @@ class Account extends Authenticatable
 
     public $timestamps = true; // Bật timestamps (created_at, updated_at)
 
+    protected $keyType = 'string'; // Kiểu dữ liệu của khóa chính
+
     protected $fillable = [
         'email',
         'password',
         'name',       // Họ tên
         'address',    // Địa chỉ
         'phone',      // Số điện thoại
+        'is_verified', // Trạng thái xác thực tài khoản
+        'email_verification_token', // Token xác minh email
     ];
 
     protected $hidden = [

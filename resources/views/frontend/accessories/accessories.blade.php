@@ -111,10 +111,12 @@
                     <a href="{{ route('show.cart') }}">
                         <button type="button" id="cart-button" 
                             class="relative bg-white border border-gray-300 text-gray-800 p-2 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-gray-200 shadow-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 6h14M9 17a1 1 0 100-2 1 1 0 000 2zm6 0a1 1 0 100-2 1 1 0 000 2z" />
+                            <!-- Icon trái tim với màu đen -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="#000000" viewBox="0 0 24 24" stroke="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12.1 21.7c-.3.2-.8.2-1.1 0-4.5-2.8-9.2-6.2-9.2-10.8 0-2.6 2.1-4.7 4.7-4.7 1.7 0 3.3.9 4.2 2.3.9-1.4 2.5-2.3 4.2-2.3 2.6 0 4.7 2.1 4.7 4.7 0 4.5-4.7 8-9.2 10.8z"></path>
                             </svg>
-                            <span class="absolute top-0 right-0 bg-red-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center" id="cart-count">
+                            <!-- Bộ đếm -->
+                            <span class="absolute top-0 right-0 bg-blue-500 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center" id="cart-count">
                                 0
                             </span>
                         </button>

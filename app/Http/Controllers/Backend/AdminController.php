@@ -7,8 +7,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
 use App\Http\Requests\CreateRequest;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UserTemplateExport;
+use App\Imports\UserImport;
+use Maatwebsite\Excel\Validators\ValidationException;
+use Illuminate\Support\Facades\Log;
 class AdminController extends Controller
 {
     public function __construct()
@@ -106,6 +110,7 @@ class AdminController extends Controller
 
             // Set is_quanly based on level
             $is_quanly = ($validated['level'] === 'Admin') ? 1 : 0;
+            
 
             // Create the user
             $user = User::create([
@@ -119,6 +124,7 @@ class AdminController extends Controller
                 'user_agent' => $request->header('User-Agent'),
                 'is_quanly' => $is_quanly,
                 'password' => Hash::make('minhlocdeptrai'),
+                'level' => $validated['level'],
             ]);
 
             toastr()->success('Thêm mới nhân viên thành công!');
@@ -136,5 +142,61 @@ class AdminController extends Controller
         return response()->json($employee);
     }
 
+    public function loadExcel() {
+        return view('Backend.user.createRecord');
+    }
 
+    public function downloadTemplate()
+    {
+        return Excel::download(new UserTemplateExport, 'user_template.xlsx');
+    }
+
+    public function importExcel(Request $request)
+    {
+        // Validate file upload
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ], [
+            'file.required' => 'Vui lòng chọn file Excel.',
+            'file.mimes'    => 'File phải có định dạng xlsx hoặc xls.',
+        ]);
+
+        try {
+            // Thực hiện import file
+            Excel::import(new UserImport, $request->file('file'));
+
+            toastr()->success('Import nhân viên thành công!');
+            return back();
+        } catch (ValidationException $e) {
+            // Bắt lỗi validation và xử lý thông báo cụ thể
+            $failures = $e->failures();
+
+            foreach ($failures as $failure) {
+                $row = $failure->row(); // Dòng bị lỗi
+                $attribute = $failure->attribute(); // Cột bị lỗi
+                $errorMessages = implode(', ', $failure->errors());
+
+                // Gửi từng thông báo lỗi bằng toastr
+                toastr()->error("Dòng {$row} - Cột {$attribute}: {$errorMessages}");
+            }
+            return back();
+        } catch (\Exception $e) {
+            // Xử lý lỗi chung và thông báo bằng toastr
+            toastr()->error('Có lỗi xảy ra: ' . $e->getMessage());
+            return back();
+        }
+    }
+
+    public function massDelete(Request $request)
+    {
+        $employeeIds = $request->input('employee_ids'); // Lấy danh sách ID được chọn
+
+        if (!empty($employeeIds)) {
+            User::whereIn('id', $employeeIds)->delete();
+            toastr()->success('Xóa nhân viên thành công!');
+            return redirect()->back();
+        }
+        toastr()->error('Vui lòng chọn ít nhất 1 nhân viên để xóa!');
+        return redirect()->back();
+    }
 }

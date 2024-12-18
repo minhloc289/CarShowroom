@@ -40,9 +40,9 @@ return [
         'smtp' => [
             'transport' => 'smtp',
             'url' => env('MAIL_URL'),
-            'host' => env('MAIL_HOST', '127.0.0.1'),
-            'port' => env('MAIL_PORT', 2525),
-            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+            'port' => env('MAIL_PORT', 465),
+            'encryption' => env('MAIL_ENCRYPTION', 'ssl'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
@@ -110,7 +110,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', '22520561@gm.uit.edu.vn'),
-        'name' => env('MAIL_FROM_NAME', 'Reset Password'),
+        'name' => env('MAIL_FROM_NAME', 'Merus'),
     ],
 
 ];

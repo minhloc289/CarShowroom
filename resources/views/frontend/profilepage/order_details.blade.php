@@ -25,12 +25,12 @@
 					// Xử lý trạng thái thanh toán
 					switch ($order->payments->first()->status_deposit ?? 0) {
 						case 0:
-							$statusText = 'Chờ thanh toán';
+							$statusText = 'Chờ đặt cọc';
 							$statusColor = '#e3e3e3';
 							$colorText = '#1e1e1e';
 							break;
 						case 1:
-							$statusText = 'Đã thanh toán';
+							$statusText = 'Đã đặt cọc';
 							$statusColor = '#28a745';
 							$colorText = '#fff';
 							break;
@@ -83,6 +83,7 @@
 					<span><strong>{{ number_format(($order->salesCar->sale_price ?? 0) - ($order->payments->sum('deposit_amount') ?? 0)) }}
 							VNĐ</strong></span>
 				</div>
+
 
 			</div>
 		</div>

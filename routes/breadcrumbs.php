@@ -63,19 +63,23 @@ Breadcrumbs::for('customer.edit', function (BreadcrumbTrail $trail) {
     $trail->parent('customer'); // Quản lý nhóm nhân viên as the parent
     $trail->push('Chỉnh sửa thông tin khách hàng');
 });
+
 //Accessories
 Breadcrumbs::for('Accessories', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí sản phẩm', route('accessories.index'));
     $trail->push('Quản lý phụ kiện', route('accessories.index'));
 });
+
 Breadcrumbs::for('accessories.details', function (BreadcrumbTrail $trail) {
     $trail->parent('Accessories'); // Parent breadcrumb
     $trail->push('Chi tiết phụ kiện');
 });
+
 Breadcrumbs::for('accessories.edit', function (BreadcrumbTrail $trail) {
     $trail->parent('Accessories'); // Parent breadcrumb
     $trail->push('Chỉnh sửa thông tin phụ kiện');
 });
+
 Breadcrumbs::for('accessories.create', function (BreadcrumbTrail $trail) {
     $trail->parent('Accessories'); // Parent breadcrumb
     $trail->push('Thêm phụ kiện mới');

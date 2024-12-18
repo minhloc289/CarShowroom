@@ -187,5 +187,16 @@ class AdminController extends Controller
         }
     }
 
-    
+    public function massDelete(Request $request)
+    {
+        $employeeIds = $request->input('employee_ids'); // Lấy danh sách ID được chọn
+
+        if (!empty($employeeIds)) {
+            User::whereIn('id', $employeeIds)->delete();
+            toastr()->success('Xóa nhân viên thành công!');
+            return redirect()->back();
+        }
+        toastr()->error('Vui lòng chọn ít nhất 1 nhân viên để xóa!');
+        return redirect()->back();
+    }
 }

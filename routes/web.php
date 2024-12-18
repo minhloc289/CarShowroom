@@ -48,6 +48,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('car/{carId}/edit', [carSalesController::class, 'show_edit_car'])->name('show.car.edit');
     Route::put('car/{carId}/update', [carSalesController::class, 'update_car_edit'])->name('car.update');
     Route::post('car/{carId}/destroy', [carSalesController::class, 'destroy'])->name('sales.cars.destroy');
+    Route::post('/cars/delete-selected', [carSalesController::class, 'destroySelected'])->name('cars.deleteSelected');
     Route::get('/cars/create', [carSalesController::class, 'create'])->name('car.create');
     Route::post('/cars/store', [carSalesController::class, 'store'])->name('car.store');
     Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
@@ -66,8 +67,8 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('user/record/create', [AdminController::class, 'loadExcel'])->name('user.record.create');
     Route::post('/users/import', [AdminController::class, 'importExcel'])->name('users.import');
     Route::get('/download/user-template', [AdminController::class, 'downloadTemplate'])->name('user.download.template');
-
-
+    Route::delete('/users/mass-delete', [AdminController::class, 'massDelete'])->name('user.mass_delete');
+  
     /*CUSTOMER CRUD*/
     Route::get('/customer', [CustomerController::class, 'loadCustomerPage'])->name('customer');
     Route::get('/customer/create', [CustomerController::class, 'loadCustomerCreatePage'])->name('customer.create');

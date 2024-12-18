@@ -66,7 +66,7 @@ Breadcrumbs::for('customer.edit', function (BreadcrumbTrail $trail) {
 
 //Accessories
 Breadcrumbs::for('Accessories', function (BreadcrumbTrail $trail) {
-    $trail->push('Quản lí sản phẩm', route('Carsales'));
+    $trail->push('Quản lí sản phẩm', route('accessories.index'));
     $trail->push('Quản lý phụ kiện', route('accessories.index'));
 });
 

@@ -22,7 +22,8 @@ class Accessories extends Model
         'image_url',
         'category',
         'status',
-        'quantity', // Thêm thuộc tính số lượng
+        'quantity', 
+        'is_deleted',// Thêm thuộc tính số lượng
     ];
 
     public function invoiceDetails()

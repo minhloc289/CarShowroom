@@ -14,7 +14,7 @@ class AccessoryController extends Controller
 {
     public function index()
     {
-        $accessories = Accessories::all(); // Lấy tất cả phụ kiện
+        $accessories = Accessories::where('is_deleted', 0)->get(); // Lấy tất cả phụ kiện
         $categories = Accessories::distinct()->pluck('category'); // Lấy danh mục không trùng lặp
         return view('Backend.Product.Accessories.accessoriesOverview', compact('accessories', 'categories'));
     }
@@ -86,8 +86,8 @@ class AccessoryController extends Controller
             // Xóa các dòng liên quan trong bảng Cart
             $accessory->carts()->delete();
 
-            // Xóa phụ kiện
-            $accessory->delete();
+            /// Cập nhật is_deleted thành 1 thay vì xóa hẳn
+            $accessory->update(['is_deleted' => 1]);
 
             toastr()->success('Xóa phụ kiện và các mục liên quan trong giỏ hàng thành công!');
         } catch (\Exception $e) {
@@ -145,7 +145,7 @@ class AccessoryController extends Controller
 
         Excel::import(new AccessoriesImport, $request->file('file'));
 
-        toastr()->success('Accessories imported successfully!');
+        toastr()->success('Thêm phụ kiện từ file thành công!');
         return redirect()->back();
     }
 
@@ -163,11 +163,11 @@ class AccessoryController extends Controller
             Cart::whereIn('accessory_id', $ids)->delete();
 
             // Xóa phụ kiện trong bảng Accessories
-            Accessories::whereIn('accessory_id', $ids)->delete();
+            Accessories::whereIn('accessory_id', $ids)->update(['is_deleted' => 1]);
 
-            toastr()->success('Selected accessories deleted successfully!');
+            toastr()->success('Các phụ kiện đã được xóa thành công!');
         } else {
-            toastr()->error('No accessories were selected for deletion.');
+            toastr()->error('Không có phụ kiện nào được chọn!');
         }
 
         return redirect()->route('accessories.index');

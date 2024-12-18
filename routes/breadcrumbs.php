@@ -62,10 +62,10 @@ Breadcrumbs::for('customer.create', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('customer.edit', function (BreadcrumbTrail $trail) {
     $trail->parent('customer'); // Quản lý nhóm nhân viên as the parent
     $trail->push('Chỉnh sửa thông tin khách hàng');
-=======
+});
 //Accessories
 Breadcrumbs::for('Accessories', function (BreadcrumbTrail $trail) {
-    $trail->push('Quản lí sản phẩm', route('Carsales'));
+    $trail->push('Quản lí sản phẩm', route('accessories.index'));
     $trail->push('Quản lý phụ kiện', route('accessories.index'));
 });
 Breadcrumbs::for('accessories.details', function (BreadcrumbTrail $trail) {

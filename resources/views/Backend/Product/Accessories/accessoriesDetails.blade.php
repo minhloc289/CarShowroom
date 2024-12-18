@@ -24,11 +24,11 @@
 
                 <!-- Additional Details Section (ngay dưới description) -->
                 <div class="mt-4" style= "font-size: 1.25 rem">
-                    <h4 style="margin-bottom: 6px;">Accessory Specifications</h4>
+                    <h4 style="margin-bottom: 6px;">Các thông tin khác của phụ kiện</h4>
                     <ul class="list-unstyled">
-                        <li><strong>Category:</strong> {{ $accessory->category }}</li>
-                        <li><strong>Quantity:</strong> {{ $accessory->quantity }}</li>
-                        <li><strong>Status:</strong> 
+                        <li><strong>Phân loại:</strong> {{ $accessory->category }}</li>
+                        <li><strong>Số lượng:</strong> {{ $accessory->quantity }}</li>
+                        <li><strong>Trạng thái:</strong> 
                             {{ $accessory->status === 'Available' ? 'Available' : 'Out of Stock' }}</li>
                     </ul>
                 </div>

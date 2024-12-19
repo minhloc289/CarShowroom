@@ -84,3 +84,12 @@ Breadcrumbs::for('accessories.create', function (BreadcrumbTrail $trail) {
     $trail->parent('Accessories'); // Parent breadcrumb
     $trail->push('Thêm phụ kiện mới');
 });
+//order
+Breadcrumbs::for('Order', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí Order', route('orders.index'));
+    $trail->push('Quản lý Order Sản Phẩm', route('orders.index'));
+});
+Breadcrumbs::for('order.details', function (BreadcrumbTrail $trail) {
+    $trail->parent('Order'); // Parent breadcrumb
+    $trail->push('Chi tiết Order');
+});

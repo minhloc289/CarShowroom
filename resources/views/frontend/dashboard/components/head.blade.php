@@ -11,3 +11,4 @@
 <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
 <link rel="stylesheet" href="{{asset('assets/css/home.css')}}">
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

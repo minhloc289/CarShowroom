@@ -12,7 +12,7 @@ class CarDetailsSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('car_details')->insert([
+        $cars = [
             [
                 'brand' => 'Porsche',
                 'name' => 'Taycan',
@@ -26,7 +26,10 @@ class CarDetailsSeeder extends Seeder
                 'length' => 4963,
                 'width' => 1966,
                 'height' => 1378,
-                'description' => 'The Porsche Taycan is a groundbreaking electric sedan that epitomizes luxury and performance. With its sleek design and cutting-edge technology, it offers a smooth and silent ride unique to electric vehicles. The Taycan boasts an impressive 616 horsepower, allowing it to accelerate from 0 to 100 km/h in just over three seconds. Its advanced battery technology ensures a substantial driving range, making it suitable for both city commuting and long-distance travel. Inside, the Taycan features a luxurious interior adorned with high-quality materials and a state-of-the-art infotainment system. The car also incorporates regenerative braking and various driving modes to enhance efficiency. The Taycan sets a new standard for electric vehicles, combining Porsche\'s legendary performance with eco-friendly innovation.',
+                'description' => 'The Porsche Taycan is a groundbreaking electric sedan that epitomizes luxury and performance. With its sleek design and cutting-edge technology, it offers a smooth and silent ride unique to electric vehicles. The Taycan boasts an impressive 616 horsepower, allowing it to accelerate from 0 to 100 km/h in just over three seconds. Its advanced battery technology ensures a substantial driving range, making it suitable for both city commuting and long-distance travel. Inside, the Taycan features a luxurious interior adorned with high-quality materials and a state-of-the-art infotainment system. The car also incorporates regenerative braking and various driving modes to enhance efficiency. The Taycan sets a new standard for electric vehicles, combining Porsche\'s legendary performance with eco-friendly innovation.',	
+                'acceleration_time' => 2.8,    // Thời gian tăng tốc từ 0-100 km/h
+                'fuel_efficiency' => 18.0,    // Tiêu hao nhiên liệu (kWh/100km)
+                'torque' => 850,              // Mô-men xoắn (Nm)
                 'image_url' => 'https://porsche-vietnam.vn/wp-content/uploads/2021/01/j1-taycan-modelimage-sideshot.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -45,6 +48,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1840,
                 'height' => 1620,
                 'description' => 'The Peugeot 3008 is a stylish and practical SUV that offers versatility for families and adventurers alike. Equipped with a 165 horsepower gasoline engine, it combines fuel efficiency with a dynamic driving experience. The spacious interior accommodates five passengers comfortably, featuring high-quality materials and advanced safety systems. With its distinctive European design, the 3008 provides ample trunk space for luggage or outdoor gear. Modern infotainment features and connectivity options ensure a comfortable and enjoyable driving experience, making it an ideal choice for both city commutes and long journeys.',
+
+                'acceleration_time' => 8.9,
+                'fuel_efficiency' => 6.7,
+                'torque' => 240,
                 'image_url' => 'https://hcmpeugeot.com/wp-content/uploads/2021/06/PEUGEOT-3008-XAM.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -63,12 +70,14 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1850,
                 'height' => 1720,
                 'description' => 'The Hyundai Custin is a modern MPV tailored for families or groups who value comfort and practicality. Powered by a reliable 170 horsepower gasoline engine, it ensures a smooth ride while maintaining excellent fuel efficiency. This seven-seater vehicle is equipped with advanced safety features, making it perfect for long-distance travel or daily commutes. With ample legroom, innovative storage solutions, and a user-friendly infotainment system, the Custin combines convenience with cutting-edge design. Its elegant exterior adds a touch of sophistication, setting a new standard for family vehicles.',
+
+                'acceleration_time' => 10.0,
+                'fuel_efficiency' => 7.5,
+                'torque' => 250,
                 'image_url' => 'https://hyundaingocphat.com.vn/wp-content/uploads/2023/09/hyundai-custin-c-230915.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // Repeat this format for all other cars with detailed descriptions
-            
             [
                 'brand' => 'Honda',
                 'name' => 'CR-V',
@@ -83,6 +92,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1860,
                 'height' => 1680,
                 'description' => 'The Honda CR-V Hybrid is an eco-friendly SUV that blends efficiency with performance. Powered by a 204 HP hybrid engine, it offers a smooth and responsive driving experience, whether navigating urban streets or off-road trails. With advanced safety features, a spacious and comfortable cabin, and an intuitive infotainment system, the CR-V is ideal for families or individuals seeking reliability and modern convenience. Its striking exterior design and efficient fuel economy make it a standout in the hybrid SUV market.',
+
+                'acceleration_time' => 9.3,
+                'fuel_efficiency' => 6.5,
+                'torque' => 315,
                 'image_url' => 'https://hondaotovovankiet.vn/wp-content/uploads/2020/03/Honda_CRV_2024_mau_xam_hondaotovovankiet_vn.jpg.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -101,6 +114,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1995,
                 'height' => 1750,
                 'description' => 'The Kia Carnival is a premium MPV designed for families who value space, luxury, and versatility. With seating for seven and a 201 HP engine, it delivers reliable performance and comfort for long journeys. Its interior features high-quality materials, a user-friendly infotainment system, and ample storage solutions. Advanced safety technologies ensure peace of mind on every drive, while its elegant exterior design adds a touch of sophistication. The Carnival redefines the MPV experience by seamlessly blending style and practicality.',
+
+                'acceleration_time' => 10.5,
+                'fuel_efficiency' => 9.0,
+                'torque' => 440,
                 'image_url' => 'https://kiavietnam.com.vn/storage/carnival-dosam-1.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -119,6 +136,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1820,
                 'height' => 1470,
                 'description' => 'The Peugeot 408 is a sleek and sophisticated sedan tailored for professionals and families. Equipped with a 168 HP gasoline engine, it offers a smooth and refined driving experience. The 408 features a stylish exterior, a spacious interior with premium materials, and advanced technology for entertainment and safety. Perfect for both city commuting and long-distance travel, this sedan combines practicality with European elegance, making it a top choice for discerning drivers.',
+
+                'acceleration_time' => 8.1,
+                'fuel_efficiency' => 6.3,
+                'torque' => 240,
                 'image_url' => 'https://hcmpeugeot.com/wp-content/uploads/2023/10/2022062701_Peugeot408.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -137,6 +158,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1983,
                 'height' => 1673,
                 'description' => 'The Porsche Cayenne is a luxury SUV that combines exceptional performance with practicality. Powered by a 335 HP engine, it offers dynamic handling and impressive acceleration. The Cayenne features a spacious and luxurious interior, complete with cutting-edge infotainment and safety technologies. Its stylish exterior design and off-road capabilities make it suitable for both urban environments and adventurous trails. The Cayenne continues Porsche’s legacy of blending high performance with everyday usability.',
+
+                'acceleration_time' => 6.0,
+                'fuel_efficiency' => 9.8,
+                'torque' => 450,
                 'image_url' => 'https://porsche-vietnam.vn/wp-content/uploads/2023/04/e3-2nd-cayenne-modelimage-sideshot.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -155,12 +180,14 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1900,
                 'height' => 1685,
                 'description' => 'The Hyundai Santa Fe is a dependable SUV designed for families. With seating for seven and a powerful 202 HP diesel engine, it provides a secure and comfortable driving experience. The Santa Fe’s spacious interior is complemented by advanced safety systems, intuitive technology, and versatile cargo space, making it ideal for both road trips and daily errands. Its modern design and fuel efficiency add to its appeal as a practical yet stylish vehicle.',
+
+                'acceleration_time' => 9.1,
+                'fuel_efficiency' => 7.2,
+                'torque' => 440,
                 'image_url' => 'https://vn-hyundai.com/wp-content/uploads/2018/03/icon-santafe-all-new-vn-hyundai.png',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // Continue this pattern for the remaining cars.
-            
             [
                 'brand' => 'Kia',
                 'name' => 'Sonet',
@@ -175,6 +202,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1790,
                 'height' => 1642,
                 'description' => 'The Kia Sonet is a compact SUV designed for urban dwellers and small families. With its efficient 115 HP gasoline engine, it delivers a smooth and economical driving experience. The Sonet boasts a stylish and modern design, packed with features like a user-friendly infotainment system, advanced safety technologies, and ample cabin space for passengers and cargo. Its compact size and maneuverability make it perfect for navigating busy city streets, while its versatile interior ensures comfort and convenience on longer journeys.',
+
+                'acceleration_time' => 12.3,
+                'fuel_efficiency' => 5.8,
+                'torque' => 144,            
                 'image_url' => 'https://kiavietnam.com.vn/storage/new-sonet/new-sonetjpg.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -193,6 +224,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1825,
                 'height' => 1620,
                 'description' => 'The Toyota Corolla Cross is a compact hybrid SUV that balances efficiency with modern style. Powered by a 121 HP hybrid engine, it offers excellent fuel economy and a quiet driving experience. Inside, the Corolla Cross features a spacious and comfortable cabin with advanced safety systems and a versatile infotainment setup. Its sleek exterior design and eco-friendly performance make it a practical choice for families or eco-conscious drivers looking for a reliable daily vehicle.',
+
+                'acceleration_time' => 11.2,
+                'fuel_efficiency' => 5.3,
+                'torque' => 163,
                 'image_url' => 'https://bizweb.dktcdn.net/thumb/1024x1024/100/388/878/products/toyota-corolla-cross-2024-moi-nhat-2.png?v=1715158367267',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -211,6 +246,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 2004,
                 'height' => 1775,
                 'description' => 'The Ford Explorer is a robust SUV built for families and adventurers. Its powerful 300 HP gasoline engine delivers reliable performance for both urban and off-road drives. The Explorer features a spacious interior with three rows of seating, making it ideal for large families or group trips. Equipped with advanced safety features, intuitive infotainment, and ample cargo space, it offers a perfect blend of comfort and utility for any journey.',
+
+                'acceleration_time' => 6.8,
+                'fuel_efficiency' => 10.3,
+                'torque' => 420,
                 'image_url' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXCajIxj-Vm4ioxXATVVyd7xWPIMmjamSt-A&s',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -229,6 +268,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1928,
                 'height' => 1880,
                 'description' => 'The Mercedes-Benz V250 is a luxury van that combines elegance and practicality. Its 190 HP diesel engine ensures a smooth ride, while the spacious cabin provides seating for seven passengers. Premium materials, modern amenities, and advanced safety technologies make it perfect for group travels or professional outings. With its versatile design and exceptional build quality, the V250 is ideal for those who demand style and functionality in a vehicle.',
+
+                'acceleration_time' => 9.7,
+                'fuel_efficiency' => 7.8,
+                'torque' => 440,
                 'image_url' => 'https://mercedes-benz-vn.com/wp-content/uploads/v250lux.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -247,6 +290,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1780,
                 'height' => 1690,
                 'description' => 'The Hyundai Stargazer is a modern MPV designed for families who value innovation and practicality. Powered by a 115 HP gasoline engine, it delivers a smooth and fuel-efficient performance. The Stargazer’s spacious interior offers ample seating for seven passengers, advanced safety features, and a user-friendly infotainment system. Its futuristic design and versatile layout make it an excellent choice for long road trips or everyday commutes.',
+
+                'acceleration_time' => 12.5,
+                'fuel_efficiency' => 6.2,
+                'torque' => 144,
                 'image_url' => 'https://hyundaingocan.com/wp-content/uploads/2022/10/hyundai-stargazer-2022-3.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -265,12 +312,14 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1795,
                 'height' => 1400,
                 'description' => 'The Honda Civic Hatchback is a sporty and stylish vehicle that combines practicality with fun. With its 180 HP gasoline engine, it offers responsive performance and smooth handling. Its sleek design is paired with a comfortable and spacious interior, featuring advanced infotainment and safety systems. Ideal for young professionals or small families, the Civic is a reliable and efficient choice for both city driving and long trips.',
+
+                'acceleration_time' => 7.9,
+                'fuel_efficiency' => 6.8,
+                'torque' => 240,
                 'image_url' => 'https://www.motortrend.com/uploads/sites/10/2023/09/2024-honda-civic-hatch-sport-5door-hatchback-angular-front.png',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            // Continue this pattern for the remaining cars
-            
             [
                 'brand' => 'Porsche',
                 'name' => '718 Boxster',
@@ -285,6 +334,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1801,
                 'height' => 1295,
                 'description' => 'The Porsche 718 Boxster is a luxurious convertible sports car offering unmatched agility and performance. Its 300 HP gasoline engine delivers exhilarating acceleration and a thrilling driving experience. With its compact design and advanced engineering, the 718 Boxster is perfect for weekend getaways or scenic drives. The interior is crafted with premium materials and features a modern infotainment system, ensuring both style and comfort. This convertible is the epitome of elegance and speed.',
+
+                'acceleration_time' => 4.5,
+                'fuel_efficiency' => 9.0,
+                'torque' => 380,
                 'image_url' => 'https://porsche-vietnam.vn/wp-content/uploads/2013/11/982-718-bos-modelimage-sideshot-840x473.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -303,6 +356,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1920,
                 'height' => 1950,
                 'description' => 'The Toyota Traveler is a spacious and versatile van designed for large families or group travel. Its 150 HP diesel engine provides reliable performance and fuel efficiency. With seating for up to nine passengers and ample cargo space, the Traveler is perfect for long road trips or professional transport. It features a comfortable and functional interior with advanced safety systems, ensuring a secure and enjoyable ride for everyone on board.',
+
+                'acceleration_time' => 14.0,
+                'fuel_efficiency' => 10.5,
+                'torque' => 340,
                 'image_url' => 'https://hcmpeugeot.com/wp-content/uploads/2021/02/mau-xe-traveler-1.jpg',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -321,6 +378,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1852,
                 'height' => 1460,
                 'description' => 'The Mercedes-Benz E-Class is a luxury sedan that seamlessly blends innovation and performance. With a powerful 362 HP hybrid engine, it offers an efficient and thrilling driving experience. The E-Class features a sleek exterior design and a sophisticated interior with premium materials and cutting-edge technology. Equipped with advanced safety systems and intelligent driving assistance, it provides unmatched comfort and peace of mind. Ideal for professionals or families seeking elegance and practicality.',
+
+                'acceleration_time' => 5.7,
+                'fuel_efficiency' => 6.4,
+                'torque' => 500,
                 'image_url' => 'https://mercedesbenz-hanoi.vn/wp-content/uploads/2024/07/e-class.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -339,6 +400,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1865,
                 'height' => 1650,
                 'description' => 'The Hyundai Tucson is a cutting-edge SUV that offers style, performance, and innovation. Its 187 HP gasoline engine ensures a smooth and responsive driving experience. The Tucson features a spacious and comfortable interior with advanced technology and safety features, making it ideal for families or solo adventurers. Its modern design and practical versatility set it apart as a standout choice for any lifestyle.',
+
+                'acceleration_time' => 9.0,
+                'fuel_efficiency' => 7.9,
+                'torque' => 265,
                 'image_url' => 'https://hyundaitanngocan.com.vn/upload/images/Tucson/Hyundai-tucson-2022-7.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -357,6 +422,10 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1825,
                 'height' => 1620,
                 'description' => 'The Kia Hybrid Crossover is a modern SUV that combines eco-friendly performance with advanced technology. Its 139 HP hybrid engine delivers excellent fuel efficiency without compromising power. The spacious interior is equipped with intuitive infotainment and safety systems, making it a practical choice for families or eco-conscious drivers. With a stylish design and versatile features, this crossover is perfect for city driving or weekend getaways.',
+
+                'acceleration_time' => 10.8,
+                'fuel_efficiency' => 5.0,
+                'torque' => 195,
                 'image_url' => 'https://kiavietnam.com.vn/storage/hybrid/section4/hybrid.png',
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -375,29 +444,26 @@ class CarDetailsSeeder extends Seeder
                 'width' => 1840,
                 'height' => 1445,
                 'description' => 'The Toyota Camry is a timeless sedan that combines performance, elegance, and reliability. With its 208 HP hybrid engine, it offers exceptional fuel efficiency and a smooth driving experience. The Camry features a refined interior with modern technology and advanced safety systems, ensuring comfort and peace of mind for both drivers and passengers. Its stylish design and practical features make it an ideal choice for professionals and families alike.',
+
+                'acceleration_time' => 8.3,
+                'fuel_efficiency' => 5.7,
+                'torque' => 221,
                 'image_url' => 'https://bizweb.dktcdn.net/thumb/large/100/374/665/products/en-218-1639729011.png?v=1640169039007',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'brand' => 'Hyundai',
-                'name' => 'Stargazer',
-                'model' => 'MPV',
-                'year' => 2022,
-                'engine_type' => 'Gasoline',
-                'seat_capacity' => 7,
-                'engine_power' => '115 HP',
-                'max_speed' => 170,
-                'trunk_capacity' => '20 cubic feet',
-                'length' => 4460,
-                'width' => 1780,
-                'height' => 1690,
-                'description' => 'The Hyundai Stargazer is a modern MPV designed for families who value innovation and practicality. Powered by a 115 HP gasoline engine, it delivers a smooth and fuel-efficient performance. The Stargazer’s spacious interior offers ample seating for seven passengers, advanced safety features, and a user-friendly infotainment system. Its futuristic design and versatile layout make it an excellent choice for long road trips or everyday commutes.',
-                'image_url' => 'https://hyundaingocan.com/wp-content/uploads/2022/10/hyundai-stargazer-2022-3.png',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],            
             
-        ]);
+        ];
+
+
+        foreach ($cars as $car) {
+            DB::table('car_details')->updateOrInsert(
+                [
+                    'name' => $car['name'],
+                    'brand' => $car['brand'],
+                ], // Điều kiện kiểm tra bản ghi
+                array_merge($car, ['updated_at' => now(), 'created_at' => now()]) // Dữ liệu để cập nhật hoặc chèn
+            );
+        }
     }
 }

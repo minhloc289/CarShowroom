@@ -6,7 +6,7 @@
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Danh sách đơn hàng</h1>
-        <a href="" class="btn btn-primary">Thêm đơn hàng</a>
+        <a href="{{route('orders.car.add')}}" class="btn btn-primary">Thêm đơn hàng</a>
     </div>
 
     <!-- Bộ lọc -->

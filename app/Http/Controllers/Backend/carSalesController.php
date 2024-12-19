@@ -49,10 +49,10 @@ class carSalesController extends Controller
     {
         // Lấy thông tin từ bảng car_details
         $carDetail = CarDetails::findOrFail($carId);
-
+    
         // Lấy thông tin từ bảng sales_cars
         $salesCar = SalesCars::where('car_id', $carId)->first();
-
+    
         // Validate dữ liệu đầu vào
         $request->validate([
             'brand' => 'required|string|max:255',
@@ -61,14 +61,19 @@ class carSalesController extends Controller
             'image_url' => 'required|url',
             'engine_type' => 'required|string|max:255',
             'seat_capacity' => 'required|integer|min:1',
-            'engine_power' => 'required|string|max:255', // VD: "616 HP"
+            'engine_power' => 'required|string|max:255',
             'max_speed' => 'required|numeric|min:1',
-            'trunk_capacity' => 'required|string|max:255', // VD: "12 cubic feet"
+            'trunk_capacity' => 'required|string|max:255',
             'length' => 'required|numeric|min:1',
             'width' => 'required|numeric|min:1',
             'height' => 'required|numeric|min:1',
             'description' => 'nullable|string|max:2000',
-
+    
+            // Validate dữ liệu mới
+            'acceleration_time' => 'required|numeric|min:0',
+            'fuel_efficiency' => 'required|numeric|min:0',
+            'torque' => 'required|numeric|min:0',
+    
             // Validate dữ liệu từ sales_cars
             'sale_price' => 'required|numeric|min:0',
             'quantity' => 'required|integer|min:0',
@@ -76,7 +81,7 @@ class carSalesController extends Controller
             'warranty_period' => 'nullable|integer|min:0',
             'sale_conditions' => 'nullable|string|max:1000',
         ]);
-
+    
         // Cập nhật dữ liệu vào bảng car_details
         $carDetail->update([
             'brand' => $request->brand,
@@ -85,15 +90,18 @@ class carSalesController extends Controller
             'image_url' => $request->image_url,
             'engine_type' => $request->engine_type,
             'seat_capacity' => $request->seat_capacity,
-            'engine_power' => $request->engine_power, // Lưu chuỗi như "616 HP"
+            'engine_power' => $request->engine_power,
             'max_speed' => $request->max_speed,
-            'trunk_capacity' => $request->trunk_capacity, // Lưu chuỗi như "12 cubic feet"
+            'trunk_capacity' => $request->trunk_capacity,
             'length' => $request->length,
             'width' => $request->width,
             'height' => $request->height,
             'description' => $request->description,
+            'acceleration_time' => $request->acceleration_time,
+            'fuel_efficiency' => $request->fuel_efficiency,
+            'torque' => $request->torque,
         ]);
-
+    
         // Cập nhật hoặc tạo mới dữ liệu vào bảng sales_cars
         if ($salesCar) {
             $salesCar->update([
@@ -113,11 +121,12 @@ class carSalesController extends Controller
                 'sale_conditions' => $request->sale_conditions,
             ]);
         }
-
+    
         // Redirect về trang danh sách xe hoặc chi tiết xe
         toastr()->success('Cập nhật thông tin xe thành công');
         return redirect()->route('Carsales');
     }
+    
 
     public function destroy($carId)
     {
@@ -202,9 +211,12 @@ class carSalesController extends Controller
             'availability_status' => 'required|boolean',
             'warranty_period' => 'nullable|integer|min:0',
             'sale_conditions' => 'nullable|string',
-            'image_url' => 'required|url', // Xác thực URL hình ảnh
+            'image_url' => 'required|url',
+            'acceleration_time' => 'nullable|numeric|min:0',
+            'fuel_efficiency' => 'nullable|numeric|min:0',
+            'torque' => 'nullable|numeric|min:0',
         ]);
-
+    
         // Kiểm tra xem xe đã tồn tại trong CarDetails chưa
         $carDetail = CarDetails::where([
             ['brand', '=', $request->brand],
@@ -212,21 +224,21 @@ class carSalesController extends Controller
             ['model', '=', $request->model],
             ['year', '=', $request->year]
         ])->first();
-
+    
         if ($carDetail) {
             // Nếu xe đã tồn tại trong CarDetails
-            // Kiểm tra xem xe đã có thông tin bán (SalesCars) chưa
             $salesCar = SalesCars::where('car_id', $carDetail->car_id)
                 ->where('sale_price', '=', $request->sale_price)
                 ->first();
-
+    
             if ($salesCar) {
-                // Nếu đã có thông tin bán xe, cập nhật quantity và is_deleted
-                $salesCar->quantity += $request->quantity;
-                $salesCar->is_deleted = 0; // Đặt lại is_deleted về 0
-                $salesCar->save();
+                // Cập nhật số lượng và trạng thái
+                $salesCar->update([
+                    'quantity' => $salesCar->quantity + $request->quantity,
+                    'is_deleted' => 0, // Đặt lại trạng thái nếu cần
+                ]);
             } else {
-                // Nếu không có thông tin bán xe, tạo mới thông tin bán xe
+                // Tạo mới thông tin bán xe
                 SalesCars::create([
                     'car_id' => $carDetail->car_id,
                     'sale_price' => $request->sale_price,
@@ -234,11 +246,11 @@ class carSalesController extends Controller
                     'availability_status' => $request->availability_status,
                     'warranty_period' => $request->warranty_period,
                     'sale_conditions' => $request->sale_conditions,
-                    'is_deleted' => 0, // Đảm bảo is_deleted là 0 cho xe mới
+                    'is_deleted' => 0,
                 ]);
             }
         } else {
-            // Nếu xe không tồn tại trong CarDetails, tạo mới cả CarDetails và SalesCars
+            // Nếu xe không tồn tại, tạo mới cả CarDetails và SalesCars
             $carDetail = CarDetails::create([
                 'brand' => $request->brand,
                 'name' => $request->name,
@@ -253,10 +265,12 @@ class carSalesController extends Controller
                 'width' => $request->width,
                 'height' => $request->height,
                 'description' => $request->description,
-                'image_url' => $request->image_url, // Lưu URL hình ảnh vào CarDetails
+                'image_url' => $request->image_url,
+                'acceleration_time' => $request->acceleration_time,
+                'fuel_efficiency' => $request->fuel_efficiency,
+                'torque' => $request->torque,
             ]);
-
-            // Tạo mới thông tin bán xe và liên kết với CarDetails
+    
             SalesCars::create([
                 'car_id' => $carDetail->car_id,
                 'sale_price' => $request->sale_price,
@@ -264,14 +278,14 @@ class carSalesController extends Controller
                 'availability_status' => $request->availability_status,
                 'warranty_period' => $request->warranty_period,
                 'sale_conditions' => $request->sale_conditions,
-                'is_deleted' => 0, // Đảm bảo is_deleted là 0 cho xe mới
+                'is_deleted' => 0,
             ]);
         }
-
+    
         toastr()->success('Thêm thành công xe mới.');
         return redirect()->back();
     }
-
+    
     public function showUploadForm()
     {
         return view('Backend.Product.upload');
@@ -284,7 +298,7 @@ class carSalesController extends Controller
             $path = $request->file('file')->getRealPath();
 
             // Nhập dữ liệu từ file Excel
-            Excel::import(new AccessoriesImport, $path);
+            Excel::import(new CarsImport, $path);
 
             toastr()->success('Successfully imported accessories!');
             return redirect()->back();
@@ -299,6 +313,6 @@ class carSalesController extends Controller
      */
     public function downloadTemplate()
     {
-        return Excel::download(new AccessoriesExport, 'accessories_template.xlsx');
+        return Excel::download(new CarExport, 'add_car_template.xlsx');
     }
 }

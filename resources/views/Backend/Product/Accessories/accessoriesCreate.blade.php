@@ -18,13 +18,13 @@
 
             <!-- Tên phụ kiện -->
             <div class="mb-3">
-                <label for="name" class="form-label">Accessory Name</label>
+                <label for="name" class="form-label">Tên phụ kiện</label>
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
 
             <!-- Danh mục -->
             <div class="mb-3">
-                <label for="category" class="form-label">Category</label>
+                <label for="category" class="form-label">Phân loại</label>
                 <select class="form-control" id="category" name="category" required>
                     <option value="Interior">Interior</option>
                     <option value="Exterior">Exterior</option>
@@ -34,30 +34,30 @@
 
             <!-- Giá -->
             <div class="mb-3">
-                <label for="price" class="form-label">Price (VNĐ)</label>
+                <label for="price" class="form-label">Giá (VNĐ)</label>
                 <input type="number" class="form-control" id="price" name="price" required>
             </div>
 
             <!-- Số lượng -->
             <div class="mb-3">
-                <label for="quantity" class="form-label">Quantity</label>
+                <label for="quantity" class="form-label">Số lượng</label>
                 <input type="number" class="form-control" id="quantity" name="quantity" required>
             </div>
 
             <!-- URL hình ảnh -->
             <div class="mb-3">
-                <label for="image_url" class="form-label">Image URL</label>
+                <label for="image_url" class="form-label">Link hình ảnh</label>
                 <input type="text" class="form-control" id="image_url" name="image_url" required>
             </div>
 
             <!-- Mô tả -->
             <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
+                <label for="description" class="form-label">Mô tả</label>
                 <textarea class="form-control" id="description" name="description" rows="4"></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary">Add Accessory</button>
-            <a href="{{ route('accessories.index') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Thêm</button>
+            <a href="{{ route('accessories.index') }}" class="btn btn-secondary">Hủy</a>
         </form>
     </div>
 </div>

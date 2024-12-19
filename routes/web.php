@@ -10,7 +10,7 @@ use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\carSalesController;
 use App\Http\Controllers\Backend\AccessoryController;
-
+use App\Http\Controllers\Backend\OrderManagementController;
 use App\Http\Controllers\frontend\CustomerDashBoardController;
 use App\Http\Controllers\frontend\CarController;
 use App\Http\Controllers\frontend\BuyCarController;
@@ -48,6 +48,10 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
     Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
     Route::get('/download/car-add-template', [carSalesController::class, 'downloadTemplate'])->name('caradd.download.template');
+    //order
+    Route::get('/orders', [OrderManagementController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}/detail', [OrderManagementController::class, 'detail'])->name('orders.detail');
+    Route::post('/orders/{order}/confirm-payment', [OrderManagementController::class, 'confirmPayment'])->name('orders.confirmPayment');
 
 
     /* RENTAL CAR */
@@ -221,7 +225,9 @@ Route::get('/terms', [CustomerDashBoardController::class, 'terms'])->name('Custo
 Route::get('/home', function () {
     return view('home');
 })->name('home');
-
+Route::get('/go-back', function () {
+    return back();
+})->name('go-back');
 
 Route::get('/verify-email/{token}', function ($token) {
     $account = Account::where('email_verification_token', $token)->first();

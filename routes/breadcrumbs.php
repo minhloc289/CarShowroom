@@ -67,7 +67,7 @@ Breadcrumbs::for('customer.edit', function (BreadcrumbTrail $trail) {
 
 //Accessories
 Breadcrumbs::for('Accessories', function (BreadcrumbTrail $trail) {
-    $trail->push('Quản lí sản phẩm', route('Carsales'));
+    $trail->push('Quản lí sản phẩm', route('accessories.index'));
     $trail->push('Quản lý phụ kiện', route('accessories.index'));
 });
 
@@ -110,4 +110,12 @@ Breadcrumbs::for('rentalCar.edit', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('rentalCar.record.create', function (BreadcrumbTrail $trail) {
     $trail->parent('rentalCar'); // Parent breadcrumb
     $trail->push('Thêm bản ghi');
+//order
+Breadcrumbs::for('Order', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí Order', route('orders.index'));
+    $trail->push('Quản lý Order Sản Phẩm', route('orders.index'));
+});
+Breadcrumbs::for('order.details', function (BreadcrumbTrail $trail) {
+    $trail->parent('Order'); // Parent breadcrumb
+    $trail->push('Chi tiết Order');
 });

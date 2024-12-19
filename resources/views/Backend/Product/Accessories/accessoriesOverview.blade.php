@@ -14,21 +14,21 @@
 <div class="post d-flex flex-column-fluid" id="kt_post">
     <div id="kt_content_container" class="container-xxl">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Manage Accessories</h1>
+            <h1>Quản lý phụ kiện</h1>
             <div class="d-flex justify-content-end">
                 <!-- Delete Selected Button -->
                 <button type="submit" form="bulkDeleteForm" id="deleteSelected" class=" me-2 btn btn-danger" style="display: none;">
                     <i class="fas fa-trash-alt"></i>
-                    Delete Selected
+                    Xóa hàng loạt
                 </button>
                 <!-- Add Dropdown -->
                 <div class="dropdown me-2">
                     <button class="btn btn-primary dropdown-toggle" id="addAccessoryButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        Add
+                        Thêm
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="addAccessoryButton">
-                        <li><a class="dropdown-item" href="{{ route('accessories.create') }}">Add One Accessory</a></li>
-                        <li><a class="dropdown-item" href="{{ route('accessories.upload') }}">Add Multiple Accessories</a></li>
+                        <li><a class="dropdown-item" href="{{ route('accessories.create') }}">Thêm một sản phẩm </a></li>
+                        <li><a class="dropdown-item" href="{{ route('accessories.upload') }}">Thêm nhiều sản phẩm</a></li>
                     </ul>
                 </div>
             </div>
@@ -41,7 +41,7 @@
 
             <!-- Select Category -->
             <select id="categoryFilter" class="rounded-lg border border-gray-300 px-4 py-2">
-                <option value="">All Categories</option>
+                <option value="">Tất cả các loại</option>
                 @foreach ($categories as $category)
                     <option value="{{ $category }}">{{ $category }}</option>
                 @endforeach
@@ -56,12 +56,12 @@
                         <tr>
                             <th><input type="checkbox" id="selectAll"></th>
                             <th>#</th>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Actions</th>
+                            <th>Hình ảnh</th>
+                            <th>Tên phụ kiện</th>
+                            <th>Phân loại</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -84,11 +84,11 @@
                                 </td>
                                 <td>{{ $accessory->quantity }}</td>
                                 <td>
-                                    <a href="{{ route('accessories.details', ['id' => $accessory->accessory_id]) }}" class="btn btn-primary btn-sm">View Details</a>
-                                    <a href="{{ route('accessories.edit', ['id' => $accessory->accessory_id]) }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="{{ route('accessories.details', ['id' => $accessory->accessory_id]) }}" class="btn btn-primary btn-sm">Xem chi tiết</a>
+                                    <a href="{{ route('accessories.edit', ['id' => $accessory->accessory_id]) }}" class="btn btn-warning btn-sm">Chỉnh sửa</a>
                                     <form action="{{ route('accessories.destroy', ['id' => $accessory->accessory_id]) }}" method="POST" style="display:inline;">
                                         @csrf
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
                                     </form>
                                 </td>
                             </tr>
@@ -101,7 +101,7 @@
         <!-- View More Button -->
         <div class="d-flex justify-content-center align-items-center">
             <button id="viewMoreButton" class="text-blue-500 text-sm font-semibold hover:underline">
-                View more →
+                Xem thêm →
             </button>
         </div>
     </div>

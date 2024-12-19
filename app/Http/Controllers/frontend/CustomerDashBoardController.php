@@ -25,19 +25,33 @@ class CustomerDashBoardController extends Controller
      */
    
 //compare
+//compare
 public function compare(){
-    return view("frontend.compareCar.compare_car");
+    $cars = CarDetails::whereHas('salesCars', function ($query) {
+        $query->where('is_deleted', 0);
+    })->with('sale')->get();
+    $carsByBrand = $cars->groupBy('brand');
+    return view("frontend.compareCar.compare_car", compact('carsByBrand'));
+}
+public function price_car() {
+    $cars = CarDetails::with('sale')->get(); // Lấy thông tin xe kèm giá
+    return view("frontend.compareCar.compare_car", compact('cars'));
 }
 //booking form
 public function Bookingform(){
     return view("frontend.Booking_form.booking_form");
 }
-
-// accessories
-function accessories(){
-    $accessories = Accessories::all(); // Lấy toàn bộ danh sách phụ kiện
-    return view('frontend.accessories.accessories', compact('accessories'));
+// Register
+public function registration(){
+    $cars = CarDetails::whereHas('salesCars', function ($query) {
+        $query->where('is_deleted', 0);
+    })->with('sale')->get();
+    $carsByBrand = $cars->groupBy('brand');
+    return view('frontend.registration_drive.register', [
+        'carsByBrand' => $carsByBrand->toArray()
+    ]);
 }
+
 
 public function showDashboard()
 {
@@ -48,15 +62,18 @@ public function showDashboard()
 public function introduce(){
     return view("frontend.Introduce.Introduce");
 }
-// Register
-public function registration(){
-    return view("frontend.registration_drive.register");
-}
 
+
+
+// accessories
+function accessories(){
+    $accessories = Accessories::where('is_deleted', 0)->get(); // Lấy toàn bộ danh sách phụ kiện
+    return view('frontend.accessories.accessories', compact('accessories'));
+}
 
 public function getAccessories()
 {
-    $accessories = Accessories::all(); // Lấy toàn bộ danh sách phụ kiện
+    $accessories = Accessories::where('is_deleted', 0)->get(); // Lấy toàn bộ danh sách phụ kiện
     return response()->json($accessories); // Trả về dạng JSON
 }
 

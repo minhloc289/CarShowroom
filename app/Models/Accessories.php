@@ -22,6 +22,8 @@ class Accessories extends Model
         'image_url',
         'category',
         'status',
+        'quantity', 
+        'is_deleted',// Thêm thuộc tính số lượng
     ];
 
     public function invoiceDetails()
@@ -33,4 +35,36 @@ class Accessories extends Model
     {
         return $this->hasMany(Cart::class, 'accessory_id', 'accessory_id');
     }
+
+    public function increaseQuantity($amount)
+    {
+        $this->quantity += $amount;
+
+        // Nếu số lượng > 0, cập nhật trạng thái thành "Available"
+        if ($this->quantity > 0) {
+            $this->status = 'Available';
+        }
+
+        $this->save();
+    }
+
+    public function decreaseQuantity($amount)
+    {
+        if ($this->quantity >= $amount) {
+            $this->quantity -= $amount;
+
+            // Nếu số lượng giảm về 0, cập nhật trạng thái thành "Out of stock"
+            if ($this->quantity == 0) {
+                $this->status = 'Out of stock';
+            }
+
+            $this->save();
+        } else {
+            // Nếu không đủ số lượng, cập nhật trạng thái và ném exception
+            $this->status = 'Out of stock';
+            $this->save();
+            throw new \Exception('Số lượng không đủ để bán');
+        }
+    }
+
 }

@@ -17,6 +17,8 @@ class Account extends Authenticatable
 
     public $timestamps = true; // Bật timestamps (created_at, updated_at)
 
+    protected $keyType = 'string'; // Kiểu dữ liệu của khóa chính
+
     protected $fillable = [
         'email',
         'password',

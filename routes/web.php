@@ -9,6 +9,8 @@ use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
 use App\Http\Controllers\Backend\AdminController;
 use App\Http\Controllers\Backend\carSalesController;
+use App\Http\Controllers\Backend\AccessoryController;
+use App\Http\Controllers\Backend\OrderManagementController;
 use App\Http\Controllers\frontend\CustomerDashBoardController;
 use App\Http\Controllers\frontend\CarController;
 use App\Http\Controllers\frontend\BuyCarController;
@@ -20,6 +22,9 @@ use App\Http\Controllers\frontend\CartController;
 use App\Http\Controllers\frontend\TransactionController;
 use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
+use App\Http\Controllers\Backend\CustomerController;
+
+
 
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
@@ -49,6 +54,10 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
     Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
     Route::get('/download/car-add-template', [carSalesController::class, 'downloadTemplate'])->name('caradd.download.template');
+    //order
+    Route::get('/orders', [OrderManagementController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}/detail', [OrderManagementController::class, 'detail'])->name('orders.detail');
+    Route::post('/orders/{order}/confirm-payment', [OrderManagementController::class, 'confirmPayment'])->name('orders.confirmPayment');
 
 
 
@@ -62,9 +71,35 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('user/record/create', [AdminController::class, 'loadExcel'])->name('user.record.create');
     Route::post('/users/import', [AdminController::class, 'importExcel'])->name('users.import');
     Route::get('/download/user-template', [AdminController::class, 'downloadTemplate'])->name('user.download.template');
+    Route::delete('/users/mass-delete', [AdminController::class, 'massDelete'])->name('user.mass_delete');
+  
+    /*CUSTOMER CRUD*/
+    Route::get('/customer', [CustomerController::class, 'loadCustomerPage'])->name('customer');
+    Route::get('/customer/create', [CustomerController::class, 'loadCustomerCreatePage'])->name('customer.create');
+    Route::post('/customer/create', [CustomerController::class, 'createCustomer'])->name('customer.store');
+    Route::get('/customer/edit/{customerId}', [CustomerController::class, 'loadEditPage'])->name('customer.edit');
+    Route::put('/customer/update/{customerId}', [CustomerController::class, 'update'])->name('customer.update');
+    Route::delete('/customer/delete/{customerId}', [CustomerController::class, 'delete'])->name('customer.destroy');
 
 
 });
+
+// Accessories Backend
+Route::prefix('admin/accessories')->group(function () {
+    Route::get('/', [AccessoryController::class, 'index'])->name('accessories.index');
+    Route::get('/create', [AccessoryController::class, 'create'])->name('accessories.create');
+    Route::post('/store', [AccessoryController::class, 'store'])->name('accessories.store');
+    Route::get('/edit/{id}', [AccessoryController::class, 'edit'])->name('accessories.edit');
+    Route::post('/update/{id}', [AccessoryController::class, 'update'])->name('accessories.update');
+    Route::post('/{id}/destroy', [AccessoryController::class, 'destroy'])->name('accessories.destroy');
+    Route::get('details/{id}', [AccessoryController::class, 'showDetails'])->name('accessories.details');
+    Route::get('/upload', [AccessoryController::class, 'showUploadForm'])->name('accessories.upload');
+    Route::post('/import', [AccessoryController::class, 'import'])->name('accessories.import');
+    Route::get('/template', [AccessoryController::class, 'downloadTemplate'])->name('accessories.template');
+    Route::post('/bulk-delete', [AccessoryController::class, 'bulkDelete'])->name('accessories.bulkDelete');
+});
+
+
 
 
 /* FRONTEND ROUTES */
@@ -182,7 +217,9 @@ Route::get('/terms', [CustomerDashBoardController::class, 'terms'])->name('Custo
 Route::get('/home', function () {
     return view('home');
 })->name('home');
-
+Route::get('/go-back', function () {
+    return back();
+})->name('go-back');
 
 Route::get('/verify-email/{token}', function ($token) {
     $account = Account::where('email_verification_token', $token)->first();

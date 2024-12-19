@@ -40,7 +40,7 @@
                             </span>
                             <!--end::Svg Icon-->
                     </span>
-                        <span class="menu-title">Quản lí nhân viên</span>
+                        <span class="menu-title">Employee Management</span>
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
@@ -49,19 +49,10 @@
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Quản lí nhóm nhân viên</span>
+                                <span class="menu-title">Employees' Group Management</span>
                             </a>
                             <span class="menu-arrow"></span>
                         </div>
-                        {{-- <div class="menu-item menu-accordion">
-                            <a href="{{ route('user.account') }}" class="menu-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Quản lí tài khoản</span>
-                            </a>
-                            </span><span class="menu-arrow"></span>
-                        </div> --}}
                     </div>
                 </div>
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
@@ -75,16 +66,16 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                    <span class="menu-title">Quản lý khách hàng</span>
+                    <span class="menu-title">Customer Management</span>
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
                         <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/account/overview.html">
+                            <a class="menu-link" href="{{route('customer')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title"></span>
+                                <span class="menu-title">Tài khoản khách hàng</span>
                             </a>
                         </div>
                         <div class="menu-item">
@@ -93,46 +84,6 @@
                                     <span class="bullet bullet-dot"></span>
                                 </span>
                                 <span class="menu-title">Settings</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/account/security.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Security</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/account/billing.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Billing</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/account/statements.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Statements</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/account/referrals.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Referrals</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/account/api-keys.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">API Keys</span>
                             </a>
                         </div>
                     </div>
@@ -154,7 +105,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Authentication</span>
+                        <span class="menu-title">Quản lý order</span>
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
@@ -328,11 +279,11 @@
                         </div>
                         <div class="menu-item">
                             <a class="menu-link"
-                                href="../../demo1/dist/authentication/extended/multi-steps-sign-up.html">
+                                href="{{route('orders.index')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Multi-steps Sign-up</span>
+                                <span class="menu-title">Quản lý Order Sản Phẩm</span>
                             </a>
                         </div>
                         <div class="menu-item">
@@ -671,7 +622,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Quản lý sản phẩm</span>
+                        <span class="menu-title">Service Management</span>
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
@@ -680,15 +631,15 @@
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Quản lý xe bán</span>
+                                <span class="menu-title">Sales Car Management</span>
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/widgets/statistics.html">
+                            <a class="menu-link" href="{{route('accessories.index')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Statistics</span>
+                                <span class="menu-title">Accessories Management</span>
                             </a>
                         </div>
                         <div class="menu-item">

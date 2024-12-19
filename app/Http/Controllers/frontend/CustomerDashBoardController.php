@@ -33,11 +33,7 @@ public function Bookingform(){
     return view("frontend.Booking_form.booking_form");
 }
 
-// accessories
-function accessories(){
-    $accessories = Accessories::all(); // Lấy toàn bộ danh sách phụ kiện
-    return view('frontend.accessories.accessories', compact('accessories'));
-}
+
 
 public function showDashboard()
 {
@@ -54,9 +50,15 @@ public function registration(){
 }
 
 
+// accessories
+function accessories(){
+    $accessories = Accessories::where('is_deleted', 0)->get(); // Lấy toàn bộ danh sách phụ kiện
+    return view('frontend.accessories.accessories', compact('accessories'));
+}
+
 public function getAccessories()
 {
-    $accessories = Accessories::all(); // Lấy toàn bộ danh sách phụ kiện
+    $accessories = Accessories::where('is_deleted', 0)->get(); // Lấy toàn bộ danh sách phụ kiện
     return response()->json($accessories); // Trả về dạng JSON
 }
 

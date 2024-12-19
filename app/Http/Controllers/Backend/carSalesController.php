@@ -278,22 +278,27 @@ class carSalesController extends Controller
     }
     public function import(Request $request)
     {
-        // Kiểm tra nếu có file được upload
+        // Kiểm tra nếu có file được tải lên
         if ($request->hasFile('file')) {
             // Lấy đường dẫn của file
             $path = $request->file('file')->getRealPath();
 
             // Nhập dữ liệu từ file Excel
-            Excel::import(new CarsImport, $path);
-            toastr()->success('Thêm thành công xe');
+            Excel::import(new AccessoriesImport, $path);
+
+            toastr()->success('Successfully imported accessories!');
             return redirect()->back();
         }
-        toastr()->error('Vui lòng kiểm tra lại file');
 
+        toastr()->error('Please check the file and try again.');
         return back();
     }
+
+    /**
+     * Tải file mẫu Excel cho phụ kiện.
+     */
     public function downloadTemplate()
     {
-        return Excel::download(new CarExport, 'car_add_template.xlsx');
+        return Excel::download(new AccessoriesExport, 'accessories_template.xlsx');
     }
 }

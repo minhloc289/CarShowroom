@@ -105,7 +105,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Authentication</span>
+                        <span class="menu-title">Quản lý order</span>
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
@@ -279,11 +279,11 @@
                         </div>
                         <div class="menu-item">
                             <a class="menu-link"
-                                href="../../demo1/dist/authentication/extended/multi-steps-sign-up.html">
+                                href="{{route('orders.index')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Multi-steps Sign-up</span>
+                                <span class="menu-title">Quản lý Order Sản Phẩm</span>
                             </a>
                         </div>
                         <div class="menu-item">

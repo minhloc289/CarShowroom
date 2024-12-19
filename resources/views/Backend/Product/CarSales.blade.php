@@ -84,6 +84,9 @@
                             <h2 class="text-xl font-bold ms-3 mb-0">{{ $car->brand }} - {{ $car->model }}</h2>
                             <h2 class="text-xl font-bold ms-3 mb-0">{{ $car->name }}</h2>
                             <h2 class="text-xl font-bold ms-3 mb-0">${{ number_format($car->sale->sale_price, 2) }}</h2>
+                            <p class="text-lg text-gray-500 hidden">{{ $car->brand }}</p>
+                            <p class="text-gray-600 hidden">Seats: {{ $car->seat_capacity }}</p>
+                            <p class="text-gray-700 hidden">Engine Type: {{ $car->engine_type }}</p>
                         </div>
                         <div class="d-flex align-items-center">
                             <a href="{{ route('show.car.details', ['carId' => $car->car_id]) }}" class="btn"

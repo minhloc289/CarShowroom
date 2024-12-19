@@ -23,8 +23,7 @@ use App\Http\Controllers\frontend\TransactionController;
 use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
-
-
+use App\Http\Controllers\Backend\RentalCarController;
 
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
@@ -37,14 +36,9 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     /* DASHBOARD */
     Route::get('/dashboard', [DashboardController::class, 'loadDashboard'])->name('dashboard');
 
-    /* USERS */
-    Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
-    // //////////////////////////////////////////////////////////////// Back end
-    //Carsales
+    /* CAR SALES */
     Route::get('/carsales', [carSalesController::class, 'loadCarsales'])->name('Carsales');
-    //cardetails back end
     Route::get('car/{carId}/details', [carSalesController::class, 'show_details_Car'])->name('show.car.details');
-    //edit car
     Route::get('car/{carId}/edit', [carSalesController::class, 'show_edit_car'])->name('show.car.edit');
     Route::put('car/{carId}/update', [carSalesController::class, 'update_car_edit'])->name('car.update');
     Route::post('car/{carId}/destroy', [carSalesController::class, 'destroy'])->name('sales.cars.destroy');
@@ -60,8 +54,22 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/orders/{order}/confirm-payment', [OrderManagementController::class, 'confirmPayment'])->name('orders.confirmPayment');
 
 
+    /* RENTAL CAR */
+    Route::get('/rental-car', [RentalCarController::class, 'loadRentalCar'])->name('rentalCar');
+    Route::post('/rental-cars/filter', [RentalCarController::class, 'filterRentalCars'])->name('rental.car.filter');
+    Route::get('/rental-car/details/{id}', [RentalCarController::class, 'showDetails'])->name('rentalCar.details');
+    Route::get('/rental-car/create', [RentalCarController::class, 'loadCreateForm'])->name('rentalCar.create');
+    Route::post('/rental-car/store', [RentalCarController::class, 'store'])->name('rentalCar.store');
+    Route::get('/rental-car/edit/{id}', [RentalCarController::class, 'loadEditForm'])->name('rentalCar.edit');
+    Route::put('/rental-car/update/{id}', [RentalCarController::class, 'update'])->name('rentalCar.update');
+    Route::put('/rental-car/delete/{id}', [RentalCarController::class, 'delete'])->name('rentalCar.delete');
+    Route::get('/rental-car/record/create', [RentalCarController::class, 'loadRentalExcel'])->name('rentalCar.record.create');
+    Route::get('/rental-car/download-template', [RentalCarController::class, 'downloadTemplate'])->name('rentalCar.download.template');
+    Route::post('/rental-car/import', [RentalCarController::class, 'importExcel'])->name('rentalCar.import');
+    Route::delete('/rental-car/delete-multiple', [RentalCarController::class, 'deleteMultiple'])->name('rentalCar.deleteMultiple');
 
     /* USER CRUD */
+    Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
     Route::get('/user/create', [AdminController::class, 'loadUserCreatePage'])->name('user.create');
     Route::post('/user/create', [AdminController::class, 'createUser'])->name('user.store'); // Unique name for POST
     Route::get('/user/edit/{id}', [AdminController::class, 'loadUserEditPage'])->name('user.edit');

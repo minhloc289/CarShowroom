@@ -30,7 +30,7 @@ Breadcrumbs::for('user.record.create', function (BreadcrumbTrail $trail) {
 });
 
 
-  //Carsales
+//Carsales
 Breadcrumbs::for('carsales', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí sản phẩm', route('Carsales'));
     $trail->push('Quản lý xe bán', route('Carsales'));
@@ -48,6 +48,7 @@ Breadcrumbs::for('carsales.create', function (BreadcrumbTrail $trail) {
     $trail->push('Thêm thông tin xe');
 });
 
+//Customer
 Breadcrumbs::for('customer', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí khách hàng', route('customer'));
     $trail->push('Home', route('dashboard'));
@@ -84,6 +85,31 @@ Breadcrumbs::for('accessories.create', function (BreadcrumbTrail $trail) {
     $trail->parent('Accessories'); // Parent breadcrumb
     $trail->push('Thêm phụ kiện mới');
 });
+
+//Rental Car
+Breadcrumbs::for('rentalCar', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí sản phẩm');
+    $trail->push('Quản lý xe thuê', route('rentalCar'));
+});
+
+Breadcrumbs::for('rentalCar.details', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalCar'); // Parent breadcrumb
+    $trail->push('Chi tiết phụ kiện');
+});
+
+Breadcrumbs::for('rentalCar.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalCar'); // Parent breadcrumb
+    $trail->push('Thêm xe thuê mới');
+});
+
+Breadcrumbs::for('rentalCar.edit', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalCar'); // Parent breadcrumb
+    $trail->push('Chỉnh sửa xe thuê');
+});
+
+Breadcrumbs::for('rentalCar.record.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalCar'); // Parent breadcrumb
+    $trail->push('Thêm bản ghi');
 //order
 Breadcrumbs::for('Order', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí Order', route('orders.index'));

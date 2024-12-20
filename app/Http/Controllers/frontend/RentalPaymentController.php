@@ -129,25 +129,27 @@ class RentalPaymentController extends Controller
                     $payment = RentalPayment::where('transaction_code', $transactionCode)->first();
                     if ($payment) {
                         $order = RentalOrder::find($payment->order_id);
-                        $payment->update(['status_deposit' => 'Successful']);
+                        $payment->update([
+                            'status_deposit' => 'Successful',
+                            'due_date' => now()->addMinutes(5),
+                        ]);
                         if ($order) {
                             $order->update(['status' => 'Deposit Paid']);
-                            if ($payment->remaining_amount <= 0) {
-                                $payment->update(['full_payment_status' => 'Successful']);
-                                $order->update(['status' => 'Paid']); // Cập nhật trạng thái đơn hàng là 'Paid'
-                                // Cập nhật trạng thái xe thuê
-                                $rental = RentalCars::find($order->rental_id);
-                                if ($rental) {
-                                    $rental->update(['availability_status' => 'Rented']);
-                                }
+                            $rental = RentalCars::find($order->rental_id);
+                            if ($rental) {
+                                $rental->update(['availability_status' => 'Rented']);
+                                // if ($payment->remaining_amount <= 0) {
+                                //     $payment->update(['full_payment_status' => 'Successful']);
+                                //     $order->update(['status' => 'Paid']); // Cập nhật trạng thái đơn hàng là 'Paid'
+                                // }
                             }
                         }
                     }
                 }
-                toastr()->success("Thanh toán thành công");
+                toastr()->success("Thanh toán đặt cọc thành công");
                 return redirect()->route('rent.car');
             } else {
-                toastr()->error("Thanh toán thất bại");
+                toastr()->error("Thanh toán đặt cọc thất bại");
                 return redirect()->route('rent.car');
             }
         } else {
@@ -156,47 +158,45 @@ class RentalPaymentController extends Controller
         }
     }
 
-    public function updateFullPaymentStatus(Request $request, $paymentId)
-    {
-        $request->validate([
-            'payment_id' => 'required|exists:rental_payments,payment_id',
-        ]);
+    // public function updateFullPaymentStatus(Request $request, $paymentId)
+    // {
+    //     $request->validate([
+    //         'payment_id' => 'required|exists:rental_payments,payment_id',
+    //     ]);
 
-        // Tìm payment
-        $payment = RentalPayment::find($paymentId);
+    //     // Tìm payment
+    //     $payment = RentalPayment::find($paymentId);
 
-        if (!$payment) {
-            toastr()->error("Không tìm thấy thông tin thanh toán.");
-            return redirect()->back();
-        }
+    //     if (!$payment) {
+    //         toastr()->error("Không tìm thấy thông tin thanh toán.");
+    //         return redirect()->back();
+    //     }
 
-        // Kiểm tra nếu thanh toán còn lại đã thực hiện
-        if ($payment->remaining_amount > 0) {
-            $payment->update([
-                'remaining_amount' => 0, // Số dư còn lại là 0
-                'full_payment_status' => 'Successful', // Đánh dấu đã thanh toán đầy đủ
-                'payment_date' => now(), // Cập nhật thời gian thanh toán
-            ]);
+    //     // Kiểm tra nếu thanh toán còn lại đã thực hiện
+    //     if ($payment->remaining_amount > 0) {
+    //         $payment->update([
+    //             'remaining_amount' => 0, // Số dư còn lại là 0
+    //             'full_payment_status' => 'Successful', // Đánh dấu đã thanh toán đầy đủ
+    //             'payment_date' => now(), // Cập nhật thời gian thanh toán
+    //         ]);
 
-            // Cập nhật trạng thái order
-            $order = RentalOrder::find($payment->order_id);
-            if ($order) {
-                $order->update(['status' => 'Paid']);
+    //         // Cập nhật trạng thái order
+    //         $order = RentalOrder::find($payment->order_id);
+    //         if ($order) {
+    //             $order->update(['status' => 'Paid']);
 
-                // Cập nhật trạng thái xe
-                $rentalCar = RentalCars::find($order->rental_id);
-                if ($rentalCar) {
-                    $rentalCar->update(['availability_status' => 'Rented']);
-                }
-            }
+    //             // Cập nhật trạng thái xe
+    //             $rentalCar = RentalCars::find($order->rental_id);
+    //             if ($rentalCar) {
+    //                 $rentalCar->update(['availability_status' => 'Rented']);
+    //             }
+    //         }
 
-            toastr()->success("Cập nhật trạng thái thanh toán thành công.");
-            return redirect()->route('order.details', ['id' => $order->order_id]);
-        } else {
-            toastr()->warning("Thanh toán đã được hoàn tất trước đó.");
-            return redirect()->back();
-        }
-    }
-
-
+    //         toastr()->success("Cập nhật trạng thái thanh toán thành công.");
+    //         return redirect()->route('order.details', ['id' => $order->order_id]);
+    //     } else {
+    //         toastr()->warning("Thanh toán đã được hoàn tất trước đó.");
+    //         return redirect()->back();
+    //     }
+    // }
 }

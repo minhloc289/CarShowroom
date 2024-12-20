@@ -109,174 +109,6 @@
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
-                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                            <span class="menu-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Basic Flow</span>
-                                <span class="menu-arrow"></span>
-                            </span>
-                            <div class="menu-sub menu-sub-accordion menu-active-bg">
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/basic/sign-in.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Sign-in</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/basic/sign-up.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Sign-up</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/basic/two-steps.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Two-steps</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/basic/password-reset.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Password Reset</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/basic/new-password.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">New Password</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                            <span class="menu-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Aside Flow</span>
-                                <span class="menu-arrow"></span>
-                            </span>
-                            <div class="menu-sub menu-sub-accordion menu-active-bg">
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/aside/sign-in.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Sign-in</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/aside/sign-up.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Sign-up</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/aside/two-steps.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Two-steps</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/aside/password-reset.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Password Reset</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/aside/new-password.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">New Password</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                            <span class="menu-link">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Dark Flow</span>
-                                <span class="menu-arrow"></span>
-                            </span>
-                            <div class="menu-sub menu-sub-accordion menu-active-bg">
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/dark/sign-in.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Sign-in</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/dark/sign-up.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Sign-up</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/dark/two-steps.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Two-steps</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/dark/password-reset.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Password Reset</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/flows/dark/new-password.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">New Password</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                         <div class="menu-item">
                             <a class="menu-link"
                                 href="{{route('orders.index')}}">
@@ -288,11 +120,11 @@
                         </div>
                         <div class="menu-item">
                             <a class="menu-link"
-                                href="../../demo1/dist/authentication/extended/free-trial-sign-up.html">
+                                href="{{route('rentalOrders')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Free Trial Sign-up</span>
+                                <span class="menu-title">Quản lí Order Thuê Xe</span>
                             </a>
                         </div>
                         <div class="menu-item">

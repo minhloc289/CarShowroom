@@ -12,8 +12,13 @@ Artisan::command('inspire', function () {
 Artisan::command('rental:expire-payments', function () {
     $this->comment('Expired payments');
 })->purpose('Expire payments');
-
 Schedule::command('rental:expire-payments')->everyFiveMinutes();
+
+Artisan::command('payments:check-due-date', function () {
+    $this->comment('Check due date payments');
+})->purpose('Check due date payments');
+Schedule::command('payments:check-due-date')->hourly();
+
 Artisan::command('payment:check-status', function () {
     // Cập nhật trạng thái status_deposit
     $this->info("Đang kiểm tra trạng thái status_deposit...");

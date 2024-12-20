@@ -8,6 +8,12 @@ Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
     $trail->push('Home', route('dashboard'));
 });
 
+Breadcrumbs::for('profile', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí hồ sơ lý lịch');
+    $trail->push('Home', route('dashboard'));
+    $trail->push('Chỉnh sửa hồ sơ', route('profile'));
+});
+
 Breadcrumbs::for('user', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí nhân viên', route('user'));
     $trail->push('Home', route('dashboard'));
@@ -110,6 +116,8 @@ Breadcrumbs::for('rentalCar.edit', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('rentalCar.record.create', function (BreadcrumbTrail $trail) {
     $trail->parent('rentalCar'); // Parent breadcrumb
     $trail->push('Thêm bản ghi');
+});
+
 //order
 Breadcrumbs::for('Order', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí Order', route('orders.index'));
@@ -118,4 +126,20 @@ Breadcrumbs::for('Order', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('order.details', function (BreadcrumbTrail $trail) {
     $trail->parent('Order'); // Parent breadcrumb
     $trail->push('Chi tiết Order');
+});
+
+//Rental Order
+Breadcrumbs::for('rentalOrders', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí Order');
+    $trail->push('Theo dõi đơn hàng', route('rentalOrders'));
+});
+
+Breadcrumbs::for('rentalOrders.details', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalOrders');
+    $trail->push('Chi tiết đơn hàng');  
+});
+
+Breadcrumbs::for('rentalOrders.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalOrders');
+    $trail->push('Thêm đơn hàng');  
 });

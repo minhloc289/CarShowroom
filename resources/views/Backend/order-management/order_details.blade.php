@@ -141,18 +141,20 @@
             <p><strong>Tổng tiền:</strong> {{ number_format($totalAmount, 0, ',', '.') }} VNĐ</p>
             <p><strong>Số tiền còn lại:</strong> {{ number_format($remainingAmount, 0, ',', '.') }} VNĐ</p>
             <p><strong>Hạn thanh toán:</strong> {{ optional($order->payments->first())->payment_deadline ?? 'Chưa cập nhật' }}</p>
-            <p style="padding: 8px 0px;"><strong>Trạng thái thanh toán:</strong>
-                <span style="font-size: 14px; background-color: {{ $statusColorPayment }}; color: {{ $colorTextPayment }}; padding: 8px 12px; border-radius: 12px; text-align: center;">
-                    {{ $statusTextPayment }}
-                </span>
-            </p>
+            @if (optional($order->payments->first())->status_deposit != 2) 
+                <p style="padding: 8px 0px;"><strong>Trạng thái thanh toán:</strong>
+                    <span style="font-size: 14px; background-color: {{ $statusColorPayment }}; color: {{ $colorTextPayment }}; padding: 8px 12px; border-radius: 12px; text-align: center;">
+                        {{ $statusTextPayment }}
+                    </span>
+                </p>
+            @endif
         </div>
     </div>
 
     <!-- Nút hành động -->
     <div class="text-end d-flex justify-content-end align-items-center gap-2">
         <a href="{{ route('orders.index') }}" class="btn btn-secondary">Quay lại danh sách</a>
-        @if (optional($order->payments->first())->status_payment_all != 1) 
+        @if (optional($order->payments->first())->status_payment_all != 1&&optional($order->payments->first())->status_deposit != 2) 
             <form action="{{route('orders.confirmPayment',['order'=>$order->order_id])}}" method="POST" style="margin: 0;">
                 @csrf
                 <button type="submit" class="btn btn-success">Xác nhận thanh toán</button>

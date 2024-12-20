@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Order; // Import model Order
 use App\Models\Payment; // Import model Payment
 use App\Models\SalesCars; // Import model SalesCars
-use App\Models\Account; 
-use App\Models\CarDetails; 
+use App\Models\Account;
+use App\Models\Accessories;
+use App\Models\CarDetails;
 use Illuminate\Http\Request;
 
 class OrderManagementController extends Controller
@@ -28,7 +29,7 @@ class OrderManagementController extends Controller
         // Tìm đơn hàng theo ID
         $order = Order::findOrFail($order);
         $payment = $order->payments->first();
-        
+
 
         // Cập nhật trạng thái đơn hàng và thanh toán
         $order->update(['status_order' => 1]); // Cập nhật trạng thái đơn hàng thành Hoàn tất
@@ -41,7 +42,7 @@ class OrderManagementController extends Controller
             ]);
         }
         toastr()->success('Thanh toán thành công');
-        
+
         return redirect()->back();
     }
     public function addCar()
@@ -50,17 +51,18 @@ class OrderManagementController extends Controller
         $cars = CarDetails::whereHas('salesCars', function ($query) {
             $query->where('is_deleted', 0);
         })->with('sale')->get();
-    
+        $accessories = Accessories::all();
+
         // Nhóm xe theo thương hiệu
         $carsByBrand = $cars->groupBy('brand');
-    
+
         // Lấy danh sách tất cả tài khoản khách hàng
         $accounts = Account::select('id', 'name', 'email', 'phone', 'address')->get();
-    
+
         // Trả về view với dữ liệu xe và tài khoản
-        return view('Backend.order-management.order_car_add', compact('cars', 'carsByBrand', 'accounts'));
+        return view('Backend.order-management.order_car_add', compact('cars', 'carsByBrand', 'accounts', 'accessories'));
     }
-    
+
     public function storeOrder(Request $request)
     {
 
@@ -84,9 +86,9 @@ class OrderManagementController extends Controller
             'email' => $request->customer_email,
             'address' => $request->customer_address,
         ]);
-    
+
         // Kiểm tra nếu xe đã tồn tại trong đơn hàng khác
-    
+
         // Tạo một đơn hàng mới
         $order = Order::create([
             'account_id' => $account->id,
@@ -94,7 +96,7 @@ class OrderManagementController extends Controller
             'status_order' => $request->payment_method === 'full' ? 1 : 0, // Hoàn tất nếu thanh toán toàn bộ
             'order_date' => now()->toDateString(),
         ]);
-    
+
         // Tạo payment mới
         $paymentData = [
             'order_id' => $order->order_id,
@@ -105,7 +107,7 @@ class OrderManagementController extends Controller
             'deposit_deadline' => now()->addDays(1), // Hạn đặt cọc là 7 ngày
             'payment_deadline' => now()->addDays(30), // Hạn thanh toán toàn bộ là 30 ngày
         ];
-    
+
         if ($request->payment_method === 'full') {
             $paymentData['status_deposit'] = 1; // Đã đặt cọc
             $paymentData['status_payment_all'] = 1; // Đã thanh toán toàn bộ
@@ -118,13 +120,13 @@ class OrderManagementController extends Controller
             $paymentData['deposit_amount'] = $request->deposit_amount;
             $paymentData['remaining_amount'] = $request->remaining_amount;
         }
-    
+
         Payment::create($paymentData);
-    
+
         // Điều hướng về trang danh sách đơn hàng với thông báo thành công
         toastr()->success('Thêm đơn hàng thành công');
         return redirect()->route('orders.index');
     }
-    
+
 
 }

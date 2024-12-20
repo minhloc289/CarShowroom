@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,7 +13,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->string('order_id')->primary(); // Khóa chính dạng string
             $table->string('account_id'); // Khóa ngoại với bảng accounts
-            $table->unsignedBigInteger('sale_id'); // Khóa ngoại với bảng sales_cars
+            $table->unsignedBigInteger('sale_id')->nullable(); // Khóa ngoại với bảng sales_cars
             $table->tinyInteger('status_order')->default(0); // 0: Chờ, 1: Thành công, 2: Hủy
             $table->date('order_date'); // Thêm cột ngày đặt hàng
             $table->timestamps();

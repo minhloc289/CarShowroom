@@ -110,6 +110,7 @@ Breadcrumbs::for('rentalCar.edit', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('rentalCar.record.create', function (BreadcrumbTrail $trail) {
     $trail->parent('rentalCar'); // Parent breadcrumb
     $trail->push('Thêm bản ghi');
+});
 //order
 Breadcrumbs::for('Order', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí Order', route('orders.index'));
@@ -118,4 +119,8 @@ Breadcrumbs::for('Order', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('order.details', function (BreadcrumbTrail $trail) {
     $trail->parent('Order'); // Parent breadcrumb
     $trail->push('Chi tiết Order');
+});
+Breadcrumbs::for('order.add.car', function (BreadcrumbTrail $trail) {
+    $trail->parent('Order'); // Parent breadcrumb
+    $trail->push('Thêm Order Xe');
 });

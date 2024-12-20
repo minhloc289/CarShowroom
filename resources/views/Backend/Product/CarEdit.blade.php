@@ -94,6 +94,25 @@
                     rows="4">{{ $carDetail->description }}</textarea>
             </div>
 
+            <!-- Thêm các trường mới -->
+            <div class="mb-3">
+                <label for="acceleration_time" class="form-label">Thời gian tăng tốc (giây)</label>
+                <input type="number" step="0.1" class="form-control" id="acceleration_time" name="acceleration_time"
+                    value="{{ $carDetail->acceleration_time ?? '' }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="fuel_efficiency" class="form-label">Hiệu suất nhiên liệu (km/L)</label>
+                <input type="number" step="0.1" class="form-control" id="fuel_efficiency" name="fuel_efficiency"
+                    value="{{ $carDetail->fuel_efficiency ?? '' }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="torque" class="form-label">Mô-men xoắn (Nm)</label>
+                <input type="number" step="0.1" class="form-control" id="torque" name="torque"
+                    value="{{ $carDetail->torque ?? '' }}" required>
+            </div>
+
             <!-- Thông tin từ bảng sales_cars -->
             <div class="mb-3">
                 <label for="sale_price" class="form-label">Giá bán</label>

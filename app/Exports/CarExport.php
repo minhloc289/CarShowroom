@@ -35,6 +35,9 @@ class CarExport implements WithHeadings, WithStyles, WithColumnWidths, FromArray
             'sale_conditions',
             'image_url',
             'quantity',
+            'acceleration_time',
+            'fuel_efficiency',
+            'torque',
         ];
     }
 
@@ -64,6 +67,9 @@ class CarExport implements WithHeadings, WithStyles, WithColumnWidths, FromArray
                 'Brand new, full warranty',
                 'https://hyundaingocphat.com.vn/wp-content/uploads/2023/09/hyundai-custin-c-230915.jpg',
                 '2',
+                3.5, // acceleration_time
+                15.8, // fuel_efficiency
+                850, // torque
             ],
             [
                 'Hyundai',
@@ -85,6 +91,33 @@ class CarExport implements WithHeadings, WithStyles, WithColumnWidths, FromArray
                 'Certified pre-owned',
                 'https://porsche-vietnam.vn/wp-content/uploads/2021/01/j1-taycan-modelimage-sideshot.png',
                 '3',
+                8.5, // acceleration_time
+                12.3, // fuel_efficiency
+                320, // torque
+            ],
+            [
+                'Toyota',
+                'Corolla',
+                'Altis',
+                '2022',
+                'Hybrid',
+                '5',
+                '180 HP',
+                '200 km/h',
+                '13 cubic feet',
+                '4650',
+                '1775',
+                '1435',
+                'Mô tả chi tiết',
+                '30000',
+                'Available',
+                '36',
+                'Certified with warranty',
+                'https://example.com/toyota-corolla.jpg',
+                '4',
+                9.0, // acceleration_time
+                20.0, // fuel_efficiency
+                400, // torque
             ],
         ];
     }
@@ -96,7 +129,7 @@ class CarExport implements WithHeadings, WithStyles, WithColumnWidths, FromArray
     {
         return [
             1 => ['font' => ['bold' => true]], // In đậm tiêu đề hàng đầu tiên
-            'A1:S1' => ['alignment' => ['horizontal' => 'center']],
+            'A1:V1' => ['alignment' => ['horizontal' => 'center']],
         ];
     }
 
@@ -104,7 +137,7 @@ class CarExport implements WithHeadings, WithStyles, WithColumnWidths, FromArray
      * Độ rộng của các cột
      */
     public function columnWidths(): array
-    {
+    { 
         return [
             'A' => 15, // brand
             'B' => 20, // name
@@ -125,6 +158,9 @@ class CarExport implements WithHeadings, WithStyles, WithColumnWidths, FromArray
             'Q' => 30, // sale_conditions
             'R' => 50, // image_url
             'S' => 10, // quantity
+            'T' => 20, // acceleration_time
+            'U' => 20, // fuel_efficiency
+            'V' => 20, // torque
         ];
     }
 }

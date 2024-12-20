@@ -15,6 +15,9 @@ class Kernel extends ConsoleKernel
     {
         // Đặt lịch cho các lệnh
         $schedule->command('rental:expire-payments')->everyFiveMinutes();
+        $schedule->command('payment:check-status')
+        ->daily() // Chạy mỗi ngày vào nửa đêm
+        ->appendOutputTo(storage_path('logs/payment_check_status.log')); // Ghi nhật ký
     }
     
 

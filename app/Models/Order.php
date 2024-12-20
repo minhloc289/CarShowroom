@@ -17,6 +17,7 @@ class Order extends Model
         'order_id',
         'account_id',
         'sale_id',
+        'accessory_id',
         'status_order',
         'order_date', // Thêm thuộc tính vào $fillable
     ];
@@ -36,7 +37,10 @@ class Order extends Model
     {
         return $this->belongsTo(SalesCars::class, 'sale_id', 'sale_id');
     }
-
+    public function accessory()
+    {
+        return $this->belongsTo(Accessories::class, 'accessory_id', 'accessory_id');
+    }
     /**
      * Quan hệ với Payment
      */
@@ -54,7 +58,7 @@ class Order extends Model
 
         static::creating(function ($model) {
             $lastOrder = Order::orderBy('order_id', 'desc')->first();
-            $nextId = $lastOrder ? ((int)substr($lastOrder->order_id, 3)) + 1 : 1;
+            $nextId = $lastOrder ? ((int) substr($lastOrder->order_id, 3)) + 1 : 1;
             $model->order_id = 'ORD' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
 
             // Gán ngày hiện tại nếu chưa có

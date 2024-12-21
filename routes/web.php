@@ -57,7 +57,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/orders/{order}/detail', [OrderManagementController::class, 'detail'])->name('orders.detail');
     Route::post('/orders/{order}/confirm-payment', [OrderManagementController::class, 'confirmPayment'])->name('orders.confirmPayment');
     Route::get('/orders/car/add', [OrderManagementController::class, 'addCar'])->name('orders.car.add');
-    Route::post('/orders/store', [OrderManagementController::class, 'storeOrder'])->name('orders.store');
+    Route::post('/orders/store', [OrderManagementController::class, 'store'])->name('orders.store');
 
     /* RENTAL ORDER */
     Route::get('/rental-orders', [RentalOrderController::class, 'index'])->name('rentalOrders');

@@ -63,27 +63,27 @@
 
     <div id="carsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
       @foreach ($cars as $index => $car)
-          @if ($car->sale) <!-- Kiểm tra nếu car->sale tồn tại -->
-          <div class="car-item border bg-white shadow-lg p-4 rounded-lg text-center" data-index="{{ $index }}">
-          <h2 class="text-2xl font-bold">{{ $car->name }}</h2>
-          <p class="text-lg text-gray-500">{{ $car->brand }} - {{ $car->model }}</p>
-          <p class="text-sm text-gray-400">Year: {{ $car->year }}</p>
-          <img src="{{ $car->image_url }}" alt="{{ $car->name }}" class="w-full h-auto my-4 rounded-lg">
-          <p class="text-gray-600">Seats: {{ $car->seat_capacity }}</p>
-          <p class="text-gray-600">Engine Type: {{ $car->engine_type }}</p> <!-- Thêm engine_type -->
-          <p class="text-gray-600">Max Speed: {{ $car->max_speed }} km/h</p>
-          @if ($car->sale)
-          <p class="text-gray-600">Price: ${{ number_format($car->sale->sale_price, 2) }}</p>
-          <p class="text-gray-600">Status: {{ $car->sale->availability_status }}</p>
-        @endif
-          <div class="mt-auto flex justify-center space-x-4 mb-5">
-          <a href="{{ route('cars.details', $car->car_id) }}"><button
-            class="text-blue-500 text-sm font-semibold hover:underline">View Details→</button></a>
-          <a href="{{ route('car.buy', ['id' => $car->car_id]) }}"><button type="button"
-            class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Buy</button></a>
-          </div>
-          </div>
-        @endif
+      @if ($car->sale) <!-- Kiểm tra nếu car->sale tồn tại -->
+      <div class="car-item border bg-white shadow-lg p-4 rounded-lg text-center" data-index="{{ $index }}">
+      <h2 class="text-2xl font-bold">{{ $car->name }}</h2>
+      <p class="text-lg text-gray-500">{{ $car->brand }} - {{ $car->model }}</p>
+      <p class="text-sm text-gray-400">Year: {{ $car->year }}</p>
+      <img src="{{ $car->image_url }}" alt="{{ $car->name }}" class="w-full h-auto my-4 rounded-lg">
+      <p class="text-gray-600">Seats: {{ $car->seat_capacity }}</p>
+      <p class="text-gray-600">Engine Type: {{ $car->engine_type }}</p> <!-- Thêm engine_type -->
+      <p class="text-gray-600">Max Speed: {{ $car->max_speed }} km/h</p>
+      @if ($car->sale)
+      <p class="text-gray-600">Price: ${{ number_format($car->sale->sale_price, 2) }}</p>
+      <p class="text-gray-600">Status: {{ $car->sale->availability_status }}</p>
+    @endif
+      <div class="mt-auto flex justify-center space-x-4 mb-5">
+      <a href="{{ route('cars.details', $car->car_id) }}"><button
+        class="text-blue-500 text-sm font-semibold hover:underline">View Details→</button></a>
+      <a href="{{ route('car.buy', ['id' => $car->car_id]) }}"><button type="button"
+        class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Buy</button></a>
+      </div>
+      </div>
+    @endif
     @endforeach
     </div>
 

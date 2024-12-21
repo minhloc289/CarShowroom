@@ -1,184 +1,109 @@
 @extends('Backend.dashboard.layout')
 
 @section('content')
-<x-breadcrumbs breadcrumb="order.details" />
+    <x-breadcrumbs breadcrumb="order.details" />
+    <div class="container custom-width w-95 ml-4 mt-8 p-6 bg-white shadow-lg rounded-lg">
+        <!-- Tiêu đề -->
+        <h2 class="text-2xl font-bold text-blue-600 mb-6">
+            Chi tiết đơn hàng: <span class="text-gray-800">{{ $order->order_id }}</span>
+        </h2>
 
-<div class="container">
-    <h1 class="mb-4">Chi tiết đơn hàng</h1>
-
-    <!-- Thông tin đơn hàng và thanh toán trong một ô -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <div class="row">
-                <!-- Thông tin đơn hàng -->
-                <div class="col-md-6">
-                    <h3>Thông tin đơn hàng</h3>
-                    @php
-                        $statusOrderText = '';
-                        $statusOrderColor = '#e3e3e3'; // Default background color
-                        $statusOrderTextColor = '#1e1e1e'; // Default text color
-
-                        switch ($order->status_order) {
-                            case 0:
-                                $statusOrderText = 'Đang xử lý';
-                                $statusOrderColor = '#ffc107'; // Yellow
-                                $statusOrderTextColor = '#000';
-                                break;
-                            case 1:
-                                $statusOrderText = 'Hoàn tất';
-                                $statusOrderColor = '#28a745'; // Green
-                                $statusOrderTextColor = '#fff';
-                                break;
-                            case 2:
-                                $statusOrderText = 'Đã hủy';
-                                $statusOrderColor = '#dc3545'; // Red
-                                $statusOrderTextColor = '#fff';
-                                break;
-                        }
-                    @endphp
-                    <p style="padding: 8px 0px;"><strong>Trạng thái:</strong>
-                        <span
-                            style="font-size: 14px; background-color: {{ $statusOrderColor }}; color: {{ $statusOrderTextColor }}; padding: 8px 12px; border-radius: 12px; text-align: center;">
-                            {{ $statusOrderText }}
-                        </span>
-                    </p>
-                    <p><strong>Mã đơn hàng:</strong> {{ $order->order_id }}</p>
-                    <p><strong>Ngày tạo:</strong> {{ $order->order_date }}</p>
-                    <p><strong>Khách hàng:</strong> {{ optional($order->account)->name ?? 'Không có tên' }}</p>
-                    <p><strong>Email:</strong> {{ optional($order->account)->email ?? 'Không có email' }}</p>
-                    <p><strong>Số điện thoại:</strong>
-                        {{ optional($order->account)->phone ?? 'Không có số điện thoại' }}</p>
-                </div>
-
-                <!-- Thông tin thanh toán -->
-                <div class="col-md-6">
-                    <h3>Thông tin thanh toán</h3>
-                    @php
-                        $statusDeposit = optional($order->payments->first())->status_deposit;
-                        $statusTextDeposit = '';
-                        $statusColorDeposit = '#e3e3e3'; // Default background color
-                        $colorTextDeposit = '#1e1e1e'; // Default text color
-
-                        switch ($statusDeposit) {
-                            case 0:
-                                $statusTextDeposit = 'Đang chờ đặt cọc';
-                                $statusColorDeposit = '#ffc107'; // Yellow
-                                $colorTextDeposit = '#000';
-                                break;
-                            case 1:
-                                $statusTextDeposit = 'Đã đặt cọc';
-                                $statusColorDeposit = '#28a745'; // Green
-                                $colorTextDeposit = '#fff';
-                                break;
-                            case 2:
-                                $statusTextDeposit = 'Không đặt cọc';
-                                $statusColorDeposit = '#dc3545'; // Red
-                                $colorTextDeposit = '#fff';
-                                break;
-                        }
-
-                        $statusPayment = optional($order->payments->first())->status_payment_all;
-                        $statusTextPayment = '';
-                        $statusColorPayment = '#e3e3e3'; // Default background color
-                        $colorTextPayment = '#1e1e1e'; // Default text color
-
-                        switch ($statusPayment) {
-                            case 0:
-                                $statusTextPayment = 'Đang chờ thanh toán';
-                                $statusColorPayment = '#ffc107'; // Yellow
-                                $colorTextPayment = '#000';
-                                break;
-                            case 1:
-                                $statusTextPayment = 'Đã thanh toán';
-                                $statusColorPayment = '#28a745'; // Green
-                                $colorTextPayment = '#fff';
-                                break;
-                            case 2:
-                                $statusTextPayment = 'Không thanh toán';
-                                $statusColorPayment = '#dc3545'; // Red
-                                $colorTextPayment = '#fff';
-                                break;
-                        }
-
-                        $depositAmount = $statusDeposit == 1 ? (optional($order->payments->first())->deposit_amount ?? 0) : 0;
-                        $totalAmount = optional($order->payments->first())->total_amount ?? 0;
-                        $remainingAmount = $statusDeposit == 1 ? (optional($order->payments->first())->remaining_amount ?? 0) : $totalAmount;
-                        $depositDeadline = optional($order->payments->first())->deposit_deadline;
-                    @endphp
-                    <p><strong>Số tiền đặt cọc:</strong>
-                        {{ $depositAmount == 0 ? '0đ' : number_format($depositAmount, 0, ',', '.') . ' VNĐ' }}</p>
-                    <p style="padding: 8px 0px;"><strong>Trạng thái đặt cọc:</strong>
-                        <span
-                            style="font-size: 14px; background-color: {{ $statusColorDeposit }}; color: {{ $colorTextDeposit }}; padding: 8px 12px; border-radius: 12px; text-align: center;">
-                            {{ $statusTextDeposit }}
-                        </span>
-                    </p>
-                    @if ($statusDeposit == 0)
-                        <p><strong>Hạn đặt cọc:</strong> {{ $depositDeadline ?? 'Chưa cập nhật' }}</p>
-                    @endif
-                    <p><strong>Tổng tiền:</strong> {{ number_format($totalAmount, 0, ',', '.') }} VNĐ</p>
-                    <p><strong>Số tiền còn lại:</strong> {{ number_format($remainingAmount, 0, ',', '.') }} VNĐ</p>
-                    <p><strong>Hạn thanh toán:</strong>
-                        {{ optional($order->payments->first())->payment_deadline ?? 'Chưa cập nhật' }}</p>
-                    @if (optional($order->payments->first())->status_deposit != 2)
-                        <p style="padding: 8px 0px;"><strong>Trạng thái thanh toán:</strong>
-                            <span
-                                style="font-size: 14px; background-color: {{ $statusColorPayment }}; color: {{ $colorTextPayment }}; padding: 8px 12px; border-radius: 12px; text-align: center;">
-                                {{ $statusTextPayment }}
-                            </span>
-                        </p>
-                    @endif
-                </div>
+        <!-- Thông tin khách hàng -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Thông tin khách hàng</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <p class="text-gray-600"><strong>Khách hàng:</strong> {{ $order->account->name ?? 'Không có thông tin' }}</p>
+                <p class="text-gray-600"><strong>Email:</strong> {{ $order->account->email ?? 'Không có thông tin' }}</p>
+                <p class="text-gray-600"><strong>Số điện thoại:</strong> {{ $order->account->phone ?? 'Không có thông tin' }}</p>
+                <p class="text-gray-600"><strong>Ngày tạo:</strong> {{ \Carbon\Carbon::parse($order->order_date)->format('d/m/Y H:i') }}</p>
             </div>
         </div>
-    </div>
 
-    <!-- Thông tin xe -->
-    <div class="card mb-4">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <img src="{{ optional(optional($order->salesCar)->carDetails)->image_url ?? asset('images/default-car.jpg') }}"
-                    class="img-fluid rounded-start"
-                    alt="{{ optional(optional($order->salesCar)->carDetails)->name ?? 'Tên xe' }}">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h3>Thông tin xe</h3>
-                    <p><strong>Thương hiệu:</strong>
-                        {{ optional(optional($order->salesCar)->carDetails)->brand ?? 'Chưa cập nhật' }}</p>
-                    <p><strong>Tên xe:</strong>
-                        {{ optional(optional($order->salesCar)->carDetails)->name ?? 'Chưa cập nhật' }}</p>
-                    <p><strong>Model:</strong>
-                        {{ optional(optional($order->salesCar)->carDetails)->model ?? 'Chưa cập nhật' }}</p>
-                    <p><strong>Năm sản xuất:</strong>
-                        {{ optional(optional($order->salesCar)->carDetails)->year ?? 'Chưa cập nhật' }}</p>
-                    <p><strong>Loại động cơ:</strong>
-                        {{ optional(optional($order->salesCar)->carDetails)->engine_type ?? 'Chưa cập nhật' }}</p>
-                    <p><strong>Công suất:</strong>
-                        {{ optional(optional($order->salesCar)->carDetails)->engine_power ?? 'Chưa cập nhật' }}</p>
-                    <p><strong>Dung tích cốp:</strong>
-                        {{ optional(optional($order->salesCar)->carDetails)->trunk_capacity ?? 'Chưa cập nhật' }}</p>
-                    <p><strong>Kích thước:</strong>
-                        {{ optional(optional($order->salesCar)->carDetails)->length ?? '-' }} x
-                        {{ optional(optional($order->salesCar)->carDetails)->width ?? '-' }} x
-                        {{ optional(optional($order->salesCar)->carDetails)->height ?? '-' }} mm
-                    </p>
-
+        <!-- Thông tin xe và phụ kiện -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Thông tin sản phẩm</h3>
+            @if ($order->salesCar)
+                <div class="mb-4">
+                    <h4 class="text-md font-bold text-gray-700">Thông tin xe</h4>
+                    <div class="border border-gray-300 bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <p class="text-gray-600"><strong>Thương hiệu:</strong> {{ $order->salesCar->carDetails->brand ?? 'Không có thông tin' }}</p>
+                        <p class="text-gray-600"><strong>Tên xe:</strong> {{ $order->salesCar->carDetails->name ?? 'Không có thông tin' }}</p>
+                        <p class="text-gray-600"><strong>Model:</strong> {{ $order->salesCar->carDetails->model ?? 'Không có thông tin' }}</p>
+                        <p class="text-gray-600"><strong>Năm sản xuất:</strong> {{ $order->salesCar->carDetails->year ?? 'Không có thông tin' }}</p>
+                        <p class="text-gray-600"><strong>Giá:</strong> {{ number_format($order->salesCar->sale_price, 0, ',', '.') }} VNĐ</p>
+                    </div>
                 </div>
-            </div>
+            @endif
+
+            @if ($order->accessories->isNotEmpty())
+                <div class="mb-4">
+                    <h4 class="text-md font-bold text-gray-700">Thông tin phụ kiện</h4>
+                    @foreach ($order->accessories as $accessory)
+                        <div class="border border-gray-300 bg-gray-50 p-4 rounded-lg shadow-sm mb-4">
+                            <p class="text-gray-600"><strong>Tên phụ kiện:</strong> {{ $accessory->name }}</p>
+                            <p class="text-gray-600"><strong>Số lượng:</strong> {{ $accessory->pivot->quantity }}</p>
+                            <p class="text-gray-600"><strong>Giá mỗi sản phẩm:</strong> {{ number_format($accessory->pivot->price, 0, ',', '.') }} VNĐ</p>
+                            <p class="text-gray-600"><strong>Tổng:</strong> {{ number_format($accessory->pivot->quantity * $accessory->pivot->price, 0, ',', '.') }} VNĐ</p>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+            @if (!$order->salesCar && $order->accessories->isEmpty())
+                <p class="text-gray-600">Không có thông tin sản phẩm liên quan đến đơn hàng này.</p>
+            @endif
+        </div>
+
+        <!-- Thông tin thanh toán -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-700 mb-4">Thông tin thanh toán</h3>
+            @php
+                $payment = $order->payments->first();
+            @endphp
+            @if ($payment)
+                <p class="text-gray-600"><strong>Tổng tiền:</strong> {{ number_format($payment->total_amount, 0, ',', '.') }} VNĐ</p>
+                <p class="text-gray-600"><strong>Đặt cọc:</strong> {{ number_format($payment->deposit_amount, 0, ',', '.') }} VNĐ</p>
+                <p class="text-gray-600"><strong>Số tiền còn lại:</strong> {{ number_format($payment->remaining_amount, 0, ',', '.') }} VNĐ</p>
+                <p class="text-gray-600"><strong>Trạng thái thanh toán:</strong>
+                    <span class="px-3 py-1 rounded-full text-sm font-medium 
+                        @if ($payment->status_payment_all == 1) bg-green-200 text-green-800
+                        @elseif ($payment->status_payment_all == 0) bg-yellow-200 text-yellow-800
+                        @elseif ($payment->status_payment_all == 2) bg-red-200 text-red-800
+                        @endif">
+                        @switch($payment->status_payment_all)
+                            @case(1)
+                                Đã thanh toán
+                                @break
+                            @case(0)
+                                Đang chờ thanh toán
+                                @break
+                            @case(2)
+                                Không thanh toán
+                                @break
+                            @default
+                                Không xác định
+                        @endswitch
+                    </span>
+                </p>
+            @else
+                <p class="text-gray-600">Không tìm thấy thông tin thanh toán cho đơn hàng này.</p>
+            @endif
+        </div>
+
+        <!-- Nút quay lại -->
+        <div class="text-center flex justify-center space-x-4">
+            <!-- Nút thanh toán nếu chưa thanh toán -->
+            @if ($payment && $payment->status_payment_all == 0)
+                <form action="{{ route('orders.confirmPayment', ['order' => $order->order_id]) }}" method="POST" class="inline-block">
+                    @csrf
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg">
+                        Xác nhận thanh toán
+                    </button>
+                </form>
+            @endif
+            <a href="{{ route('orders.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-lg">
+                Quay lại danh sách
+            </a>
         </div>
     </div>
-
-    <!-- Nút hành động -->
-    <div class="text-end d-flex justify-content-end align-items-center gap-2">
-        <a href="{{ route('orders.index') }}" class="btn btn-secondary">Quay lại danh sách</a>
-        @if (optional($order->payments->first())->status_payment_all != 1 && optional($order->payments->first())->status_deposit != 2)
-            <form action="{{route('orders.confirmPayment', ['order' => $order->order_id])}}" method="POST"
-                style="margin: 0;">
-                @csrf
-                <button type="submit" class="btn btn-success">Xác nhận thanh toán</button>
-            </form>
-        @endif
-    </div>
-</div>
 @endsection

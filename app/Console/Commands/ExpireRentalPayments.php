@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use App\Models\RentalPayment;
 use App\Models\RentalOrder;
 use App\Models\RentalReceipt;
+use App\Models\RentalCars;
 
 class ExpireRentalPayments extends Command
 {
@@ -43,6 +44,10 @@ class ExpireRentalPayments extends Command
             $order = RentalOrder::find($payment->order_id);
             if ($order) {
                 $order->update(['status' => 'Canceled']);
+                $rental_car = RentalCars::find($order->rental_id);
+                if ($rental_car && $rental_car->availability_status === 'Rented') {
+                    $rental_car->update(['availability_status' => 'Available']);
+                }
             }
 
             $receipt = RentalReceipt::where('order_id', $payment->order_id)->first();

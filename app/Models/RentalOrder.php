@@ -36,4 +36,9 @@ class RentalOrder extends Model
     {
         return $this->belongsTo(RentalCars::class, 'rental_id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(Account::class, 'user_id', 'id');
+    }
 }

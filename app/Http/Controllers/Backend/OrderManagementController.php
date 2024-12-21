@@ -129,70 +129,94 @@ class OrderManagementController extends Controller
     // }
 
     public function store(Request $request)
-{
-    dd($request->all());
-    $validated = $request->validate([
-        'account_id' => 'required|exists:accounts,id', // Kiểm tra account_id hợp lệ
-        'customer_phone' => 'required',
-        'customer_name' => 'required',
-        'customer_email' => 'required|email',
-        'customer_address' => 'required',
-        'selected_car' => 'nullable|string|exists:sales_cars,sale_id',
-        'selected_accessories' => 'nullable|array',
-        // 'selected_accessories.*.accessory_id' => 'required|exists:accessories,accessory_id',
-        // 'selected_accessories.*.quantity' => 'required|integer|min:1',
-        'payment_method' => 'required|in:full,deposit', // Kiểm tra phương thức thanh toán
-    ]);
-    // dd($validated['selected_accessories']);
+    {
+        // Xóa phần tử có index 0 trong selected_accessories nếu tồn tại
+        if ($request->has('selected_accessories') && is_array($request->input('selected_accessories'))) {
+            $selectedAccessories = $request->input('selected_accessories');
+            unset($selectedAccessories[0]); // Xóa phần tử với index 0
+            $selectedAccessories = array_values($selectedAccessories); // Sắp xếp lại index của mảng
 
-    // Tính tổng giá trị đơn hàng
-    $totalAmount = 0;
-
-    // Giá xe
-    if ($request->selected_car) {
-        $car = SalesCars::find($request->selected_car);
-        $totalAmount += $car->sale_price;
-    }
-
-    // Giá phụ kiện
-    if ($request->has('selected_accessories') && !empty($request->selected_accessories)) {
-        foreach ($request->selected_accessories as $accessoryData) {
-            $accessory = Accessories::find($accessoryData['accessory_id']);
-            $totalAmount += $accessory->price * $accessoryData['quantity'];
+            // Cập nhật lại dữ liệu trong request
+            $request->merge(['selected_accessories' => $selectedAccessories]);
         }
+
+        // Tiến hành validate dữ liệu
+        $validated = $request->validate([
+            'account_id' => 'required|exists:accounts,id', // Kiểm tra account_id hợp lệ
+            'customer_phone' => 'required',
+            'customer_name' => 'required',
+            'customer_email' => 'required|email',
+            'customer_address' => 'required',
+            'selected_car' => 'nullable|string|exists:sales_cars,sale_id',
+            'selected_accessories' => 'nullable|array',
+            'payment_method' => 'required|in:full,deposit', // Kiểm tra phương thức thanh toán
+        ]);
+
+        // Tính tổng giá trị đơn hàng
+        $totalAmount = 0;
+        $carPrice = 0;
+
+        // Giá xe
+        $saleId = $request->selected_car ? $request->selected_car : null;
+        if ($saleId) {
+            $car = SalesCars::find($saleId);
+            $carPrice = $car->sale_price;
+            $totalAmount += $carPrice;
+        }
+
+        // Giá phụ kiện
+        $accessoriesTotal = 0;
+        $accessoriesToAttach = [];
+        if ($request->has('selected_accessories') && !empty($request->selected_accessories)) {
+            foreach ($request->selected_accessories as $accessoryData) {
+                $accessory = Accessories::find($accessoryData['accessory_id']);
+                $accessoryCost = $accessory->price * $accessoryData['quantity'];
+                $accessoriesTotal += $accessoryCost;
+                $totalAmount += $accessoryCost;
+
+                // Chuẩn bị dữ liệu để thêm vào bảng trung gian
+                $accessoriesToAttach[$accessoryData['accessory_id']] = [
+                    'quantity' => $accessoryData['quantity'],
+                    'price' => $accessory->price,
+                ];
+            }
+        }
+
+        // Tạo đơn hàng
+        $order = Order::create([
+            'account_id' => $validated['account_id'],
+            'sale_id' => $saleId,
+            'status_order' => $request->payment_method === 'full' ? 1 : 0, // Đã thanh toán nếu phương thức là full
+            'order_date' => now(),
+        ]);
+
+        // Lưu phụ kiện nếu có
+        if (!empty($accessoriesToAttach)) {
+            $order->accessories()->attach($accessoriesToAttach);
+        }
+
+        // Tạo bản ghi trong bảng payments
+        $depositAmount = $request->payment_method === 'full'
+            ? $totalAmount
+            : ($carPrice * 0.15) + $accessoriesTotal; // 15% giá xe + giá trị phụ kiện
+        $remainingAmount = $totalAmount - $depositAmount;
+
+        Payment::create([
+            'order_id' => $order->order_id,
+            'status_deposit' => $request->payment_method === 'full' || $request->payment_method === 'deposit' ? 1 : 0, // Đặt cọc thành công nếu full hoặc deposit
+            'status_payment_all' => $request->payment_method === 'full' ? 1 : 0, // Thanh toán toàn bộ nếu full
+            'deposit_amount' => $depositAmount,
+            'total_amount' => $totalAmount,
+            'remaining_amount' => $remainingAmount,
+            'deposit_deadline' => $request->payment_method === 'full' ? now() : now()->addDays(7),
+            'payment_deadline' => $request->payment_method === 'full' ? now() : now()->addDays(30),
+        ]);
+
+        toastr()->success('Thêm đơn hàng thành công');
+        return redirect()->back();
     }
 
-    // Tạo đơn hàng
-    $order = Order::create([
-        'account_id' => $validated['account_id'],
-        'sale_id' => $request->selected_car,
-        'status_order' => $request->payment_method === 'full' ? 1 : 0, // Đã thanh toán nếu phương thức là full
-        'order_date' => now(),
-    ]);
 
-    // Lưu phụ kiện nếu có
 
-    // Tạo bản ghi trong bảng payments
-    $depositAmount = $request->payment_method === 'full' ? $totalAmount : $totalAmount * 0.15; // 15% nếu là đặt cọc
-    $remainingAmount = $totalAmount - $depositAmount;
-    
-    // Tạo bản ghi trong bảng payments
-    $payment = Payment::create([
-        'order_id' => $order->order_id,
-        'status_deposit' => $request->payment_method === 'full' || $request->payment_method === 'deposit' ? 1 : 0, // Đặt cọc thành công nếu full hoặc deposit
-        'status_payment_all' => $request->payment_method === 'full' ? 1 : 0, // Thanh toán toàn bộ nếu full
-        'deposit_amount' => $depositAmount,
-        'total_amount' => $totalAmount,
-        'remaining_amount' => $remainingAmount,
-        'deposit_deadline' => $request->payment_method === 'full' ? now() : now()->addDays(7),
-        'payment_deadline' => $request->payment_method === 'full' ? now() : now()->addDays(30),
-    ]);
-    
 
-    toastr()->success('Thêm đơn hàng thành công');
-    return redirect()->back();
-}
-
-    
-    
 }

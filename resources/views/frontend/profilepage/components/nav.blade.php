@@ -17,12 +17,11 @@
 
     <div class="h-1 bg-gradient-to-r from-blue-500 via-gray-300 to-blue-500 my-4"></div>
 
-
     <!-- THÔNG TIN XE -->
     <h2 class="text-lg font-semibold text-gray-800">THÔNG TIN XE</h2>
     <ul class="mt-4 space-y-2">
         <li>
-            <a href="" class="flex items-center text-gray-600 hover:text-blue-600" data-section="xe-cua-toi">
+            <a href="#" class="flex items-center text-gray-600 hover:text-blue-600" data-section="xe-cua-toi">
                 <i class="fas fa-car mr-3"></i> Xe của tôi
             </a>
         </li>
@@ -32,14 +31,13 @@
     <h2 class="text-lg font-semibold text-gray-800 mt-6">ĐẶT HÀNG VÀ DỊCH VỤ</h2>
     <ul class="mt-4 space-y-2">
         <li>
-            <a href="{{route('transaction.history')}}" class="flex items-center text-gray-600 hover:text-blue-600"
-                data-section="lich-su-giao-dich">
+            <a href="{{ route('transaction.history') }}" class="flex items-center text-gray-600 hover:text-blue-600" data-section="lich-su-giao-dich">
                 <i class="fas fa-file-invoice-dollar mr-3"></i> Lịch sử giao dịch
             </a>
         </li>
         <li>
-            <a href="" class="flex items-center text-gray-600 hover:text-blue-600" data-section="dang-ky-lai-thu">
-                <i class="fas fa-clipboard-check mr-3"></i> Đăng ký lái thử
+            <a href="#" class="flex items-center text-gray-600 hover:text-blue-600" data-section="dang-ky-lai-thu">
+                <i class="fas fa-clipboard-check mr-3"></i> Lịch sử thuê xe
             </a>
         </li>
     </ul>
@@ -48,31 +46,28 @@
     <h2 class="text-lg font-semibold text-gray-800 mt-6">TÀI KHOẢN</h2>
     <ul class="mt-4 space-y-2">
         <li>
-            <a href="{{ route('view.profile') }}" class="flex items-center text-gray-600 hover:text-blue-600 active"
-                data-section="thong-tin-ca-nhan">
+            <a href="{{ route('view.profile') }}" class="flex items-center text-gray-600 hover:text-blue-600" data-section="thong-tin-ca-nhan">
                 <i class="fas fa-user mr-3"></i> Thông tin cá nhân
             </a>
         </li>
         <li>
-            <a href="" class="flex items-center text-gray-600 hover:text-blue-600"
-                data-section="thong-tin-xuat-hoa-don">
+            <a href="#" class="flex items-center text-gray-600 hover:text-blue-600" data-section="thong-tin-xuat-hoa-don">
                 <i class="fas fa-file-invoice mr-3"></i> Thông tin xuất hóa đơn
             </a>
         </li>
         <li>
-            <a href="" class="flex items-center text-gray-600 hover:text-blue-600" data-section="yeu-cau-ho-tro">
+            <a href="https://www.facebook.com/minhloc.caingoc" target="_blank" class="flex items-center text-gray-600 hover:text-blue-600" data-section="yeu-cau-ho-tro">
                 <i class="fas fa-headset mr-3"></i> Yêu cầu hỗ trợ
             </a>
         </li>
         <li>
-            <a href="" class="flex items-center text-gray-600 hover:text-blue-600" data-section="lien-he">
+            <a href="https://www.linkedin.com/in/l%E1%BB%99c-c%C3%A1i-b5b9b9259/" target="_blank" class="flex items-center text-gray-600 hover:text-blue-600" data-section="lien-he">
                 <i class="fas fa-envelope mr-3"></i> Liên hệ
             </a>
         </li>
     </ul>
 
     <div class="h-0.5 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 my-4"></div>
-
 
     <!-- Đăng Xuất -->
     <ul class="mt-4">
@@ -86,7 +81,6 @@
         </li>
     </ul>
 </div>
-
 
 <style>
     /* Màu sắc mặc định khi active */
@@ -103,9 +97,22 @@
         /* Màu xanh đậm hơn khi hover */
     }
 </style>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const menuItems = document.querySelectorAll('[data-section]'); // Chọn tất cả các mục có `data-section`
+        const currentPath = window.location.pathname; // Lấy đường dẫn hiện tại
+
+        // Xóa tất cả trạng thái active trước đó
+        menuItems.forEach(item => item.classList.remove('active'));
+
+        // Xác định và thêm trạng thái active cho mục phù hợp
+        menuItems.forEach(item => {
+            const sectionHref = item.getAttribute('href');
+            if (currentPath === new URL(sectionHref, window.location.origin).pathname) {
+                item.classList.add('active');
+            }
+        });
 
         menuItems.forEach(item => {
             item.addEventListener('click', (e) => {
@@ -125,4 +132,5 @@
             });
         });
     });
+
 </script>

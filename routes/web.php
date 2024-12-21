@@ -180,7 +180,8 @@ Route::get('/rental-history/{orderId}', [TransactionController::class, 'rentalOr
 Route::get('/rental-order-status/{orderId}', [TransactionController::class, 'getStatus'])->name('order.status');
 
 // Rental History
-Route::get('/rental-history', [RentalHistoryController::class, 'index'])->name('rentalHistory');
+Route::get('/rentalCar-history', [RentalHistoryController::class, 'index'])->name('rentalHistory');
+Route::get('/rentalCar-history/{receiptId}', [RentalHistoryController::class, 'showReceipt'])->name('rentalHistory.showReceipt');
 
 //
 

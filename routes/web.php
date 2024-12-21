@@ -23,6 +23,7 @@ use App\Http\Controllers\frontend\TransactionController;
 use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
+use App\Http\Controllers\Backend\RentalCarController;
 
 
 use App\Http\Controllers\Backend\TestDriveController;
@@ -108,6 +109,8 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/customer/edit/{customerId}', [CustomerController::class, 'loadEditPage'])->name('customer.edit');
     Route::put('/customer/update/{customerId}', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customer/delete/{customerId}', [CustomerController::class, 'delete'])->name('customer.destroy');
+
+    //test drive
     Route::get('/test_drive', [TestDriveController::class, 'index'])->name('test_drive.index');
     Route::get('/test_drive/create', [TestDriveController::class, 'loadCustomerCreatePage'])->name('customer.creates');
     Route::post('/test_drive/create', [TestDriveController::class, 'createCustomer'])->name('customer.stores');

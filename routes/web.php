@@ -25,6 +25,7 @@ use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\RentalCarController;
 use App\Http\Controllers\Backend\RentalOrderController;
+use App\Http\Controllers\frontend\RentalHistoryController;
 
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
@@ -167,9 +168,16 @@ Route::get('/view-profile/resetpass', [ProfileController::class, 'showResetPass'
 // Xử lý yêu cầu đổi mật khẩu
 Route::post('/view-profile/resetpass', [CustomerAuthController::class, 'resetPassword'])->name('reset.password.submit');
 //transactionHistory
-Route::get('/transaction-history', [TransactionController::class, 'index'])->name('transaction.history');
-Route::get('/transactionHistory/{orderId}', [TransactionController::class, 'orderDetails'])->name('transactionHistory.details');
+Route::get('/saleCar-history', [TransactionController::class, 'index'])->name('transaction.history');
+Route::get('/saleCar/{orderId}', [TransactionController::class, 'orderDetails'])->name('transactionHistory.details');
+Route::get('/rental-history', [TransactionController::class, 'indexRental'])->name('rentalHistory.index');
+Route::get('/rental-history/{orderId}', [TransactionController::class, 'rentalOrderDetails'])->name('rentalHistory.details');
+Route::get('/rental-order-status/{orderId}', [TransactionController::class, 'getStatus'])->name('order.status');
 
+// Rental History
+Route::get('/rental-history', [RentalHistoryController::class, 'index'])->name('rentalHistory');
+
+//
 
 // Route logout
 Route::middleware('auth')->group(function () {

@@ -154,20 +154,25 @@ class OrderManagementController extends Controller
 
         // Tính tổng giá trị đơn hàng
         $totalAmount = 0;
+        $carPrice = 0;
 
         // Giá xe
         $saleId = $request->selected_car ? $request->selected_car : null;
         if ($saleId) {
             $car = SalesCars::find($saleId);
-            $totalAmount += $car->sale_price;
+            $carPrice = $car->sale_price;
+            $totalAmount += $carPrice;
         }
 
         // Giá phụ kiện
+        $accessoriesTotal = 0;
         $accessoriesToAttach = [];
         if ($request->has('selected_accessories') && !empty($request->selected_accessories)) {
             foreach ($request->selected_accessories as $accessoryData) {
                 $accessory = Accessories::find($accessoryData['accessory_id']);
-                $totalAmount += $accessory->price * $accessoryData['quantity'];
+                $accessoryCost = $accessory->price * $accessoryData['quantity'];
+                $accessoriesTotal += $accessoryCost;
+                $totalAmount += $accessoryCost;
 
                 // Chuẩn bị dữ liệu để thêm vào bảng trung gian
                 $accessoriesToAttach[$accessoryData['accessory_id']] = [
@@ -185,13 +190,15 @@ class OrderManagementController extends Controller
             'order_date' => now(),
         ]);
 
-        // Lưu phụ kiện nếu có và xe được chọn
+        // Lưu phụ kiện nếu có
         if (!empty($accessoriesToAttach)) {
             $order->accessories()->attach($accessoriesToAttach);
         }
 
         // Tạo bản ghi trong bảng payments
-        $depositAmount = $request->payment_method === 'full' ? $totalAmount : $totalAmount * 0.15; // 15% nếu là đặt cọc
+        $depositAmount = $request->payment_method === 'full'
+            ? $totalAmount
+            : ($carPrice * 0.15) + $accessoriesTotal; // 15% giá xe + giá trị phụ kiện
         $remainingAmount = $totalAmount - $depositAmount;
 
         Payment::create([

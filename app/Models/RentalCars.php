@@ -17,7 +17,8 @@ class RentalCars extends Model
         'license_plate_number',
         'rental_price_per_day',
         'availability_status',
-        'rental_conditions'
+        'rental_conditions',
+        'is_deleted',
     ];
 
     public function carDetails()
@@ -34,4 +35,8 @@ class RentalCars extends Model
     {
         return $this->hasMany(RentalOrder::class, 'car_id');
     }
+
+    protected $attributes = [
+        'availability_status' => 'Available',
+    ];
 }

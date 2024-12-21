@@ -8,6 +8,12 @@ Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
     $trail->push('Home', route('dashboard'));
 });
 
+Breadcrumbs::for('profile', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí hồ sơ lý lịch');
+    $trail->push('Home', route('dashboard'));
+    $trail->push('Chỉnh sửa hồ sơ', route('profile'));
+});
+
 Breadcrumbs::for('user', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí nhân viên', route('user'));
     $trail->push('Home', route('dashboard'));
@@ -30,7 +36,7 @@ Breadcrumbs::for('user.record.create', function (BreadcrumbTrail $trail) {
 });
 
 
-  //Carsales
+//Carsales
 Breadcrumbs::for('carsales', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí sản phẩm', route('Carsales'));
     $trail->push('Quản lý xe bán', route('Carsales'));
@@ -48,6 +54,7 @@ Breadcrumbs::for('carsales.create', function (BreadcrumbTrail $trail) {
     $trail->push('Thêm thông tin xe');
 });
 
+//Customer
 Breadcrumbs::for('customer', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí khách hàng', route('customer'));
     $trail->push('Home', route('dashboard'));
@@ -84,6 +91,33 @@ Breadcrumbs::for('accessories.create', function (BreadcrumbTrail $trail) {
     $trail->parent('Accessories'); // Parent breadcrumb
     $trail->push('Thêm phụ kiện mới');
 });
+
+//Rental Car
+Breadcrumbs::for('rentalCar', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí sản phẩm');
+    $trail->push('Quản lý xe thuê', route('rentalCar'));
+});
+
+Breadcrumbs::for('rentalCar.details', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalCar'); // Parent breadcrumb
+    $trail->push('Chi tiết phụ kiện');
+});
+
+Breadcrumbs::for('rentalCar.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalCar'); // Parent breadcrumb
+    $trail->push('Thêm xe thuê mới');
+});
+
+Breadcrumbs::for('rentalCar.edit', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalCar'); // Parent breadcrumb
+    $trail->push('Chỉnh sửa xe thuê');
+});
+
+Breadcrumbs::for('rentalCar.record.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalCar'); // Parent breadcrumb
+    $trail->push('Thêm bản ghi');
+});
+
 //order
 Breadcrumbs::for('Order', function (BreadcrumbTrail $trail) {
     $trail->push('Quản lí Order', route('orders.index'));
@@ -92,4 +126,26 @@ Breadcrumbs::for('Order', function (BreadcrumbTrail $trail) {
 Breadcrumbs::for('order.details', function (BreadcrumbTrail $trail) {
     $trail->parent('Order'); // Parent breadcrumb
     $trail->push('Chi tiết Order');
+});
+
+
+//Rental Order
+Breadcrumbs::for('rentalOrders', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí Order');
+    $trail->push('Theo dõi đơn hàng', route('rentalOrders'));
+});
+
+Breadcrumbs::for('rentalOrders.details', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalOrders');
+    $trail->push('Chi tiết đơn hàng');  
+});
+
+Breadcrumbs::for('rentalOrders.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalOrders');
+    $trail->push('Thêm đơn hàng');  
+});
+
+Breadcrumbs::for('order.add.car', function (BreadcrumbTrail $trail) {
+    $trail->parent('Order'); // Parent breadcrumb
+    $trail->push('Thêm Order Xe');
 });

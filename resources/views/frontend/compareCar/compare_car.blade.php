@@ -37,7 +37,7 @@
         <!-- Tiêu đề -->
         <h2 class="text-3xl font-semibold mb-6 text-center">Chọn tối đa 2 xe để so sánh</h2>
 
-        <!-- Nội dung -->
+        <!-- Nội dung --> 
         <div class="bg-gray-50 p-6 rounded-lg space-y-8">
             @foreach($carsByBrand as $brand => $cars)
                 <div>

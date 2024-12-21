@@ -24,10 +24,9 @@ use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
 
+
 use App\Http\Controllers\Backend\TestDriveController;
 use App\Http\Controllers\frontend\RegisterTestDrive;
-
-
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
 
@@ -35,27 +34,16 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
-
+    
     /* DASHBOARD */
     Route::get('/dashboard', [DashboardController::class, 'loadDashboard'])->name('dashboard');
+    Route::get('/user/profile', [DashboardController::class, 'loadProfile'])->name('profile');
+    Route::put('/profile/update', [DashboardController::class, 'updateProfile'])->name('Profile.update');
 
-    /* USERS */
-    Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
-    // //////////////////////////////////////////////////////////////// Back end
-    //Carsales
+    /* CAR SALES */
     Route::get('/carsales', [carSalesController::class, 'loadCarsales'])->name('Carsales');
-
-        
-    // Test Drive Backend
-    Route::get('/test_drive', [TestDriveController::class, 'index'])->name('test_drive.index');
-    Route::get('/test_drive/create', [TestDriveController::class, 'loadCustomerCreatePage'])->name('customer.creates');
-    Route::post('/test_drive/create', [TestDriveController::class, 'createCustomer'])->name('customer.stores');
-    Route::get('/test_drive/search', [TestDriveController::class, 'search'])->name('customer.search');
-    Route::delete('/test_drive/delete,{id}', [TestDriveController::class, 'delete'])->name('test_drive.destroy');
-
     //cardetails back end
     Route::get('car/{carId}/details', [carSalesController::class, 'show_details_Car'])->name('show.car.details');
-    //edit car
     Route::get('car/{carId}/edit', [carSalesController::class, 'show_edit_car'])->name('show.car.edit');
     Route::put('car/{carId}/update', [carSalesController::class, 'update_car_edit'])->name('car.update');
     Route::post('car/{carId}/destroy', [carSalesController::class, 'destroy'])->name('sales.cars.destroy');
@@ -65,14 +53,43 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
     Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
     Route::get('/download/car-add-template', [carSalesController::class, 'downloadTemplate'])->name('caradd.download.template');
+    
     //order
     Route::get('/orders', [OrderManagementController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}/detail', [OrderManagementController::class, 'detail'])->name('orders.detail');
     Route::post('/orders/{order}/confirm-payment', [OrderManagementController::class, 'confirmPayment'])->name('orders.confirmPayment');
+    Route::get('/orders/car/add', [OrderManagementController::class, 'addCar'])->name('orders.car.add');
+    Route::post('/orders/store', [OrderManagementController::class, 'store'])->name('orders.store');
 
+    /* RENTAL ORDER */
+    Route::get('/rental-orders', [RentalOrderController::class, 'index'])->name('rentalOrders');
+    Route::post('/rental-orders/filter', [RentalOrderController::class, 'filter'])->name('rentalOrders.filter');
+    Route::get('/rental-order/{id}', [RentalOrderController::class, 'show'])->name('rentalOrders.details');
+    Route::get('/rental-orders/create', [RentalOrderController::class, 'loadCreateForm'])->name('rentalOrders.create');
+    //Lấy dữ liệu từ xe cụ thể 
+    Route::get('/rental-car/{rental_id}', [RentalCarController::class, 'getRentalDetails'])->name('rentalCars.getDetails');
+    //Lấy dữ liệu từ khách hàng
+    Route::get('/customer/get-by-phone', [CustomerController::class, 'getCustomerByPhone'])->name('customer.getByPhone');
+    //Tạo đơn thuê xe
+    Route::post('/rental-orders/store', [RentalOrderController::class, 'store'])->name('rentalOrders.store');
+    Route::post('/rental-orders/payment/{order_id}', [RentalOrderController::class, 'completePayment'])->name('rentalOrders.completePayment');
 
+    /* RENTAL CAR */
+    Route::get('/rental-car', [RentalCarController::class, 'loadRentalCar'])->name('rentalCar');
+    Route::post('/rental-cars/filter', [RentalCarController::class, 'filterRentalCars'])->name('rental.car.filter');
+    Route::get('/rental-car/details/{id}', [RentalCarController::class, 'showDetails'])->name('rentalCar.details');
+    Route::get('/rental-car/create', [RentalCarController::class, 'loadCreateForm'])->name('rentalCar.create');
+    Route::post('/rental-car/store', [RentalCarController::class, 'store'])->name('rentalCar.store');
+    Route::get('/rental-car/edit/{id}', [RentalCarController::class, 'loadEditForm'])->name('rentalCar.edit');
+    Route::put('/rental-car/update/{id}', [RentalCarController::class, 'update'])->name('rentalCar.update');
+    Route::put('/rental-car/delete/{id}', [RentalCarController::class, 'delete'])->name('rentalCar.delete');
+    Route::get('/rental-car/record/create', [RentalCarController::class, 'loadRentalExcel'])->name('rentalCar.record.create');
+    Route::get('/rental-car/download-template', [RentalCarController::class, 'downloadTemplate'])->name('rentalCar.download.template');
+    Route::post('/rental-car/import', [RentalCarController::class, 'importExcel'])->name('rentalCar.import');
+    Route::delete('/rental-car/delete-multiple', [RentalCarController::class, 'deleteMultiple'])->name('rentalCar.deleteMultiple');
 
     /* USER CRUD */
+    Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
     Route::get('/user/create', [AdminController::class, 'loadUserCreatePage'])->name('user.create');
     Route::post('/user/create', [AdminController::class, 'createUser'])->name('user.store'); // Unique name for POST
     Route::get('/user/edit/{id}', [AdminController::class, 'loadUserEditPage'])->name('user.edit');
@@ -91,7 +108,11 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/customer/edit/{customerId}', [CustomerController::class, 'loadEditPage'])->name('customer.edit');
     Route::put('/customer/update/{customerId}', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customer/delete/{customerId}', [CustomerController::class, 'delete'])->name('customer.destroy');
-
+    Route::get('/test_drive', [TestDriveController::class, 'index'])->name('test_drive.index');
+    Route::get('/test_drive/create', [TestDriveController::class, 'loadCustomerCreatePage'])->name('customer.creates');
+    Route::post('/test_drive/create', [TestDriveController::class, 'createCustomer'])->name('customer.stores');
+    Route::get('/test_drive/search', [TestDriveController::class, 'search'])->name('customer.search');
+    Route::delete('/test_drive/delete,{id}', [TestDriveController::class, 'delete'])->name('test_drive.destroy');
 
 });
 
@@ -149,9 +170,16 @@ Route::get('/view-profile/resetpass', [ProfileController::class, 'showResetPass'
 // Xử lý yêu cầu đổi mật khẩu
 Route::post('/view-profile/resetpass', [CustomerAuthController::class, 'resetPassword'])->name('reset.password.submit');
 //transactionHistory
-Route::get('/transaction-history', [TransactionController::class, 'index'])->name('transaction.history');
-Route::get('/transactionHistory/{orderId}', [TransactionController::class, 'orderDetails'])->name('transactionHistory.details');
+Route::get('/saleCar-history', [TransactionController::class, 'index'])->name('transaction.history');
+Route::get('/saleCar/{orderId}', [TransactionController::class, 'orderDetails'])->name('transactionHistory.details');
+Route::get('/rental-history', [TransactionController::class, 'indexRental'])->name('rentalHistory.index');
+Route::get('/rental-history/{orderId}', [TransactionController::class, 'rentalOrderDetails'])->name('rentalHistory.details');
+Route::get('/rental-order-status/{orderId}', [TransactionController::class, 'getStatus'])->name('order.status');
 
+// Rental History
+Route::get('/rental-history', [RentalHistoryController::class, 'index'])->name('rentalHistory');
+
+//
 
 // Route logout
 Route::middleware('auth')->group(function () {

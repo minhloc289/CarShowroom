@@ -24,9 +24,10 @@ use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\RentalCarController;
-use App\Http\Controllers\Backend\RentalOrderController;
-use App\Http\Controllers\frontend\RentalHistoryController;
 
+
+use App\Http\Controllers\Backend\TestDriveController;
+use App\Http\Controllers\frontend\RegisterTestDrive;
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
 
@@ -42,6 +43,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
 
     /* CAR SALES */
     Route::get('/carsales', [carSalesController::class, 'loadCarsales'])->name('Carsales');
+    //cardetails back end
     Route::get('car/{carId}/details', [carSalesController::class, 'show_details_Car'])->name('show.car.details');
     Route::get('car/{carId}/edit', [carSalesController::class, 'show_edit_car'])->name('show.car.edit');
     Route::put('car/{carId}/update', [carSalesController::class, 'update_car_edit'])->name('car.update');
@@ -58,7 +60,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/orders/{order}/detail', [OrderManagementController::class, 'detail'])->name('orders.detail');
     Route::post('/orders/{order}/confirm-payment', [OrderManagementController::class, 'confirmPayment'])->name('orders.confirmPayment');
     Route::get('/orders/car/add', [OrderManagementController::class, 'addCar'])->name('orders.car.add');
-    Route::post('/orders/store', [OrderManagementController::class, 'storeOrder'])->name('orders.store');
+    Route::post('/orders/store', [OrderManagementController::class, 'store'])->name('orders.store');
 
     /* RENTAL ORDER */
     Route::get('/rental-orders', [RentalOrderController::class, 'index'])->name('rentalOrders');
@@ -108,6 +110,12 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::put('/customer/update/{customerId}', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customer/delete/{customerId}', [CustomerController::class, 'delete'])->name('customer.destroy');
 
+    //test drive
+    Route::get('/test_drive', [TestDriveController::class, 'index'])->name('test_drive.index');
+    Route::get('/test_drive/create', [TestDriveController::class, 'loadCustomerCreatePage'])->name('customer.creates');
+    Route::post('/test_drive/create', [TestDriveController::class, 'createCustomer'])->name('customer.stores');
+    Route::get('/test_drive/search', [TestDriveController::class, 'search'])->name('customer.search');
+    Route::delete('/test_drive/delete,{id}', [TestDriveController::class, 'delete'])->name('test_drive.destroy');
 
 });
 
@@ -125,9 +133,6 @@ Route::prefix('admin/accessories')->group(function () {
     Route::get('/template', [AccessoryController::class, 'downloadTemplate'])->name('accessories.template');
     Route::post('/bulk-delete', [AccessoryController::class, 'bulkDelete'])->name('accessories.bulkDelete');
 });
-
-
-
 
 /* FRONTEND ROUTES */
 
@@ -191,7 +196,9 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('account.logout');
 
+// Route RegisterTestDrive
 
+Route::post('/register', [RegisterTestDrive::class, 'registerTestDrive'])->name('email.RegisterTestDrive');
 
 // Introduce 
 Route::get('/introduce', [CustomerDashBoardController::class, 'introduce'])->name('CustomerDashBoard.introduce');

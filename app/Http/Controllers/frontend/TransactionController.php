@@ -14,10 +14,12 @@ class TransactionController extends Controller
     public function index()
     {
         // Dữ liệu xe bán
-        $transactions = Payment::with('order.salesCar') // Nạp thêm quan hệ: Order -> SalesCar
+        $transactions = Payment::with([
+            'order.salesCar.carDetails', // Nạp quan hệ từ Order -> SalesCar -> CarDetails để lấy thông tin xe
+            'order.accessories'          // Nạp quan hệ từ Order -> Accessories để lấy thông tin phụ kiện
+        ])
             ->orderBy('payment_deposit_date', 'desc') // Sắp xếp theo ngày thanh toán
             ->get();
-
         // Dữ liệu xe thuê
         $rentalTransactions = RentalOrder::with('rentalCar.carDetails') // Nạp thêm quan hệ: RentalOrder -> RentalCar
             ->orderBy('order_date', 'desc') // Sắp xếp theo ngày tạo đơn

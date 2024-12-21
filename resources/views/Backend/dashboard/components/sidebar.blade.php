@@ -643,11 +643,11 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/widgets/charts.html">
+                            <a class="menu-link" href="{{route('test_drive.index')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Charts</span>
+                                <span class="menu-title">Test Drive Management</span>
                             </a>
                         </div>
                         <div class="menu-item">

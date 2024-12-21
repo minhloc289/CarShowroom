@@ -1,7 +1,7 @@
 @extends('frontend.layouts.App')
 
 @section('content')
-<div class="max-w-6xl mx-auto">
+<div class="max-w-6xl mx-auto pt-10">
     <!-- Title and Subtitle -->
     <div class="text-center mb-8">
         <h1 class="text-4xl font-semibold">Compare Car</h1>

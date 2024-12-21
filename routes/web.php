@@ -24,6 +24,8 @@ use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
 
+use App\Http\Controllers\Backend\TestDriveController;
+use App\Http\Controllers\frontend\RegisterTestDrive;
 
 
 /* BACKEND ROUTES */
@@ -42,6 +44,15 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     // //////////////////////////////////////////////////////////////// Back end
     //Carsales
     Route::get('/carsales', [carSalesController::class, 'loadCarsales'])->name('Carsales');
+
+        
+    // Test Drive Backend
+    Route::get('/test_drive', [TestDriveController::class, 'index'])->name('test_drive.index');
+    Route::get('/test_drive/create', [TestDriveController::class, 'loadCustomerCreatePage'])->name('customer.creates');
+    Route::post('/test_drive/create', [TestDriveController::class, 'createCustomer'])->name('customer.stores');
+    Route::get('/test_drive/search', [TestDriveController::class, 'search'])->name('customer.search');
+    Route::delete('/test_drive/delete,{id}', [TestDriveController::class, 'delete'])->name('test_drive.destroy');
+
     //cardetails back end
     Route::get('car/{carId}/details', [carSalesController::class, 'show_details_Car'])->name('show.car.details');
     //edit car
@@ -99,9 +110,6 @@ Route::prefix('admin/accessories')->group(function () {
     Route::post('/bulk-delete', [AccessoryController::class, 'bulkDelete'])->name('accessories.bulkDelete');
 });
 
-
-
-
 /* FRONTEND ROUTES */
 
 Route::get('/', [CustomerDashBoardController::class, 'index'])->name('CustomerDashBoard.index');
@@ -156,7 +164,9 @@ Route::middleware('auth')->group(function () {
 
 Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('account.logout');
 
+// Route RegisterTestDrive
 
+Route::post('/register', [RegisterTestDrive::class, 'registerTestDrive'])->name('email.RegisterTestDrive');
 
 // Introduce 
 Route::get('/introduce', [CustomerDashBoardController::class, 'introduce'])->name('CustomerDashBoard.introduce');

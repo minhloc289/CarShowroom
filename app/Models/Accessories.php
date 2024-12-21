@@ -35,7 +35,13 @@ class Accessories extends Model
     {
         return $this->hasMany(Cart::class, 'accessory_id', 'accessory_id');
     }
-
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_accessories', 'accessory_id', 'order_id')
+                    ->withPivot('quantity', 'price')
+                    ->withTimestamps();
+    }
+    
     public function increaseQuantity($amount)
     {
         $this->quantity += $amount;

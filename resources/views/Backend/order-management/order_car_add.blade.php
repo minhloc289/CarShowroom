@@ -6,7 +6,7 @@
 <div class="post d-flex flex-column-fluid" id="kt_post">
     <div id="kt_content_container" class="container-xxl">
         <h1>Thêm Đơn Hàng Mới</h1>
-        <form action="{{ route('orders.store') }}" method="POST" onsubmit="return confirmPayment()">
+        <form action="{{ route('orders.store') }}" method="POST">
             @csrf
             <!-- Filter thông tin khách hàng -->
             <div class="row mb-3">
@@ -69,7 +69,7 @@
                                     @foreach($cars as $car)
                                         <div
                                             class="flex items-center bg-white p-3 rounded-md shadow hover:shadow-md transition duration-150">
-                                            <input type="radio" class="form-radio text-blue-600 w-5 h-5 mr-3" name="selected_car" value="{{ $car->car_id }}" data-image="{{ $car->image_url }}" data-speed="{{ $car->max_speed }}" data-seat="{{ $car->seat_capacity }}" data-power="{{ $car->engine_power }}" data-trunk="{{ $car->trunk_capacity }}" 
+                                            <input type="radio" class="form-radio text-blue-600 w-5 h-5 mr-3" name="selected_car" data-car-id="{{ $car->car_id }}" value="{{ optional($car->sale)->sale_id }}" data-image="{{ $car->image_url }}" data-speed="{{ $car->max_speed }}" data-seat="{{ $car->seat_capacity }}" data-power="{{ $car->engine_power }}" data-trunk="{{ $car->trunk_capacity }}" 
                                                 data-length="{{ $car->length }}" data-width="{{ $car->width }}" data-height="{{ $car->height }}"  
                                                 data-acceleration-time="{{ $car->acceleration_time }}" data-fuel-efficiency="{{ $car->fuel_efficiency }}" data-torque="{{ $car->torque }}" data-price="{{ optional($car->sale)->sale_price ?? '0' }}">
                                             <div class="flex items-center">
@@ -108,23 +108,23 @@
 
                     <div class="bg-gray-50 p-6 rounded-lg space-y-8">
                     @foreach($accessories as $accessory)
-<div class="flex items-center bg-white p-3 rounded-md shadow hover:shadow-md transition duration-150">
-    <input type="checkbox" class="form-checkbox text-blue-600 w-5 h-5 mr-3" 
-           name="selected_accessories[]" 
-           value="{{ $accessory->accessory_id }}" 
-           data-name="{{ $accessory->name }}" 
-           data-price="{{ $accessory->price }}" 
-           data-image="{{ $accessory->image_url }}" 
-           data-quantity-available="{{ $accessory->quantity }}">
+                    <div class="flex items-center bg-white p-3 rounded-md shadow hover:shadow-md transition duration-150">
+                        <input type="checkbox" class="form-checkbox text-blue-600 w-5 h-5 mr-3" 
+                            name="selected_accessories[]"  value="{{ $accessory->accessory_id }}"
+                            data-accessory-id="{{ $accessory->accessory_id }}" 
+                            data-name="{{ $accessory->name }}" 
+                            data-price="{{ number_format($accessory->price, 2, '.', '') }}" 
+                            data-image="{{ $accessory->image_url }}" 
+                            data-quantity-available="{{ $accessory->quantity }}">
 
-    <div class="flex items-center">
-        <img src="{{ $accessory->image_url }}" alt="{{ $accessory->name }}" class="w-12 h-auto object-cover rounded-md mr-3">
-        <span class="accessory-info text-base font-medium text-gray-800" data-name="{{ $accessory->name }}">
-            {{ $accessory->name }} - {{ number_format($accessory->price, 0, ',', '.') }} VNĐ
-        </span>
-    </div>
-</div>
-@endforeach
+                        <div class="flex items-center">
+                            <img src="{{ $accessory->image_url }}" alt="{{ $accessory->name }}" class="w-12 h-auto object-cover rounded-md mr-3">
+                            <span class="accessory-info text-base font-medium text-gray-800" data-name="{{ $accessory->name }}">
+                                {{ $accessory->name }} - {{ number_format($accessory->price, 0, ',', '.') }} VNĐ
+                            </span>
+                        </div>
+                    </div>
+                    @endforeach
 
                     </div>
                     <div class="mt-6 flex justify-end">
@@ -140,9 +140,9 @@
 </div>
 
             <!-- Chọn hình thức thanh toán -->
-            <div class="mb-3">
-                <label for="payment_method" class="form-label">Hình thức thanh toán</label>
-                <select class="form-control" id="payment_method" name="payment_method" onchange="updatePaymentFields()">
+            <div class="mb-3"  >
+                <label for="payment_method" id="method" class="form-label hidden">Hình thức thanh toán</label>
+                <select class="form-control hidden" id="payment_method" name="payment_method" onchange="updatePaymentFields()">
                     <option value="full">Thanh toán toàn bộ</option>
                     <option value="deposit">Thanh toán đặt cọc</option>
                 </select>
@@ -151,7 +151,7 @@
             <!-- Tổng giá trị đơn hàng -->
             <div class="mb-3">
                 <label for="total_price" class="form-label">Tổng giá trị đơn hàng (VNĐ)</label>
-                <input type="number" class="form-control" id="total_price" name="total_price" min="1" required readonly>
+                <input type="number" class="form-control" id="total_price" name="total_price" min="1" value="0" required readonly>
 
             </div>
 
@@ -167,50 +167,58 @@
                 <input type="number" class="form-control" id="remaining_amount" name="remaining_amount" readonly>
             </div>
 
-            <button type="submit" class="btn btn-primary">Thêm Đơn Hàng</button>
+            <button type="submit" onclick="confirmSubmission()" class="btn btn-primary">Thêm Đơn Hàng</button>
             <a href="{{ route('orders.index') }}" class="btn btn-secondary">Hủy</a>
         </form>
     </div>
 </div>
-
 <script>
     const accounts = @json($accounts);
 
-    document.addEventListener('keydown', function (e) {
-        // Kiểm tra nếu phím Enter được nhấn
-        if (e.key === 'Enter') {
-            // Lấy phần tử hiện đang được focus
-            const activeElement = document.activeElement;
+    document.getElementById('customer_phone').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
 
-            // Ngăn hành động mặc định (form submit) nếu focus không phải là nút submit
-            if (activeElement.tagName !== 'TEXTAREA' && activeElement.type !== 'submit') {
-                e.preventDefault();
-                // Nếu là ô số điện thoại, thực hiện xử lý dữ liệu
-                if (activeElement.id === 'customer_phone') {
-                    const input = activeElement.value;
-                    const matchedAccount = accounts.find(account => account.phone === input);
+        const phone = this.value.trim();
+        const accounts = @json($accounts); // Danh sách tài khoản từ backend
 
-                    if (matchedAccount) {
-                        document.getElementById('customer_name').value = matchedAccount.name;
-                        document.getElementById('customer_email').value = matchedAccount.email;
-                        document.getElementById('customer_address').value = matchedAccount.address;
-                    } else {
-                        alert('Không tìm thấy thông tin khách hàng.');
-                        document.getElementById('customer_name').value = '';
-                        document.getElementById('customer_email').value = '';
-                        document.getElementById('customer_address').value = '';
-                    }
-                }
+        // Tìm account dựa trên số điện thoại
+        const account = accounts.find(acc => acc.phone === phone);
+
+        if (account) {
+            // Gán thông tin tài khoản vào các trường input
+            document.getElementById('customer_name').value = account.name;
+            document.getElementById('customer_email').value = account.email;
+            document.getElementById('customer_address').value = account.address;
+
+            // Lưu account_id vào hidden input để gửi lên server
+            let accountIdInput = document.getElementById('account_id');
+            if (!accountIdInput) {
+                accountIdInput = document.createElement('input');
+                accountIdInput.type = 'hidden';
+                accountIdInput.id = 'account_id';
+                accountIdInput.name = 'account_id';
+                document.querySelector('form').appendChild(accountIdInput);
             }
+            accountIdInput.value = account.id;
+        } else {
+            alert('Không tìm thấy thông tin tài khoản.');
+            // Xóa các thông tin cũ nếu không tìm thấy tài khoản
+            document.getElementById('customer_name').value = '';
+            document.getElementById('customer_email').value = '';
+            document.getElementById('customer_address').value = '';
         }
-    });
+    }
+});
+
+
     function toggleAccessoryModal(show) {
         const modal = document.getElementById('accessoryModal');
-        modal.classList.toggle('hidden', !show); // Hiển thị hoặc ẩn modal phụ kiện dựa trên tham số `show`
+        modal.classList.toggle('hidden', !show);
     }
-    const filterCars = () => {
-        const searchQuery = document.getElementById('carSearchInput').value.toLowerCase();
 
+    function filterCars() {
+        const searchQuery = document.getElementById('carSearchInput').value.toLowerCase();
         const carRows = document.querySelectorAll('#carModal .grid .flex');
 
         carRows.forEach(row => {
@@ -220,11 +228,10 @@
 
             row.style.display = carName.includes(searchQuery) || carModel.includes(searchQuery) ? '' : 'none';
         });
-    };
+    }
 
-    const filterAccessories = () => {
+    function filterAccessories() {
         const searchQuery = document.getElementById('accessorySearchInput').value.toLowerCase();
-
         const accessoryRows = document.querySelectorAll('#accessoryModal .flex');
 
         accessoryRows.forEach(row => {
@@ -233,127 +240,154 @@
 
             row.style.display = accessoryName.includes(searchQuery) ? '' : 'none';
         });
-    };
-
+    }
 
     function confirmAccessorySelection() {
-    const selectedAccessories = document.querySelectorAll('input[name="selected_accessories[]"]:checked');
-    const selectedAccessoriesList = document.getElementById('selectedAccessoriesList');
-    const accessorySelectionBox = document.getElementById('accessorySelectionBox');
+        const selectedAccessories = document.querySelectorAll('input[name="selected_accessories[]"]:checked');
+        const selectedAccessoriesList = document.getElementById('selectedAccessoriesList');
+        selectedAccessoriesList.innerHTML = '';
+        
 
-    // Xóa danh sách phụ kiện cũ
-    selectedAccessoriesList.innerHTML = '';
+        selectedAccessories.forEach(accessory => {
+            const accessoryId = accessory.dataset.accessoryId;
+            const accessoryName = accessory.getAttribute('data-name');
+            const accessoryPrice = parseFloat(accessory.getAttribute('data-price'));
+            const accessoryImage = accessory.getAttribute('data-image');
+            const accessoryQuantityAvailable = accessory.getAttribute('data-quantity-available');
 
-    // Duyệt qua các phụ kiện đã chọn
-    selectedAccessories.forEach(accessory => {
-        const accessoryId = accessory.value;
-        const accessoryName = accessory.getAttribute('data-name');
-        const accessoryPrice = parseFloat(accessory.getAttribute('data-price'));
-        const accessoryImage = accessory.getAttribute('data-image');
-        const accessoryQuantityAvailable = accessory.getAttribute('data-quantity-available');
-
-        // Thêm phụ kiện vào danh sách
-        const accessoryHtml = `
-            <div id="selected-accessory-${accessoryId}" class="flex items-center mb-3">
-                <img src="${accessoryImage}" alt="${accessoryName}" class="w-12 h-auto object-cover rounded-md mr-3">
-                <div class="flex-1">
-                    <span class="block font-medium">${accessoryName}</span>
-                    <span class="block text-sm text-gray-500">${accessoryPrice.toLocaleString()} VNĐ</span>
-                    <div>
-                        <label for="accessory-quantity-${accessoryId}" class="text-sm">Số lượng:</label>
-                        <input type="number" id="accessory-quantity-${accessoryId}" 
-                               class="form-control w-20" 
-                               min="1" 
-                               max="${accessoryQuantityAvailable}" 
-                               value="1" 
-                               onchange="updateAccessoryTotal('${accessoryId}', ${accessoryPrice})">
+            const accessoryHtml = `
+                <div id="selected-accessory-${accessoryId}" class="flex items-center mb-3">
+                    <img src="${accessoryImage}" alt="${accessoryName}" class="w-12 h-auto object-cover rounded-md mr-3">
+                    <div class="flex-1">
+                        <span class="block font-medium">${accessoryName}</span>
+                        <span class="block text-sm text-gray-500">${accessoryPrice.toLocaleString()} VNĐ</span>
+                        <div>
+                            <label for="accessory-quantity-${accessoryId}" class="text-sm">Số lượng:</label>
+                            <input type="number" id="accessory-quantity-${accessoryId}" 
+                                    name="selected_accessories[${accessoryId}][quantity]"
+                                   class="form-control w-20" 
+                                   min="1" 
+                                   max="${accessoryQuantityAvailable}" 
+                                   value="1" 
+                                   onchange="updateAccessoryTotal('${accessoryId}', ${accessoryPrice})">
+                        </div>
                     </div>
+                    <input type="hidden" name="selected_accessories[${accessoryId}][accessory_id]" value="${accessoryId}">
+                    <button type="button" class="btn" style="background-color: #de3333; color: white;" onclick="removeAccessory('${accessoryId}')">Xóa</button>
                 </div>
-                <button type="button" class="ml-4 text-red-500" onclick="removeAccessory('${accessoryId}')">Xóa</button>
-            </div>
-        `;
-        selectedAccessoriesList.insertAdjacentHTML('beforeend', accessoryHtml);
-    });
+            `;
+            selectedAccessoriesList.insertAdjacentHTML('beforeend', accessoryHtml);
+        });
 
-    // Hiển thị nút "Thêm sản phẩm"
-    showAddAccessoryButton();
+        if (!document.getElementById('addAccessoryButton') && selectedAccessories.length > 0) {
+            const addAccessoryButtonHtml = `
+                <button id="addAccessoryButton" 
+                        type="button" 
+                        class="btn btn-secondary mt-3"
+                        onclick="toggleAccessoryModal(true)">
+                    Thêm sản phẩm
+                </button>
+            `;
+            selectedAccessoriesList.insertAdjacentHTML('afterend', addAccessoryButtonHtml);
+        }
 
-    // Cập nhật giá tổng và kiểm tra danh sách phụ kiện
-    updateTotalPrice();
-    toggleAccessorySelectionBox();
-
-    // Đóng modal chọn phụ kiện
-    toggleAccessoryModal(false);
-}
+        updateTotalPrice();
+        toggleAccessorySelectionBox();
+        toggleAccessoryModal(false);
+    }
 
     function toggleModal(show) {
         const modal = document.getElementById('carModal');
-        modal.classList.toggle('hidden', !show); // Hiển thị hoặc ẩn modal dựa trên tham số `show`
+        modal.classList.toggle('hidden', !show);
     }
 
-    function confirmCarSelection() {
-        const selectedCar = document.querySelector('input[name="selected_car"]:checked');
-        if (selectedCar) {
-            const carImage = selectedCar.getAttribute('data-image');
-            const carPrice = selectedCar.getAttribute('data-price');
-            const selectedCarContainer = document.getElementById('selectedCarContainer');
+    function updatePaymentMethodVisibility() {
+    const paymentMethod = document.getElementById('payment_method');
+    const Method = document.getElementById('method');
+    const selectedCar = document.querySelector('input[name="selected_car"]:checked');
 
-            selectedCarContainer.innerHTML = `<img src="${carImage}" class="w-[40%] h-full rounded-full">`;
-            document.getElementById('total_price').value = carPrice;
-            updatePaymentFields();
-            toggleModal(false);
-        } else {
-            alert('Vui lòng chọn một xe!');
+    if (!selectedCar) {
+        // Nếu chưa có xe nào được chọn, ẩn combobox phương thức thanh toán và đặt mặc định là "Thanh toán toàn bộ"
+        paymentMethod.value = 'full';
+        paymentMethod.classList.add('hidden');
+        Method.classList.add('hidden');
+        updatePaymentFields(); // Cập nhật lại các trường liên quan đến thanh toán
+    } else {
+        // Hiển thị combobox phương thức thanh toán nếu có xe được chọn
+        Method.classList.remove('hidden');
+        paymentMethod.classList.remove('hidden');
+    }
+}
+
+// Gọi hàm này mỗi khi cần kiểm tra trạng thái chọn xe, ví dụ sau khi chọn xe:
+function confirmCarSelection() {
+    const selectedCar = document.querySelector('input[name="selected_car"]:checked');
+    if (selectedCar) {
+        const carImage = selectedCar.getAttribute('data-image');
+        const selectedCarContainer = document.getElementById('selectedCarContainer');
+        const carPrice = selectedCar.getAttribute('data-price');
+        selectedCarContainer.innerHTML = `<img src="${carImage}" class="w-[40%] h-full rounded-full">`;
+        document.getElementById('total_price').value = carPrice;
+        updatePaymentFields();
+        toggleModal(false);
+    } else {
+        alert('Vui lòng chọn một xe!');
+    }
+
+    updatePaymentMethodVisibility()
+
+}
+
+// Thêm sự kiện onchange để kiểm tra mỗi khi thay đổi trạng thái chọn xe
+
+
+    function updateAccessoryTotal(accessoryId, accessoryPrice) {
+        const quantityInput = document.getElementById(`accessory-quantity-${accessoryId}`);
+        const quantity = parseInt(quantityInput.value);
+        if (quantity < 1) {
+            quantityInput.value = 1;
         }
+        updateTotalPrice();
     }
 
+    function updateTotalPrice() {
+        const totalPriceInput = document.getElementById('total_price');
+        const depositAmountInput = document.getElementById('deposit_amount');
+        const remainingAmountInput = document.getElementById('remaining_amount');
+        const paymentMethod = document.getElementById('payment_method').value;
 
+        const selectedCar = document.querySelector('input[name="selected_car"]:checked');
+        const carPrice = selectedCar ? parseFloat(selectedCar.getAttribute('data-price').replace(/,/g, '').trim()) : 0;
+        
+        let accessoriesTotal = 0;
+        document.querySelectorAll('#selectedAccessoriesList > div').forEach(accessory => {
+            const accessoryId = accessory.id.replace('selected-accessory-', '');
+            const quantity = parseInt(document.getElementById(`accessory-quantity-${accessoryId}`).value) || 1;
+            const price = parseFloat(document.querySelector(`input[data-accessory-id="${accessoryId}"]`).getAttribute('data-price'));
+            accessoriesTotal += quantity * price;
+        });
 
+        const totalPrice = carPrice + accessoriesTotal;
+        totalPriceInput.value = totalPrice.toFixed(0);
 
-function updateAccessoryTotal(accessoryId, accessoryPrice) {
-    const quantityInput = document.getElementById(`accessory-quantity-${accessoryId}`);
-    const quantity = parseInt(quantityInput.value);
-    const price = parseFloat(accessoryPrice);
-    if (quantity < 1) {
-        quantityInput.value = 1; // Không cho phép giá trị nhỏ hơn 1
+        if (selectedCar) {
+            if (paymentMethod === 'full') {
+                depositAmountInput.value = '0';
+                remainingAmountInput.value = '0';
+            } else if (paymentMethod === 'deposit') {
+                const depositAmount = (carPrice * 0.15) + accessoriesTotal;
+                const remainingAmount = totalPrice - depositAmount;
+                
+                depositAmountInput.value = depositAmount.toFixed(0);
+                remainingAmountInput.value = remainingAmount.toFixed(0);
+            }
+        } else {
+            depositAmountInput.value = '0';
+            remainingAmountInput.value = '0';
+        }
+
     }
-    updateTotalPrice();
-}
-
-function updateAccessoryTotal(accessoryId, accessoryPrice) {
-    const quantityInput = document.getElementById(`accessory-quantity-${accessoryId}`);
-    const quantity = parseInt(quantityInput.value);
-    const price = parseFloat(accessoryPrice);
-    if (quantity < 1) {
-        quantityInput.value = 1; // Không cho phép giá trị nhỏ hơn 1
-    }
-    updateTotalPrice();
-}
-
-function updateTotalPrice() {
-    const totalPriceInput = document.getElementById('total_price');
-    const selectedAccessories = document.querySelectorAll('#selectedAccessoriesList > div');
-    let totalPrice = 0;
-
-    selectedAccessories.forEach(accessory => {
-        const accessoryId = accessory.id.replace('selected-accessory-', '');
-        const quantity = parseInt(document.getElementById(`accessory-quantity-${accessoryId}`).value);
-        const price = parseFloat(document.querySelector(`input[value="${accessoryId}"]`).getAttribute('data-price'));
-        totalPrice += quantity * price;
-    });
-
-    totalPriceInput.value = totalPrice.toFixed(0);
-}
-function removeAccessory(accessoryId) {
-    // Xóa phụ kiện khỏi danh sách
-    const checkbox = document.querySelector(`input[name="selected_accessories[]"][value="${accessoryId}"]`);
-    checkbox.checked = false;
-    document.getElementById(`selected-accessory-${accessoryId}`).remove();
-
-    updateTotalPrice();
-    toggleAccessorySelectionBox();
-}
-function toggleAccessorySelectionBox() {
+    function toggleAccessorySelectionBox() {
     const accessorySelectionBox = document.getElementById('accessorySelectionBox');
     const selectedAccessoriesList = document.getElementById('selectedAccessoriesList');
 
@@ -362,21 +396,27 @@ function toggleAccessorySelectionBox() {
     } else {
         accessorySelectionBox.classList.remove('hidden'); // Hiển thị lại hộp chọn phụ kiện
     }
-}   
+}  
+    function removeAccessory(accessoryId) {
+        const checkbox = document.querySelector(`input[name="selected_accessories[]"][data-accessory-id="${accessoryId}"]`);
+        checkbox.checked = false;
+        document.getElementById(`selected-accessory-${accessoryId}`).remove();
+        updateTotalPrice();
+        toggleAccessorySelectionBox();
 
-
+        const selectedAccessoriesList = document.getElementById('selectedAccessoriesList');
+        const addAccessoryButton = document.getElementById('addAccessoryButton');
+        if (selectedAccessoriesList.children.length === 0 && addAccessoryButton) {
+            addAccessoryButton.remove();
+        }
+    }
     function updatePaymentFields() {
         const paymentMethod = document.getElementById('payment_method').value;
         const totalPrice = parseFloat(document.getElementById('total_price').value) || 0;
         const depositContainer = document.getElementById('deposit_container');
         const remainingContainer = document.getElementById('remaining_container');
         if (paymentMethod === 'deposit') {
-            const depositAmount = totalPrice * 0.15;
-            const remainingAmount = totalPrice - depositAmount;
-
-            document.getElementById('deposit_amount').value = depositAmount.toFixed(0);
-            document.getElementById('remaining_amount').value = remainingAmount.toFixed(0);
-
+            updateTotalPrice();
             depositContainer.classList.remove('hidden');
             remainingContainer.classList.remove('hidden');
         } else {
@@ -387,25 +427,16 @@ function toggleAccessorySelectionBox() {
             document.getElementById('remaining_amount').value = '0';
         }
     }
+    function confirmSubmission() {
+    const selectedCar = document.querySelector('input[name="selected_car"]:checked');
+    const selectedAccessories = document.querySelectorAll('input[name="selected_accessories[]"]:checked');
 
-    function confirmPayment() {
-        const customerPhone = document.getElementById('customer_phone').value.trim();
-        const customerName = document.getElementById('customer_name').value.trim();
-        const customerEmail = document.getElementById('customer_email').value.trim();
-        const customerAddress = document.getElementById('customer_address').value.trim();
-        const selectedCar = document.querySelector('input[name="selected_car"]:checked');
-
-        if (!customerPhone || !customerName || !customerEmail || !customerAddress) {
-            alert('Vui lòng nhập đầy đủ thông tin khách hàng.');
-            return false;
-        }
-
-        if (!selectedCar) {
-            alert('Vui lòng chọn một xe!');
-            return false;
-        }
-
-        return true;
+    if (!selectedCar && selectedAccessories.length === 0) {
+        alert('Vui lòng chọn ít nhất một xe hoặc một phụ kiện!');
+        return false;
     }
+    return true;
+}
+
 </script>
 @endsection

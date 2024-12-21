@@ -29,7 +29,13 @@ class Order extends Model
     {
         return $this->belongsTo(Account::class, 'account_id', 'id');
     }
-
+    public function accessories()
+    {
+        return $this->belongsToMany(Accessories::class, 'order_accessories', 'order_id', 'accessory_id')
+                    ->withPivot('quantity', 'price')
+                    ->withTimestamps();
+    }
+    
     /**
      * Quan hệ với SalesCars
      */

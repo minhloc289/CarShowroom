@@ -24,6 +24,7 @@ use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\RentalCarController;
+use App\Http\Controllers\Backend\RentalOrderController;
 
 /* BACKEND ROUTES */
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
@@ -32,9 +33,11 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
-
+    
     /* DASHBOARD */
     Route::get('/dashboard', [DashboardController::class, 'loadDashboard'])->name('dashboard');
+    Route::get('/user/profile', [DashboardController::class, 'loadProfile'])->name('profile');
+    Route::put('/profile/update', [DashboardController::class, 'updateProfile'])->name('Profile.update');
 
     /* CAR SALES */
     Route::get('/carsales', [carSalesController::class, 'loadCarsales'])->name('Carsales');
@@ -48,13 +51,26 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
     Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
     Route::get('/download/car-add-template', [carSalesController::class, 'downloadTemplate'])->name('caradd.download.template');
+    
     //order
     Route::get('/orders', [OrderManagementController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}/detail', [OrderManagementController::class, 'detail'])->name('orders.detail');
     Route::post('/orders/{order}/confirm-payment', [OrderManagementController::class, 'confirmPayment'])->name('orders.confirmPayment');
     Route::get('/orders/car/add', [OrderManagementController::class, 'addCar'])->name('orders.car.add');
-    Route::post('/orders/store', [OrderManagementController::class, 'storeOrder'])->name('orders.store');
+    Route::post('/orders/store', [OrderManagementController::class, 'store'])->name('orders.store');
 
+    /* RENTAL ORDER */
+    Route::get('/rental-orders', [RentalOrderController::class, 'index'])->name('rentalOrders');
+    Route::post('/rental-orders/filter', [RentalOrderController::class, 'filter'])->name('rentalOrders.filter');
+    Route::get('/rental-order/{id}', [RentalOrderController::class, 'show'])->name('rentalOrders.details');
+    Route::get('/rental-orders/create', [RentalOrderController::class, 'loadCreateForm'])->name('rentalOrders.create');
+    //Lấy dữ liệu từ xe cụ thể 
+    Route::get('/rental-car/{rental_id}', [RentalCarController::class, 'getRentalDetails'])->name('rentalCars.getDetails');
+    //Lấy dữ liệu từ khách hàng
+    Route::get('/customer/get-by-phone', [CustomerController::class, 'getCustomerByPhone'])->name('customer.getByPhone');
+    //Tạo đơn thuê xe
+    Route::post('/rental-orders/store', [RentalOrderController::class, 'store'])->name('rentalOrders.store');
+    Route::post('/rental-orders/payment/{order_id}', [RentalOrderController::class, 'completePayment'])->name('rentalOrders.completePayment');
 
     /* RENTAL CAR */
     Route::get('/rental-car', [RentalCarController::class, 'loadRentalCar'])->name('rentalCar');

@@ -73,6 +73,22 @@ class CustomerController extends Controller
         return redirect()->route('customer');
     }
 
-    
+    public function getCustomerByPhone(Request $request)
+    {
+        $phone = $request->query('phone');
+
+        if (!$phone) {
+            return response()->json(['error' => 'Số điện thoại không được để trống'], 400);
+        }
+
+        $customer = Account::where('phone', $phone)->first();
+
+        if (!$customer) {
+            return response()->json(['error' => 'Không tìm thấy khách hàng'], 404);
+        }
+
+        return response()->json(['name' => $customer->name]);
+    }
+
 
 }

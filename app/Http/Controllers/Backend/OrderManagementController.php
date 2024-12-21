@@ -51,7 +51,7 @@ class OrderManagementController extends Controller
         $cars = CarDetails::whereHas('salesCars', function ($query) {
             $query->where('is_deleted', 0);
         })->with('sale')->get();
-        $accessories = Accessories::all();
+        $accessories = Accessories::where('quantity', '>', 0)->get();
 
         // Nhóm xe theo thương hiệu
         $carsByBrand = $cars->groupBy('brand');
@@ -63,70 +63,136 @@ class OrderManagementController extends Controller
         return view('Backend.order-management.order_car_add', compact('cars', 'carsByBrand', 'accounts', 'accessories'));
     }
 
-    public function storeOrder(Request $request)
-    {
+    // public function storeOrder(Request $request)
+    // {
 
-        // Validate dữ liệu từ form
-        $request->validate([
-            'customer_phone' => 'required|string',
-            'customer_name' => 'required|string',
-            'customer_email' => 'required|email',
-            'customer_address' => 'required|string',
-            'selected_car' => 'required|exists:sales_cars,car_id',
-            'payment_method' => 'required|in:full,deposit',
-            'total_price' => 'required|numeric|min:0',
-            'deposit_amount' => 'nullable|numeric|min:0',
-            'remaining_amount' => 'nullable|numeric|min:0',
-        ]);
-        // Tìm khách hàng theo số điện thoại
-        $account = Account::firstOrCreate([
-            'phone' => $request->customer_phone
-        ], [
-            'name' => $request->customer_name,
-            'email' => $request->customer_email,
-            'address' => $request->customer_address,
-        ]);
+    //     // Validate dữ liệu từ form
+    //     $request->validate([
+    //         'customer_phone' => 'required|string',
+    //         'customer_name' => 'required|string',
+    //         'customer_email' => 'required|email',
+    //         'customer_address' => 'required|string',
+    //         'selected_car' => 'required|exists:sales_cars,car_id',
+    //         'payment_method' => 'required|in:full,deposit',
+    //         'total_price' => 'required|numeric|min:0',
+    //         'deposit_amount' => 'nullable|numeric|min:0',
+    //         'remaining_amount' => 'nullable|numeric|min:0',
+    //     ]);
+    //     // Tìm khách hàng theo số điện thoại
+    //     $account = Account::firstOrCreate([
+    //         'phone' => $request->customer_phone
+    //     ], [
+    //         'name' => $request->customer_name,
+    //         'email' => $request->customer_email,
+    //         'address' => $request->customer_address,
+    //     ]);
 
-        // Kiểm tra nếu xe đã tồn tại trong đơn hàng khác
+    //     // Kiểm tra nếu xe đã tồn tại trong đơn hàng khác
 
-        // Tạo một đơn hàng mới
-        $order = Order::create([
-            'account_id' => $account->id,
-            'sale_id' => $request->selected_car,
-            'status_order' => $request->payment_method === 'full' ? 1 : 0, // Hoàn tất nếu thanh toán toàn bộ
-            'order_date' => now()->toDateString(),
-        ]);
+    //     // Tạo một đơn hàng mới
+    //     $order = Order::create([
+    //         'account_id' => $account->id,
+    //         'sale_id' => $request->selected_car,
+    //         'status_order' => $request->payment_method === 'full' ? 1 : 0, // Hoàn tất nếu thanh toán toàn bộ
+    //         'order_date' => now()->toDateString(),
+    //     ]);
 
-        // Tạo payment mới
-        $paymentData = [
-            'order_id' => $order->order_id,
-            'total_amount' => $request->total_price,
-            'payment_deposit_date' => now(),
-            'status_deposit' => 0, // Mặc định đang chờ đặt cọc
-            'status_payment_all' => 0, // Mặc định chưa thanh toán
-            'deposit_deadline' => now()->addDays(1), // Hạn đặt cọc là 7 ngày
-            'payment_deadline' => now()->addDays(30), // Hạn thanh toán toàn bộ là 30 ngày
-        ];
+    //     // Tạo payment mới
+    //     $paymentData = [
+    //         'order_id' => $order->order_id,
+    //         'total_amount' => $request->total_price,
+    //         'payment_deposit_date' => now(),
+    //         'status_deposit' => 0, // Mặc định đang chờ đặt cọc
+    //         'status_payment_all' => 0, // Mặc định chưa thanh toán
+    //         'deposit_deadline' => now()->addDays(1), // Hạn đặt cọc là 7 ngày
+    //         'payment_deadline' => now()->addDays(30), // Hạn thanh toán toàn bộ là 30 ngày
+    //     ];
 
-        if ($request->payment_method === 'full') {
-            $paymentData['status_deposit'] = 1; // Đã đặt cọc
-            $paymentData['status_payment_all'] = 1; // Đã thanh toán toàn bộ
-            $paymentData['deposit_amount'] = $request->total_price; // Toàn bộ giá trị đơn hàng
-            $paymentData['remaining_amount'] = 0; // Không còn nợ
-            $order->update(['status_order' => 1]); // Cập nhật trạng thái đơn hàng là hoàn tất
-        } elseif ($request->payment_method === 'deposit') {
-            $paymentData['status_deposit'] = 1; // Đã đặt cọc
-            $paymentData['status_payment_all'] = 0; // Chưa thanh toán toàn bộ
-            $paymentData['deposit_amount'] = $request->deposit_amount;
-            $paymentData['remaining_amount'] = $request->remaining_amount;
-        }
+    //     if ($request->payment_method === 'full') {
+    //         $paymentData['status_deposit'] = 1; // Đã đặt cọc
+    //         $paymentData['status_payment_all'] = 1; // Đã thanh toán toàn bộ
+    //         $paymentData['deposit_amount'] = $request->total_price; // Toàn bộ giá trị đơn hàng
+    //         $paymentData['remaining_amount'] = 0; // Không còn nợ
+    //         $order->update(['status_order' => 1]); // Cập nhật trạng thái đơn hàng là hoàn tất
+    //     } elseif ($request->payment_method === 'deposit') {
+    //         $paymentData['status_deposit'] = 1; // Đã đặt cọc
+    //         $paymentData['status_payment_all'] = 0; // Chưa thanh toán toàn bộ
+    //         $paymentData['deposit_amount'] = $request->deposit_amount;
+    //         $paymentData['remaining_amount'] = $request->remaining_amount;
+    //     }
 
-        Payment::create($paymentData);
+    //     Payment::create($paymentData);
 
-        // Điều hướng về trang danh sách đơn hàng với thông báo thành công
-        toastr()->success('Thêm đơn hàng thành công');
-        return redirect()->route('orders.index');
+    //     // Điều hướng về trang danh sách đơn hàng với thông báo thành công
+    //     toastr()->success('Thêm đơn hàng thành công');
+    //     return redirect()->route('orders.index');
+    // }
+
+    public function store(Request $request)
+{
+    dd($request->all());
+    $validated = $request->validate([
+        'account_id' => 'required|exists:accounts,id', // Kiểm tra account_id hợp lệ
+        'customer_phone' => 'required',
+        'customer_name' => 'required',
+        'customer_email' => 'required|email',
+        'customer_address' => 'required',
+        'selected_car' => 'nullable|string|exists:sales_cars,sale_id',
+        'selected_accessories' => 'nullable|array',
+        // 'selected_accessories.*.accessory_id' => 'required|exists:accessories,accessory_id',
+        // 'selected_accessories.*.quantity' => 'required|integer|min:1',
+        'payment_method' => 'required|in:full,deposit', // Kiểm tra phương thức thanh toán
+    ]);
+    // dd($validated['selected_accessories']);
+
+    // Tính tổng giá trị đơn hàng
+    $totalAmount = 0;
+
+    // Giá xe
+    if ($request->selected_car) {
+        $car = SalesCars::find($request->selected_car);
+        $totalAmount += $car->sale_price;
     }
 
+    // Giá phụ kiện
+    if ($request->has('selected_accessories') && !empty($request->selected_accessories)) {
+        foreach ($request->selected_accessories as $accessoryData) {
+            $accessory = Accessories::find($accessoryData['accessory_id']);
+            $totalAmount += $accessory->price * $accessoryData['quantity'];
+        }
+    }
 
+    // Tạo đơn hàng
+    $order = Order::create([
+        'account_id' => $validated['account_id'],
+        'sale_id' => $request->selected_car,
+        'status_order' => $request->payment_method === 'full' ? 1 : 0, // Đã thanh toán nếu phương thức là full
+        'order_date' => now(),
+    ]);
+
+    // Lưu phụ kiện nếu có
+
+    // Tạo bản ghi trong bảng payments
+    $depositAmount = $request->payment_method === 'full' ? $totalAmount : $totalAmount * 0.15; // 15% nếu là đặt cọc
+    $remainingAmount = $totalAmount - $depositAmount;
+    
+    // Tạo bản ghi trong bảng payments
+    $payment = Payment::create([
+        'order_id' => $order->order_id,
+        'status_deposit' => $request->payment_method === 'full' || $request->payment_method === 'deposit' ? 1 : 0, // Đặt cọc thành công nếu full hoặc deposit
+        'status_payment_all' => $request->payment_method === 'full' ? 1 : 0, // Thanh toán toàn bộ nếu full
+        'deposit_amount' => $depositAmount,
+        'total_amount' => $totalAmount,
+        'remaining_amount' => $remainingAmount,
+        'deposit_deadline' => $request->payment_method === 'full' ? now() : now()->addDays(7),
+        'payment_deadline' => $request->payment_method === 'full' ? now() : now()->addDays(30),
+    ]);
+    
+
+    toastr()->success('Thêm đơn hàng thành công');
+    return redirect()->back();
+}
+
+    
+    
 }

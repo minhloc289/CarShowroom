@@ -141,17 +141,18 @@ class RentalOrderController extends Controller
                 throw new \Exception('Loại thanh toán không hợp lệ');
             }
 
-            RentalPayment::create([
+            $paymentRental = RentalPayment::create([
                 'order_id' => $order->order_id,
                 'status_deposit' => $statusDeposit,
                 'full_payment_status' => $fullPaymentStatus,
                 'deposit_amount' => $depositAmount,
                 'total_amount' => $request->total_cost,
                 'remaining_amount' => $remainingAmount,
-                'due_date' => $paymentType === 'deposit' ? now()->addDays(7) : now(),
+                'due_date' => $paymentType === 'deposit' ? now()->addMinutes(5) : now(),
                 'payment_date' => $paymentType === 'full' ? now() : null,
                 'transaction_code' => uniqid('TXN-'),
             ]);
+
 
             // Cập nhật trạng thái đơn hàng
             if ($paymentType === 'deposit') {
@@ -244,6 +245,70 @@ class RentalOrderController extends Controller
             Log::error('Lỗi khi thanh toán đơn hàng: ' . $e->getMessage());
             toastr()->error('Có lỗi xảy ra. Vui lòng thử lại.');
             return redirect()->back();
+        }
+    }
+
+    public function checkOrderStatus()
+    {
+        $currentTime = now(); // Lấy thời gian hiện tại theo múi giờ hệ thống
+
+        // Lấy các đơn hàng liên quan đến thanh toán
+        $payments = RentalPayment::all();
+
+        foreach ($payments as $payment) {
+            $order = RentalOrder::find($payment->order_id);
+            $receipt = RentalReceipt::where('order_id', $payment->order_id)->first();
+            $rentalCar = RentalCars::find($order->rental_id);
+
+            // Kiểm tra trạng thái đặt cọc
+            if ($payment->status_deposit === 'Pending') {
+                // Nếu chưa đặt cọc và đã quá thời hạn đặt cọc
+                if ($currentTime->greaterThan(Carbon::parse($payment->due_date))) {
+                    $this->cancelOrder($payment, $order, $receipt, $rentalCar);
+                }
+            } elseif ($payment->status_deposit === 'Successful') {
+                // Nếu đã đặt cọc, kiểm tra trạng thái thanh toán đầy đủ
+                if ($payment->full_payment_status === 'Pending') {
+                    // Chỉ hủy nếu đã quá thời hạn thanh toán đầy đủ
+                    if ($currentTime->greaterThan(Carbon::parse($payment->due_date))) {
+                        $this->cancelOrder($payment, $order, $receipt, $rentalCar);
+                    }
+                }
+            }
+        }
+
+        return response()->json(['message' => 'Checked and updated successfully']);
+    }
+
+    /**
+     * Hủy đơn hàng và cập nhật trạng thái liên quan.
+     *
+     * @param RentalPayment $payment
+     * @param RentalOrder $order
+     * @param RentalReceipt|null $receipt
+     * @param RentalCars|null $rentalCar
+     */
+    private function cancelOrder($payment, $order, $receipt, $rentalCar)
+    {
+        // Cập nhật trạng thái thanh toán
+        $payment->status_deposit = 'Canceled';
+        $payment->full_payment_status = 'Canceled';
+        $payment->save();
+
+        // Cập nhật trạng thái đơn hàng
+        $order->status = 'Canceled';
+        $order->save();
+
+        // Cập nhật trạng thái hóa đơn thuê (nếu có)
+        if ($receipt) {
+            $receipt->status = 'Canceled';
+            $receipt->save();
+        }
+
+        // Cập nhật trạng thái xe (nếu có)
+        if ($rentalCar) {
+            $rentalCar->availability_status = 'Available';
+            $rentalCar->save();
         }
     }
 

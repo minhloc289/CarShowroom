@@ -482,12 +482,13 @@
                                 <span class="menu-title">Accessories Management</span>
                             </a>
                         </div>
+                        
                         <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/widgets/mixed.html">
+                            <a class="menu-link" href="{{route('test_drive.index')}}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Mixed</span>
+                                <span class="menu-title">Test Drive Management</span>
                             </a>
                         </div>
                         <div class="menu-item">

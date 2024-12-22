@@ -36,7 +36,7 @@
             </a>
         </li>
         <li>
-            <a href="#" class="flex items-center text-gray-600 hover:text-blue-600" data-section="dang-ky-lai-thu">
+            <a href="{{route('rentalHistory')}}" class="flex items-center text-gray-600 hover:text-blue-600" data-section="dang-ky-lai-thu">
                 <i class="fas fa-clipboard-check mr-3"></i> Lịch sử thuê xe
             </a>
         </li>

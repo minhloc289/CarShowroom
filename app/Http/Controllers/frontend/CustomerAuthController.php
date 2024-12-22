@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
+use Illuminate\Support\Facades\Log;
 
 class CustomerAuthController extends Controller
 {
@@ -122,7 +123,7 @@ class CustomerAuthController extends Controller
             toastr()->success('Đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản!');
             return redirect()->route('CustomerDashBoard.index');
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
+            Log::error($e->getMessage());
             toastr()->error('Đã xảy ra lỗi. Vui lòng thử lại.');
             return back()->withInput();
         }

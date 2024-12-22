@@ -66,7 +66,10 @@ class Account extends Authenticatable
     {
         return $this->hasMany(RentalOrder::class, 'user_id', 'id');
     }
-
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'user_id', 'id');
+    }
     /**
      * Boot method - Tạo ID tự động với tiền tố ACC
      */

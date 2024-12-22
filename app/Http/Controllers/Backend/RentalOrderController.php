@@ -9,7 +9,10 @@ use App\Models\RentalCars;
 use App\Models\Account;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use App\Mail\DepositSuccessfulNotification;
+use App\Mail\FullPaymentConfirmationMail;
 use App\Models\RentalReceipt;
 use App\Models\RentalPayment;
 
@@ -111,16 +114,29 @@ class RentalOrderController extends Controller
             // Xử lý logic thanh toán
             $paymentType = $request->payment_type;
 
+            $mailData = [
+                'name' => $request->name,
+                'order_id' => $order->order_id,
+                'start_date' => $request->start_date,
+                'end_date' => $rentalEndDate,
+                'total_cost' => $request->total_cost,
+                'deposit_amount' => $paymentType === 'deposit' ? $request->deposit_amount : $request->total_cost,
+            ];
+
             if ($paymentType === 'deposit') {
                 $depositAmount = $request->deposit_amount;
                 $remainingAmount = $request->total_cost - $depositAmount;
                 $statusDeposit = 'Successful';
                 $fullPaymentStatus = 'Pending';
+
+                Mail::to($user->email)->send(new DepositSuccessfulNotification($mailData));
             } elseif ($paymentType === 'full') {
                 $depositAmount = $request->total_cost;
                 $remainingAmount = 0;
                 $statusDeposit = 'Successful';
                 $fullPaymentStatus = 'Successful';
+
+                Mail::to($user->email)->send(new FullPaymentConfirmationMail($mailData));
             } else {
                 throw new \Exception('Loại thanh toán không hợp lệ');
             }
@@ -185,6 +201,13 @@ class RentalOrderController extends Controller
                 return redirect()->back();
             }
 
+            // Lấy thông tin từ rental_receipt
+            $rentalReceipt = RentalReceipt::where('order_id', $order->order_id)->first();
+            if (!$rentalReceipt) {
+                toastr()->error('Không tìm thấy thông tin hóa đơn thuê xe.');
+                return redirect()->back();
+            }
+
             // Cập nhật trạng thái thanh toán
             $payment->update([
                 'status_deposit' => 'Successful',
@@ -198,6 +221,20 @@ class RentalOrderController extends Controller
                 'status' => 'Paid', // Đơn hàng được đánh dấu là đã thanh toán
             ]);
 
+            // Gửi mail xác nhận thanh toán toàn bộ
+            $user = Account::find($order->user_id);
+            if ($user) {
+                $mailData = [
+                    'name' => $user->name,
+                    'order_id' => $order->order_id,
+                    'start_date' => $rentalReceipt->rental_start_date,
+                    'end_date' => $rentalReceipt->rental_end_date,
+                    'total_cost' => $payment->total_amount,
+                ];
+
+                Mail::to($user->email)->send(new FullPaymentConfirmationMail($mailData));
+            }
+
             DB::commit();
 
             toastr()->success('Thanh toán thành công. Đơn hàng đã được cập nhật.');
@@ -209,6 +246,8 @@ class RentalOrderController extends Controller
             return redirect()->back();
         }
     }
+
+
 
 
 

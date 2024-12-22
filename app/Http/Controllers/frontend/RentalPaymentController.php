@@ -7,6 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Models\RentalCars;
 use App\Models\RentalPayment;
 use App\Models\RentalOrder;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use App\Mail\DepositSuccessfulNotification;
 
 class RentalPaymentController extends Controller
 {
@@ -138,15 +142,30 @@ class RentalPaymentController extends Controller
                             $rental = RentalCars::find($order->rental_id);
                             if ($rental) {
                                 $rental->update(['availability_status' => 'Rented']);
-                                // if ($payment->remaining_amount <= 0) {
-                                //     $payment->update(['full_payment_status' => 'Successful']);
-                                //     $order->update(['status' => 'Paid']); // Cập nhật trạng thái đơn hàng là 'Paid'
-                                // }
+                            }
+
+                            // Lấy dữ liệu từ bảng rental_receipt
+                            $rentalReceipt = DB::table('rental_receipt')->where('order_id', $order->order_id)->first();
+
+                            // Gửi email xác nhận đặt cọc thành công
+                            try {
+                                Mail::to($order->user->email)->send(new DepositSuccessfulNotification([
+                                    'name' => $order->user->name,
+                                    'order_id' => $order->order_id,
+                                    'start_date' => $rentalReceipt->rental_start_date,
+                                    'end_date' => $rentalReceipt->rental_end_date,
+                                    'deposit_amount' => $payment->deposit_amount,
+                                    'total_cost' => $payment->total_amount,
+                                ]));
+
+                                toastr()->success("Thanh toán đặt cọc thành công và email xác nhận đã được gửi.");
+                            } catch (\Exception $e) {
+                                Log::error('Gửi email thất bại: ' . $e->getMessage());
+                                toastr()->warning("Thanh toán đặt cọc thành công nhưng không gửi được email xác nhận.");
                             }
                         }
                     }
                 }
-                toastr()->success("Thanh toán đặt cọc thành công");
                 return redirect()->route('rent.car');
             } else {
                 toastr()->error("Thanh toán đặt cọc thất bại");
@@ -157,6 +176,8 @@ class RentalPaymentController extends Controller
             return redirect()->route('rent.car');
         }
     }
+
+
 
     // public function updateFullPaymentStatus(Request $request, $paymentId)
     // {

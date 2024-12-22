@@ -24,7 +24,8 @@ use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\RentalCarController;
-
+use App\Http\Controllers\Backend\RentalOrderController;
+use App\Http\Controllers\frontend\RentalHistoryController;
 
 use App\Http\Controllers\Backend\TestDriveController;
 use App\Http\Controllers\frontend\RegisterTestDrive;
@@ -35,7 +36,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
-    
+
     /* DASHBOARD */
     Route::get('/dashboard', [DashboardController::class, 'loadDashboard'])->name('dashboard');
     Route::get('/user/profile', [DashboardController::class, 'loadProfile'])->name('profile');
@@ -54,7 +55,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
     Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
     Route::get('/download/car-add-template', [carSalesController::class, 'downloadTemplate'])->name('caradd.download.template');
-    
+
     //order
     Route::get('/orders', [OrderManagementController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}/detail', [OrderManagementController::class, 'detail'])->name('orders.detail');
@@ -74,6 +75,9 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     //Tạo đơn thuê xe
     Route::post('/rental-orders/store', [RentalOrderController::class, 'store'])->name('rentalOrders.store');
     Route::post('/rental-orders/payment/{order_id}', [RentalOrderController::class, 'completePayment'])->name('rentalOrders.completePayment');
+    //Kiểm tra trạng thái thanh toán (AJAX)
+    Route::get('/check-order-status', [RentalOrderController::class, 'checkOrderStatus'])->name('checkOrderStatus');
+
 
     /* RENTAL CAR */
     Route::get('/rental-car', [RentalCarController::class, 'loadRentalCar'])->name('rentalCar');
@@ -101,7 +105,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/users/import', [AdminController::class, 'importExcel'])->name('users.import');
     Route::get('/download/user-template', [AdminController::class, 'downloadTemplate'])->name('user.download.template');
     Route::delete('/users/mass-delete', [AdminController::class, 'massDelete'])->name('user.mass_delete');
-  
+
     /*CUSTOMER CRUD*/
     Route::get('/customer', [CustomerController::class, 'loadCustomerPage'])->name('customer');
     Route::get('/customer/create', [CustomerController::class, 'loadCustomerCreatePage'])->name('customer.create');
@@ -172,6 +176,9 @@ Route::post('/profile/update', [ProfileController::class, 'update'])->name('prof
 Route::get('/view-profile/resetpass', [ProfileController::class, 'showResetPass'])->name('view.resetpass');
 // Xử lý yêu cầu đổi mật khẩu
 Route::post('/view-profile/resetpass', [CustomerAuthController::class, 'resetPassword'])->name('reset.password.submit');
+Route::get('/customer-car', [ProfileController::class, 'customer_car'])->name('customer.car');
+Route::get('/customer-car/detail/{id}', [ProfileController::class, 'customer_car_detail'])->name('customer.car.detail');
+
 //transactionHistory
 Route::get('/saleCar-history', [TransactionController::class, 'index'])->name('transaction.history');
 Route::get('/saleCar/{orderId}', [TransactionController::class, 'orderDetails'])->name('transactionHistory.details');
@@ -180,7 +187,8 @@ Route::get('/rental-history/{orderId}', [TransactionController::class, 'rentalOr
 Route::get('/rental-order-status/{orderId}', [TransactionController::class, 'getStatus'])->name('order.status');
 
 // Rental History
-Route::get('/rental-history', [RentalHistoryController::class, 'index'])->name('rentalHistory');
+Route::get('/rentalCar-history', [RentalHistoryController::class, 'index'])->name('rentalHistory');
+Route::get('/rentalCar-history/{receiptId}', [RentalHistoryController::class, 'showReceipt'])->name('rentalHistory.showReceipt');
 
 //
 

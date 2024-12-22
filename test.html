@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Đặt Hàng</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-5xl mx-auto bg-white rounded-lg shadow-md p-6 mt-10">
+        <!-- Header -->
+        <div class="flex justify-between items-center border-b pb-4 mb-6">
+            <h1 class="text-2xl font-semibold">THÔNG TIN ĐẶT HÀNG</h1>
+            <button class="text-gray-500 hover:underline">Thu gọn</button>
+        </div>
+        
+        <!-- Content -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Left Column: Order and Customer Info -->
+            <div>
+                <!-- Order Info -->
+                <div class="mb-6">
+                    <h2 class="text-lg font-semibold mb-4">Thông tin chung</h2>
+                    <p><strong>Mã đơn hàng:</strong> 24VF94R3ZRYZF</p>
+                    <p><strong>Ngày đặt hàng:</strong> 12.12.2024 16:19:32</p>
+                    <p><strong>Trạng thái:</strong> 
+                        <span class="bg-red-500 text-white px-3 py-1 rounded-md">Đã hủy</span>
+                    </p>
+                </div>
+                <!-- Customer Info -->
+                <div>
+                    <h2 class="text-lg font-semibold mb-4">Thông tin chủ xe</h2>
+                    <p><strong>Họ và tên:</strong> Cái Ngọc Minh Lộc</p>
+                    <p><strong>Số điện thoại:</strong> 0708985088</p>
+                    <p><strong>Email:</strong> locminh.2809@gmail.com</p>
+                    <p><strong>CMND/CCCD:</strong> 079204016114</p>
+                    <p><strong>Showroom nhận xe:</strong> KINH DOANH O2O</p>
+                </div>
+            </div>
+            
+            <!-- Right Column: Car Info -->
+            <div>
+                <!-- Car Info -->
+                <div class="bg-gray-100 rounded-lg p-4 mb-6">
+                    <h2 class="text-lg font-semibold mb-4">VF 9 - Plus tùy chọn 7 chỗ, trần kính toàn cảnh</h2>
+                    <div class="flex items-center">
+                        <img src="https://via.placeholder.com/200" alt="Car Image" class="w-40 h-auto rounded-md shadow-md">
+                        <div class="ml-4">
+                            <p class="flex items-center">
+                                <span class="w-6 h-6 bg-gray-800 rounded-full inline-block mr-2"></span>
+                                Neptune Grey
+                            </p>
+                            <p class="flex items-center mt-2">
+                                <span class="w-6 h-6 bg-[#A0522D] rounded-full inline-block mr-2"></span>
+                                Saddle Brown
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payment Info -->
+                <div class="bg-gray-100 rounded-lg p-4">
+                    <h2 class="text-lg font-semibold mb-4">Thông tin thanh toán</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="font-semibold">Giá trị đơn hàng</p>
+                            <p>Đang cập nhật</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold">Đã thanh toán</p>
+                            <p>Đang cập nhật</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold">Cần thanh toán</p>
+                            <p>Đang cập nhật</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

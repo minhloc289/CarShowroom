@@ -18,109 +18,111 @@
             <!-- Danh sách giao dịch Xe ô tô và Sản phẩm -->
             <div id="carsContainer" class="tabcontent d-flex flex-column">
                 @foreach ($transactions as $transaction)
-                    @if ($transaction->order)
-                        @php
-                            // Trạng thái đặt cọc
-                            $statusText = '';
-                            $statusColor = '#e3e3e3';
-                            $colorText = '#1e1e1e';
+                            @if ($transaction->order)
+                                        @php
+                                            // Trạng thái đặt cọc
+                                            $statusText = '';
+                                            $statusColor = '#e3e3e3';
+                                            $colorText = '#1e1e1e';
 
-                            // Trạng thái thanh toán
-                            $paymentStatusText = '';
-                            $paymentStatusColor = '#e3e3e3';
-                            $paymentColorText = '#1e1e1e';
+                                            // Trạng thái thanh toán
+                                            $paymentStatusText = '';
+                                            $paymentStatusColor = '#e3e3e3';
+                                            $paymentColorText = '#1e1e1e';
 
-                            switch ($transaction->status_deposit) {
-                                case 0:
-                                    $statusText = 'Chờ đặt cọc';
-                                    $statusColor = '#e3e3e3';
-                                    break;
-                                case 1:
-                                    $statusText = 'Đã đặt cọc';
-                                    $statusColor = '#28a745';
-                                    $colorText = '#fff';
-                                    break;
-                                case 2:
-                                    $statusText = 'Không đặt cọc';
-                                    $statusColor = '#dc3545';
-                                    $colorText = '#fff';
-                                    break;
-                            }
+                                            switch ($transaction->status_deposit) {
+                                                case 0:
+                                                    $statusText = 'Chờ đặt cọc';
+                                                    $statusColor = '#e3e3e3';
+                                                    break;
+                                                case 1:
+                                                    $statusText = 'Đã đặt cọc';
+                                                    $statusColor = '#28a745';
+                                                    $colorText = '#fff';
+                                                    break;
+                                                case 2:
+                                                    $statusText = 'Không đặt cọc';
+                                                    $statusColor = '#dc3545';
+                                                    $colorText = '#fff';
+                                                    break;
+                                            }
 
-                            switch ($transaction->status_payment_all) {
-                                case 0:
-                                    $paymentStatusText = 'Chưa thanh toán hết';
-                                    $paymentStatusColor = '#ffc107';
-                                    break;
-                                case 1:
-                                    $paymentStatusText = 'Đã thanh toán hết';
-                                    $paymentStatusColor = '#28a745';
-                                    $paymentColorText = '#fff';
-                                case 2:
-                                    $paymentStatusText = 'Không đặt cọc';
-                                    $paymentStatusColor = '#dc3545';
-                                    $paymentColorText = '#fff';
-                                    break;
-                            }
+                                            switch ($transaction->status_payment_all) {
+                                                case 0:
+                                                    $paymentStatusText = 'Chưa thanh toán hết';
+                                                    $paymentStatusColor = '#ffc107';
+                                                    break;
+                                                case 1:
+                                                    $paymentStatusText = 'Đã thanh toán hết';
+                                                    $paymentStatusColor = '#28a745';
+                                                    $paymentColorText = '#fff';
+                                                    break;
 
-                            // Kiểm tra loại đơn hàng
-                            $orderType = '';
-                            $carDetails = $transaction->order->salesCar->carDetails ?? null;
-                            $accessories = $transaction->order->accessories;
+                                                case 2:
+                                                    $paymentStatusText = 'Không thanh toán hết';
+                                                    $paymentStatusColor = '#dc3545';
+                                                    $paymentColorText = '#fff';
+                                                    break;
+                                            }
 
-                            if ($carDetails && $accessories->count() > 0) {
-                                $orderType = 'Xe và Sản phẩm';
-                            } elseif ($carDetails) {
-                                $orderType = 'Xe';
-                            } elseif ($accessories->count() > 0) {
-                                $orderType = 'Sản phẩm';
-                            }
+                                            // Kiểm tra loại đơn hàng
+                                            $orderType = '';
+                                            $carDetails = $transaction->order->salesCar->carDetails ?? null;
+                                            $accessories = $transaction->order->accessories;
 
-                            // Ảnh hiển thị
-                            $imageUrl = $carDetails ? $carDetails->image_url : ($accessories->count() > 0 ? $accessories->first()->image_url : 'default-image.jpg');
-                        @endphp
+                                            if ($carDetails && $accessories->count() > 0) {
+                                                $orderType = 'Xe và Sản phẩm';
+                                            } elseif ($carDetails) {
+                                                $orderType = 'Xe';
+                                            } elseif ($accessories->count() > 0) {
+                                                $orderType = 'Sản phẩm';
+                                            }
 
-                        <div
-                            style="display: flex; justify-content: space-between; align-items: center; border: 1px solid #ddd; padding: 16px; border-radius: 12px; margin-bottom: 16px; background-color: #ffffff; width: 95%; margin-left: auto; margin-right: auto;">
-                            <!-- Ảnh và thông tin -->
-                            <a href="{{ route('transactionHistory.details', ['orderId' => $transaction->order->order_id]) }}">
-                                <div style="display: flex; align-items: center;">
-                                    <!-- Ảnh xe hoặc phụ kiện -->
-                                    <img src="{{ $imageUrl ?? 'default-image.jpg' }}" alt="Image"
-                                        style="width: 70px; height: auto; border-radius: 8px; margin-right: 15px;">
-                                    <!-- Thông tin -->
-                                    <div>
-                                        <h4 style="margin: 0; font-weight: bold;">
-                                            {{ $carDetails->name ?? ($accessories->count() > 0 ? 'Sản phẩm' : 'Không xác định') }}
-                                        </h4>
-                                        <p style="margin: 0; color: #6c757d;">Đại loại: <strong>{{ $orderType }}</strong></p>
-                                        <p style="margin: 0; color: #6c757d;">Đơn hàng: {{ $transaction->order->order_id }}</p>
+                                            // Ảnh hiển thị
+                                            $imageUrl = $carDetails ? $carDetails->image_url : ($accessories->count() > 0 ? $accessories->first()->image_url : 'default-image.jpg');
+                                        @endphp
 
-                                        @if ($accessories->count() > 0)
-                                            <p style="margin: 0; color: #6c757d;">
-                                                Phụ kiện:
-                                                @foreach ($accessories as $accessory)
-                                                    {{ $accessory->name }} (x{{ $accessory->pivot->quantity }}),
-                                                @endforeach
-                                            </p>
-                                        @endif
-                                    </div>
-                                </div>
-                            </a>
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items: center; border: 1px solid #ddd; padding: 16px; border-radius: 12px; margin-bottom: 16px; background-color: #ffffff; width: 95%; margin-left: auto; margin-right: auto;">
+                                            <!-- Ảnh và thông tin -->
+                                            <a href="{{ route('transactionHistory.details', ['orderId' => $transaction->order->order_id]) }}">
+                                                <div style="display: flex; align-items: center;">
+                                                    <!-- Ảnh xe hoặc phụ kiện -->
+                                                    <img src="{{ $imageUrl ?? 'default-image.jpg' }}" alt="Image"
+                                                        style="width: 70px; height: auto; border-radius: 8px; margin-right: 15px;">
+                                                    <!-- Thông tin -->
+                                                    <div>
+                                                        <h4 style="margin: 0; font-weight: bold;">
+                                                            {{ $carDetails->name ?? ($accessories->count() > 0 ? 'Sản phẩm' : 'Không xác định') }}
+                                                        </h4>
+                                                        <p style="margin: 0; color: #6c757d;">Đại loại: <strong>{{ $orderType }}</strong></p>
+                                                        <p style="margin: 0; color: #6c757d;">Đơn hàng: {{ $transaction->order->order_id }}</p>
 
-                            <!-- Trạng thái -->
-                            <div>
-                                <span class="px-3 py-1 rounded-full text-sm font-medium"
-                                    style="background-color: {{ $statusColor }}; color: {{ $colorText }}; margin-right: 10px;">
-                                    {{ $statusText }}
-                                </span>
-                                <span class="px-3 py-1 rounded-full text-sm font-medium"
-                                    style="background-color: {{ $paymentStatusColor }}; color: {{ $paymentColorText }};">
-                                    {{ $paymentStatusText }}
-                                </span>
-                            </div>
-                        </div>
-                    @endif
+                                                        @if ($accessories->count() > 0)
+                                                            <p style="margin: 0; color: #6c757d;">
+                                                                Phụ kiện:
+                                                                @foreach ($accessories as $accessory)
+                                                                    {{ $accessory->name }} (x{{ $accessory->pivot->quantity }}),
+                                                                @endforeach
+                                                            </p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </a>
+
+                                            <!-- Trạng thái -->
+                                            <div>
+                                                <span class="px-3 py-1 rounded-full text-sm font-medium"
+                                                    style="background-color: {{ $statusColor }}; color: {{ $colorText }}; margin-right: 10px;">
+                                                    {{ $statusText }}
+                                                </span>
+                                                <span class="px-3 py-1 rounded-full text-sm font-medium"
+                                                    style="background-color: {{ $paymentStatusColor }}; color: {{ $paymentColorText }};">
+                                                    {{ $paymentStatusText }}
+                                                </span>
+                                            </div>
+                                        </div>
+                            @endif
                 @endforeach
             </div>
 

@@ -36,7 +36,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
-    
+
     /* DASHBOARD */
     Route::get('/dashboard', [DashboardController::class, 'loadDashboard'])->name('dashboard');
     Route::get('/user/profile', [DashboardController::class, 'loadProfile'])->name('profile');
@@ -55,7 +55,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
     Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
     Route::get('/download/car-add-template', [carSalesController::class, 'downloadTemplate'])->name('caradd.download.template');
-    
+
     //order
     Route::get('/orders', [OrderManagementController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}/detail', [OrderManagementController::class, 'detail'])->name('orders.detail');
@@ -105,7 +105,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/users/import', [AdminController::class, 'importExcel'])->name('users.import');
     Route::get('/download/user-template', [AdminController::class, 'downloadTemplate'])->name('user.download.template');
     Route::delete('/users/mass-delete', [AdminController::class, 'massDelete'])->name('user.mass_delete');
-  
+
     /*CUSTOMER CRUD*/
     Route::get('/customer', [CustomerController::class, 'loadCustomerPage'])->name('customer');
     Route::get('/customer/create', [CustomerController::class, 'loadCustomerCreatePage'])->name('customer.create');
@@ -176,6 +176,9 @@ Route::post('/profile/update', [ProfileController::class, 'update'])->name('prof
 Route::get('/view-profile/resetpass', [ProfileController::class, 'showResetPass'])->name('view.resetpass');
 // Xử lý yêu cầu đổi mật khẩu
 Route::post('/view-profile/resetpass', [CustomerAuthController::class, 'resetPassword'])->name('reset.password.submit');
+Route::get('/customer-car', [ProfileController::class, 'customer_car'])->name('customer.car');
+Route::get('/customer-car/detail/{id}', [ProfileController::class, 'customer_car_detail'])->name('customer.car.detail');
+
 //transactionHistory
 Route::get('/saleCar-history', [TransactionController::class, 'index'])->name('transaction.history');
 Route::get('/saleCar/{orderId}', [TransactionController::class, 'orderDetails'])->name('transactionHistory.details');

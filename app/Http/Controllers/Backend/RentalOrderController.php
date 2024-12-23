@@ -18,7 +18,7 @@ use App\Models\RentalPayment;
 
 class RentalOrderController extends Controller
 {
-    public function index() 
+    public function index()
     {
         $orders = RentalOrder::with(['user', 'rentalCar.carDetails'])->paginate(10); // Eager loading for related data
         return view('Backend.rentalOrder.rentalOrderIndex', compact('orders'));
@@ -58,8 +58,8 @@ class RentalOrderController extends Controller
     {
         // Lấy danh sách xe thuê có sẵn (trạng thái 'Available')
         $rentalCars = RentalCars::where('availability_status', 'Available')
-        ->with('carDetails') // Eager load bảng carDetails
-        ->get();
+            ->with('carDetails') // Eager load bảng carDetails
+            ->get();
 
         // Trả về view với dữ liệu cần thiết
         return view('Backend.rentalOrder.createRentalOrder', compact('rentalCars'));

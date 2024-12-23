@@ -26,6 +26,7 @@ use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\RentalCarController;
 use App\Http\Controllers\Backend\RentalOrderController;
 use App\Http\Controllers\frontend\RentalHistoryController;
+use App\Http\Controllers\Backend\RevenueController;
 
 use App\Http\Controllers\Backend\TestDriveController;
 use App\Http\Controllers\frontend\RegisterTestDrive;
@@ -69,7 +70,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/rental-order/{id}', [RentalOrderController::class, 'show'])->name('rentalOrders.details');
     Route::get('/rental-orders/create', [RentalOrderController::class, 'loadCreateForm'])->name('rentalOrders.create');
     //Lấy dữ liệu từ xe cụ thể 
-    Route::get('/rental-car/{rental_id}', [RentalCarController::class, 'getRentalDetails'])->name('rentalCars.getDetails');
+    Route::get('/rental-car/getDetails/{rental_id}', [RentalCarController::class, 'getRentalDetails'])->name('rentalCars.getDetails');
     //Lấy dữ liệu từ khách hàng
     Route::get('/customer/get-by-phone', [CustomerController::class, 'getCustomerByPhone'])->name('customer.getByPhone');
     //Tạo đơn thuê xe
@@ -122,6 +123,9 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::delete('/test_drive/delete,{id}', [TestDriveController::class, 'delete'])->name('test_drive.destroy');
     // Thanh toan va thong ke
     Route::get('/admin/payments/manage', [PaymentController::class, 'managePayments'])->name('payments.manage');
+    Route::get('/payments', [RevenueController::class, 'index'])->name('payments.index');
+    Route::get('/payments/detail/{payment}', [RevenueController::class, 'Paymentdetail'])->name('payments.detail');
+
 
 
 

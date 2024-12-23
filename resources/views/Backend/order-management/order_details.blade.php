@@ -95,7 +95,7 @@
             <!-- Nút thanh toán nếu chưa thanh toán -->
             @if ($payment && $payment->status_payment_all == 0)
                 <form action="{{ route('orders.confirmPayment', ['order' => $order->order_id]) }}" method="POST" class="inline-block">
-                    @csrf
+                    @csrf 
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg">
                         Xác nhận thanh toán
                     </button>

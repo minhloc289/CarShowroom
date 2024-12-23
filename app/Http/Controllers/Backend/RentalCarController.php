@@ -37,8 +37,8 @@ class RentalCarController extends Controller
         if ($request->search) {
             $query->whereHas('carDetails', function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('brand', 'like', '%' . $request->search . '%')
-                ->orWhere('model', 'like', '%' . $request->search . '%');
+                    ->orWhere('brand', 'like', '%' . $request->search . '%')
+                    ->orWhere('model', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -222,11 +222,6 @@ class RentalCarController extends Controller
     public function getRentalDetails($rental_id)
     {
         $car = RentalCars::with('carDetails')->find($rental_id);
-
-        if (!$car) {
-            return response()->json(['error' => 'Xe không tồn tại'], 404);
-        }
-
         return response()->json([
             'price_per_day' => number_format($car->rental_price_per_day, 0, ',', '.'), // Định dạng tiền
             'car_name' => $car->carDetails->name ?? 'Không có thông tin',

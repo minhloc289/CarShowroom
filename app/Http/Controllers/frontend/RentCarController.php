@@ -9,6 +9,8 @@ use App\Models\RentalCars;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use App\Models\RentalReceipt;
+use App\Models\RentalRenewal;
 
 class RentCarController extends Controller
 {
@@ -107,14 +109,15 @@ class RentCarController extends Controller
             ]);
 
             // Tính ngày kết thúc thuê
-            $rental_end_date = Carbon::parse($request->start_date)->addDays($request->rental_days - 1);
+            $rental_start_date = Carbon::parse($request->start_date); // Ngày bắt đầu do người dùng chọn
+            $rental_end_date = $rental_start_date->copy()->addDays($request->rental_days - 1)->endOfDay(); // Ngày kết thúc là 23:59 của ngày cuối cùng
 
             // Lưu dữ liệu vào bảng rental_receipt
             DB::table('rental_receipt')->insert([
                 'order_id' => $orderId, // Lấy ID của đơn hàng vừa tạo
                 'rental_id' => $request->rental_id,
                 'rental_start_date' => $request->start_date,
-                'rental_end_date' => $rental_end_date,
+                'rental_end_date' => now()->addMinutes(2),
                 'rental_price_per_day' => $request->rental_price_per_day,
                 'total_cost' => $request->total_cost,
                 'status' => 'Active', // Trạng thái ban đầu là 'Active'
@@ -139,6 +142,50 @@ class RentCarController extends Controller
             return redirect()->back()->withInput();
         }
     }
+
+    public function handleExtend(Request $request)
+    {
+        $validated = $request->validate([
+            'receipt_id' => 'required|exists:rental_receipt,receipt_id',
+            'extend_days' => 'required|integer|min:1',
+        ]);
+
+        $receipt = RentalReceipt::findOrFail($validated['receipt_id']);
+        $extendDays = $validated['extend_days'];
+
+        // Kiểm tra trạng thái hiện tại của biên lai
+        if (!in_array($receipt->status, ['Active', 'Completed'])) {
+            toastr()->error('Không thể gia hạn cho biên lai này.');
+            return redirect()->back();
+        }
+
+        // Xử lý logic gia hạn dựa trên trạng thái
+        if ($receipt->status === 'Active') {
+            // Nới ngày kết thúc thêm số ngày gia hạn
+            $newEndDate = Carbon::parse($receipt->rental_end_date)->addDays($extendDays);
+        } elseif ($receipt->status === 'Completed') {
+            // Đặt ngày bắt đầu mới là ngày sau ngày kết thúc
+            $newStartDate = Carbon::parse($receipt->rental_end_date)->addDay();
+            $newEndDate = Carbon::parse($newStartDate)->addDays($extendDays - 1);
+        }
+
+        // Tính chi phí gia hạn
+        $renewalCost = $receipt->rental_price_per_day * $extendDays;
+
+        // Gửi yêu cầu gia hạn tới admin bằng cách thêm bản ghi mới vào bảng rental_renewals
+        $renewal = RentalRenewal::create([
+            'receipt_id' => $receipt->receipt_id,
+            'request_date' => now(),
+            'new_end_date' => $newEndDate,
+            'renewal_cost' => $renewalCost,
+            'status' => 'Pending',
+        ]);
+
+        // Trả về thông báo cho khách hàng
+        toastr()->success('Yêu cầu gia hạn đã được gửi. Vui lòng chờ xác nhận!');
+        return redirect()->back();
+    }
+
 
 
 }

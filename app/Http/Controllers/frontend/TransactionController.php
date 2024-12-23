@@ -15,19 +15,19 @@ class TransactionController extends Controller
     public function index()
     {
         // Dữ liệu xe bán
-    $user = Auth::guard('account')->user();
-    $currentUserId=$user->id;
-    $transactions = Payment::with([
-        'order.salesCar.carDetails', // Nạp quan hệ từ Order -> SalesCar -> CarDetails
-        'order.accessories'          // Nạp quan hệ từ Order -> Accessories
-    ])
-    ->whereHas('order', function ($query) use ($currentUserId) {
-        $query->where('account_id', $currentUserId); // Lọc các order của khách hàng đang đăng nhập
-    })
-    ->orderBy('payment_deposit_date', 'desc') // Sắp xếp theo ngày thanh toán
-    ->get();
+        $user = Auth::guard('account')->user();
+        $currentUserId=$user->id;
+        $transactions = Payment::with([
+            'order.salesCar.carDetails', // Nạp quan hệ từ Order -> SalesCar -> CarDetails
+            'order.accessories'          // Nạp quan hệ từ Order -> Accessories
+        ])
+        ->whereHas('order', function ($query) use ($currentUserId) {
+            $query->where('account_id', $currentUserId); // Lọc các order của khách hàng đang đăng nhập
+        })
+        ->orderBy('payment_deposit_date', 'desc') // Sắp xếp theo ngày thanh toán
+        ->get();
 
-// Dữ liệu xe thuê
+        // Dữ liệu xe thuê
         $rentalTransactions = RentalOrder::with('rentalCar.carDetails') // Nạp quan hệ: RentalOrder -> RentalCar
             ->where('user_id', $currentUserId) // Lọc các rental order của khách hàng đang đăng nhập
             ->orderBy('order_date', 'desc') // Sắp xếp theo ngày tạo đơn

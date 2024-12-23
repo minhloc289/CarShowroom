@@ -118,117 +118,31 @@
                                 <span class="menu-title">Quản lý Order Sản Phẩm</span>
                             </a>
                         </div>
-                        <div class="menu-item">
-                            <a class="menu-link"
-                                href="{{route('rentalOrders')}}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Quản lí Order Thuê Xe</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/authentication/extended/coming-soon.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Coming Soon</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/authentication/general/welcome.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Welcome Message</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/authentication/general/verify-email.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Verify Email</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link"
-                                href="../../demo1/dist/authentication/general/password-confirmation.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Password Confirmation</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/authentication/general/deactivation.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Account Deactivation</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/authentication/general/error-404.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Error 404</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a class="menu-link" href="../../demo1/dist/authentication/general/error-500.html">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">Error 500</span>
-                            </a>
-                        </div>
                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                             <span class="menu-link">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title">Email Templates</span>
+                                <span class="menu-title">Quản lí Thuê Xe</span>
                                 <span class="menu-arrow"></span>
                             </span>
                             <div class="menu-sub menu-sub-accordion menu-active-bg">
                                 <div class="menu-item">
                                     <a class="menu-link"
-                                        href="../../demo1/dist/authentication/email/verify-email.html" target="blank">
+                                        href="{{route('rentalOrders')}}" target="blank">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
-                                        <span class="menu-title">Verify Email</span>
+                                        <span class="menu-title">Quản lí Order Thuê Xe</span>
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link" href="../../demo1/dist/authentication/email/invitation.html"
+                                    <a class="menu-link" href="{{route('rentalReceipt')}}"
                                         target="blank">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
-                                        <span class="menu-title">Account Invitation</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/email/password-reset.html"
-                                        target="blank">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Password Reset</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link"
-                                        href="../../demo1/dist/authentication/email/password-change.html"
-                                        target="blank">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Password Changed</span>
+                                        <span class="menu-title">Yêu cầu gia hạn</span>
                                     </a>
                                 </div>
                             </div>

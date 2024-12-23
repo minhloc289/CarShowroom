@@ -26,7 +26,10 @@ use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\RentalCarController;
 use App\Http\Controllers\Backend\RentalOrderController;
 use App\Http\Controllers\frontend\RentalHistoryController;
+use App\Http\Controllers\Backend\RentalReceiptController;
+use App\Http\Controllers\Backend\RentalRenewalController;
 use App\Http\Controllers\Backend\RevenueController;
+
 
 use App\Http\Controllers\Backend\TestDriveController;
 use App\Http\Controllers\frontend\RegisterTestDrive;
@@ -79,6 +82,13 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     //Kiểm tra trạng thái thanh toán (AJAX)
     Route::get('/check-order-status', [RentalOrderController::class, 'checkOrderStatus'])->name('checkOrderStatus');
 
+    //Hóa đơn thuê xe
+    Route::get('/rental-receipt', [RentalReceiptController::class, 'index'])->name('rentalReceipt');
+    //Xử lý yêu cầu gia hạn
+    Route::post('/rental-renewals/approve/{renewal_id}', [RentalRenewalController::class, 'approve'])->name('rental.renewals.approve');
+    Route::post('/rental-renewals/reject/{renewal_id}', [RentalRenewalController::class, 'reject'])->name('rental.renewals.reject');
+    Route::get('/admin/rental-renewals/{renewal_id}', [RentalRenewalController::class, 'show'])->name('rental.renewals.show');
+
 
     /* RENTAL CAR */
     Route::get('/rental-car', [RentalCarController::class, 'loadRentalCar'])->name('rentalCar');
@@ -93,6 +103,8 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/rental-car/download-template', [RentalCarController::class, 'downloadTemplate'])->name('rentalCar.download.template');
     Route::post('/rental-car/import', [RentalCarController::class, 'importExcel'])->name('rentalCar.import');
     Route::delete('/rental-car/delete-multiple', [RentalCarController::class, 'deleteMultiple'])->name('rentalCar.deleteMultiple');
+    Route::get('/check-rental-status', [RentalCarController::class, 'checkRentalStatus'])->name('checkRentalStatus');
+
 
     /* USER CRUD */
     Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
@@ -260,6 +272,9 @@ Route::get('/car-rent/{id}', [RentCarController::class, 'showRentForm'])->name('
 Route::post('/car-rent/{id}', [RentCarController::class, 'rentCar'])->name('rent.submit');
 Route::get('/rental/payment/vnpay', [RentalPaymentController::class, 'vnpay_payment'])->name('rental.payment.vnpay');
 Route::get('/rental/payment/vnpay-return', [RentalPaymentController::class, 'vnpay_return'])->name('rental.payment.vnpay_return');
+Route::post('/rental/extend/{receipt_id}', [RentCarController::class, 'handleExtend'])->name('rental.extend');
+Route::get('/rental/payment/renewal', [RentalPaymentController::class, 'vnpay_payment_renewal'])->name('rental.payment.vnpay_renewal');
+Route::get('/rental/payment/renewal-return', [RentalPaymentController::class, 'vnpay_return_renewal'])->name('rental.payment.vnpay_return_renewal');
 
 //Car buy
 Route::get('/car/{id}/buy', [BuyCarController::class, 'showBuyForm'])->name('car.buy');

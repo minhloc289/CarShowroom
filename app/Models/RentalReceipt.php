@@ -44,4 +44,9 @@ class RentalReceipt extends Model
     {
         return $this->belongsTo(RentalOrder::class, 'order_id');
     }
+
+    public function renewals()
+    {
+        return $this->hasMany(RentalRenewal::class, 'receipt_id', 'receipt_id');
+    }
 }

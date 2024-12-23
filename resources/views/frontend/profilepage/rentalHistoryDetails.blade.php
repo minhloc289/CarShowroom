@@ -45,6 +45,74 @@
                                 <span class="text-gray-900 font-medium">Tổng chi phí</span>
                                 <span class="text-blue-600 font-semibold">{{ number_format($rentalReceipt->total_cost, 0, ',', '.') }} VND</span>
                             </div>
+
+                            @if($rentalReceipt->status === 'Active' || $rentalReceipt->status === 'Completed')
+                                <div class="space-y-4" x-data="{ isFormVisible: false }">
+                                    <button
+                                        @click="isFormVisible = !isFormVisible"
+                                        class="group relative w-auto px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg shadow-lg hover:from-red-700 hover:to-red-600 transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                                    >
+                                        <span class="flex items-center justify-center space-x-2">
+                                            <span>Gia hạn thuê xe</span>
+                                            <svg 
+                                                class="w-4 h-4 transition-transform duration-300"
+                                                :class="{ 'rotate-180': isFormVisible }"
+                                                fill="none" 
+                                                stroke="currentColor" 
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                            </svg>
+                                        </span>
+                                    </button>
+
+                                    <div
+                                        x-show="isFormVisible"
+                                        x-transition:enter="transition ease-out duration-300"
+                                        x-transition:enter-start="opacity-0 transform -translate-y-4"
+                                        x-transition:enter-end="opacity-100 transform translate-y-0"
+                                        x-transition:leave="transition ease-in duration-300"
+                                        x-transition:leave-start="opacity-100 transform translate-y-0"
+                                        x-transition:leave-end="opacity-0 transform -translate-y-4"
+                                        class="transform transition-all duration-300 ease-in-out"
+                                    >
+                                        <form action="{{ route('rental.extend', $rentalReceipt->receipt_id) }}" method="POST" class="bg-white p-6 rounded-lg shadow-lg border border-gray-100 space-y-4">
+                                            @csrf
+                                            <input type="hidden" name="receipt_id" value="{{ $rentalReceipt->receipt_id }}">
+                                            
+                                            <div class="space-y-2">
+                                                <label for="extend_days" class="block text-sm font-medium text-gray-700">
+                                                    Số ngày muốn gia hạn
+                                                </label>
+                                                <div class="relative">
+                                                    <input
+                                                        type="number"
+                                                        name="extend_days"
+                                                        id="extend_days"
+                                                        min="1"
+                                                        class="block w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 shadow-sm"
+                                                        required
+                                                        placeholder="Nhập số ngày"
+                                                    >
+                                                    <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm">
+                                                        ngày
+                                                    </span>
+                                                </div>
+                                                @error('extend_days')
+                                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+
+                                            <button
+                                                type="submit"
+                                                class="w-full px-6 py-3 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg shadow-lg hover:from-red-700 hover:to-red-600 transition-all duration-300 ease-in-out transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                                            >
+                                                Gửi yêu cầu gia hạn
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -91,4 +159,7 @@
         </div>
     </div>
 </div>
+
+<script src="//unpkg.com/alpinejs" defer></script>
+
 @endsection

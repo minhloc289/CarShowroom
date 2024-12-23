@@ -24,7 +24,8 @@ use App\Models\Account;
 use App\Http\Controllers\frontend\RentalPaymentController;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\RentalCarController;
-
+use App\Http\Controllers\Backend\RentalOrderController;
+use App\Http\Controllers\frontend\RentalHistoryController;
 
 use App\Http\Controllers\Backend\TestDriveController;
 use App\Http\Controllers\frontend\RegisterTestDrive;
@@ -74,6 +75,9 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     //Tạo đơn thuê xe
     Route::post('/rental-orders/store', [RentalOrderController::class, 'store'])->name('rentalOrders.store');
     Route::post('/rental-orders/payment/{order_id}', [RentalOrderController::class, 'completePayment'])->name('rentalOrders.completePayment');
+    //Kiểm tra trạng thái thanh toán (AJAX)
+    Route::get('/check-order-status', [RentalOrderController::class, 'checkOrderStatus'])->name('checkOrderStatus');
+
 
     /* RENTAL CAR */
     Route::get('/rental-car', [RentalCarController::class, 'loadRentalCar'])->name('rentalCar');
@@ -116,6 +120,10 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/test_drive/create', [TestDriveController::class, 'createCustomer'])->name('customer.stores');
     Route::get('/test_drive/search', [TestDriveController::class, 'search'])->name('customer.search');
     Route::delete('/test_drive/delete,{id}', [TestDriveController::class, 'delete'])->name('test_drive.destroy');
+    // Thanh toan va thong ke
+    Route::get('/admin/payments/manage', [PaymentController::class, 'managePayments'])->name('payments.manage');
+
+
 
 });
 

@@ -22,6 +22,8 @@ class Payment extends Model
         'status_deposit',
         'status_payment_all',
         'deposit_amount',
+        'remaining_payment_date',
+        'full_payment_date',
         'remaining_amount',
         'total_amount',
         'deposit_deadline',

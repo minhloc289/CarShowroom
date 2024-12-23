@@ -252,7 +252,7 @@
                             </span>
                             <!--end::Svg Icon-->
                         </span>
-                        <span class="menu-title">Modals</span>
+                        <span class="menu-title">Quản Lý Doanh Thu và Thống Kê</span>
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion menu-active-bg">
@@ -262,50 +262,8 @@
                                     <span class="bullet bullet-dot"></span>
                                 </span>
                                 <span class="menu-title">General</span>
-                                <span class="menu-arrow"></span>
                             </span>
-                            <div class="menu-sub menu-sub-accordion menu-active-bg">
-                                <div class="menu-item">
-                                    <a class="menu-link" href="../../demo1/dist/modals/general/invite-friends.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Invite Friends</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link" href="../../demo1/dist/modals/general/view-users.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">View Users</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link" href="../../demo1/dist/modals/general/select-users.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Select Users</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link" href="../../demo1/dist/modals/general/upgrade-plan.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Upgrade Plan</span>
-                                    </a>
-                                </div>
-                                <div class="menu-item">
-                                    <a class="menu-link" href="../../demo1/dist/modals/general/share-earn.html">
-                                        <span class="menu-bullet">
-                                            <span class="bullet bullet-dot"></span>
-                                        </span>
-                                        <span class="menu-title">Share &amp; Earn</span>
-                                    </a>
-                                </div>
-                            </div>
+
                         </div>
                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                             <span class="menu-link">
@@ -313,7 +271,6 @@
                                     <span class="bullet bullet-dot"></span>
                                 </span>
                                 <span class="menu-title">Forms</span>
-                                <span class="menu-arrow"></span>
                             </span>
                             <div class="menu-sub menu-sub-accordion menu-active-bg">
                                 <div class="menu-item">

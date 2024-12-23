@@ -175,5 +175,13 @@ class paymentcontroller extends Controller
             return redirect()->route('CarController.index')->with('error', 'Chữ ký không hợp lệ!');
         }
     }
+    public function managePayments()
+{
+    $payments = Payment::with(['order.account'])
+        ->orderBy('payment_date', 'desc')
+        ->get();
+
+    return view('Backend.payments.manage', compact('payments'));
+}
 
 }

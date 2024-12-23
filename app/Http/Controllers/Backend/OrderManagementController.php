@@ -38,7 +38,8 @@ class OrderManagementController extends Controller
         if ($payment) {
             $payment->update([
                 'status_deposit' => 1, // Đã đặt cọc
-                'status_payment_all' => 1 // Đã thanh toán toàn phần
+                'status_payment_all' => 1, // Đã thanh toán toàn phần
+                'remaining_payment_date' => now()
             ]);
         }
         toastr()->success('Thanh toán thành công');
@@ -210,11 +211,14 @@ class OrderManagementController extends Controller
             'remaining_amount' => $remainingAmount,
             'deposit_deadline' => $request->payment_method === 'full' ? now() : now()->addDays(7),
             'payment_deadline' => $request->payment_method === 'full' ? now() : now()->addDays(30),
+            'full_payment_date' => $request->payment_method === 'full' ? now() : null, // Ngày thanh toán đầy đủ nếu phương thức là full
+            'payment_deposit_date' => $request->payment_method === 'deposit' ? now() : null, // Ngày thanh toán còn lại nếu phương thức là deposit
         ]);
 
         toastr()->success('Thêm đơn hàng thành công');
         return redirect()->back();
     }
+
 
 
 

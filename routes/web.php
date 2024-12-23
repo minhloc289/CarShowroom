@@ -28,6 +28,8 @@ use App\Http\Controllers\Backend\RentalOrderController;
 use App\Http\Controllers\frontend\RentalHistoryController;
 use App\Http\Controllers\Backend\RentalReceiptController;
 use App\Http\Controllers\Backend\RentalRenewalController;
+use App\Http\Controllers\Backend\RevenueController;
+
 
 use App\Http\Controllers\Backend\TestDriveController;
 use App\Http\Controllers\frontend\RegisterTestDrive;
@@ -38,7 +40,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
-    
+
     /* DASHBOARD */
     Route::get('/dashboard', [DashboardController::class, 'loadDashboard'])->name('dashboard');
     Route::get('/user/profile', [DashboardController::class, 'loadProfile'])->name('profile');
@@ -57,7 +59,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/cars/upload', [carSalesController::class, 'showUploadForm'])->name('cars.upload');
     Route::post('/cars/import', [carSalesController::class, 'import'])->name('cars.import');
     Route::get('/download/car-add-template', [carSalesController::class, 'downloadTemplate'])->name('caradd.download.template');
-    
+
     //order
     Route::get('/orders', [OrderManagementController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}/detail', [OrderManagementController::class, 'detail'])->name('orders.detail');
@@ -71,7 +73,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/rental-order/{id}', [RentalOrderController::class, 'show'])->name('rentalOrders.details');
     Route::get('/rental-orders/create', [RentalOrderController::class, 'loadCreateForm'])->name('rentalOrders.create');
     //Lấy dữ liệu từ xe cụ thể 
-    Route::get('/rental-car/{rental_id}', [RentalCarController::class, 'getRentalDetails'])->name('rentalCars.getDetails');
+    Route::get('/rental-car/getDetails/{rental_id}', [RentalCarController::class, 'getRentalDetails'])->name('rentalCars.getDetails');
     //Lấy dữ liệu từ khách hàng
     Route::get('/customer/get-by-phone', [CustomerController::class, 'getCustomerByPhone'])->name('customer.getByPhone');
     //Tạo đơn thuê xe
@@ -116,7 +118,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/users/import', [AdminController::class, 'importExcel'])->name('users.import');
     Route::get('/download/user-template', [AdminController::class, 'downloadTemplate'])->name('user.download.template');
     Route::delete('/users/mass-delete', [AdminController::class, 'massDelete'])->name('user.mass_delete');
-  
+
     /*CUSTOMER CRUD*/
     Route::get('/customer', [CustomerController::class, 'loadCustomerPage'])->name('customer');
     Route::get('/customer/create', [CustomerController::class, 'loadCustomerCreatePage'])->name('customer.create');
@@ -131,6 +133,13 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/test_drive/create', [TestDriveController::class, 'createCustomer'])->name('customer.stores');
     Route::get('/test_drive/search', [TestDriveController::class, 'search'])->name('customer.search');
     Route::delete('/test_drive/delete,{id}', [TestDriveController::class, 'delete'])->name('test_drive.destroy');
+    // Thanh toan va thong ke
+    Route::get('/admin/payments/manage', [PaymentController::class, 'managePayments'])->name('payments.manage');
+    Route::get('/payments', [RevenueController::class, 'index'])->name('payments.index');
+    Route::get('/payments/detail/{payment}', [RevenueController::class, 'Paymentdetail'])->name('payments.detail');
+
+
+
 
 });
 
@@ -187,6 +196,9 @@ Route::post('/profile/update', [ProfileController::class, 'update'])->name('prof
 Route::get('/view-profile/resetpass', [ProfileController::class, 'showResetPass'])->name('view.resetpass');
 // Xử lý yêu cầu đổi mật khẩu
 Route::post('/view-profile/resetpass', [CustomerAuthController::class, 'resetPassword'])->name('reset.password.submit');
+Route::get('/customer-car', [ProfileController::class, 'customer_car'])->name('customer.car');
+Route::get('/customer-car/detail/{id}', [ProfileController::class, 'customer_car_detail'])->name('customer.car.detail');
+
 //transactionHistory
 Route::get('/saleCar-history', [TransactionController::class, 'index'])->name('transaction.history');
 Route::get('/saleCar/{orderId}', [TransactionController::class, 'orderDetails'])->name('transactionHistory.details');

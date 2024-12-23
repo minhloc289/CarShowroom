@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\RentalCars;
 use App\Models\CarDetails;
 use App\Http\Requests\RentalCarRequest;
+use App\Models\RentalReceipt;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RentalCarTemplateExport;
 use App\Imports\RentalCarImport;
@@ -37,8 +38,8 @@ class RentalCarController extends Controller
         if ($request->search) {
             $query->whereHas('carDetails', function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
-                ->orWhere('brand', 'like', '%' . $request->search . '%')
-                ->orWhere('model', 'like', '%' . $request->search . '%');
+                    ->orWhere('brand', 'like', '%' . $request->search . '%')
+                    ->orWhere('model', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -99,6 +100,7 @@ class RentalCarController extends Controller
 
     public function loadCreateForm()
     {
+        
         $carDetails = CarDetails::all();
         return view('Backend.Product.RentalCar.CreateRentalCar', compact('carDetails'));
     }
@@ -222,15 +224,35 @@ class RentalCarController extends Controller
     public function getRentalDetails($rental_id)
     {
         $car = RentalCars::with('carDetails')->find($rental_id);
-
-        if (!$car) {
-            return response()->json(['error' => 'Xe không tồn tại'], 404);
-        }
-
         return response()->json([
             'price_per_day' => number_format($car->rental_price_per_day, 0, ',', '.'), // Định dạng tiền
             'car_name' => $car->carDetails->name ?? 'Không có thông tin',
         ]);
+    }
+
+    public function checkRentalStatus()
+    {
+        $currentTime = now();
+
+        // Lấy tất cả các hóa đơn thuê xe có trạng thái 'Active' và kiểm tra rental_end_date
+        $receipts = RentalReceipt::where('status', 'Active')
+            ->where('rental_end_date', '<', $currentTime)
+            ->get();
+
+        foreach ($receipts as $receipt) {
+            // Cập nhật trạng thái của hóa đơn thuê
+            $receipt->status = 'Completed';
+            $receipt->save();
+
+            // Cập nhật trạng thái xe tương ứng
+            $rentalCar = RentalCars::find($receipt->rental_id);
+            if ($rentalCar) {
+                $rentalCar->availability_status = 'Available';
+                $rentalCar->save();
+            }
+        }
+
+        return response()->json(['message' => 'Checked and updated successfully']);
     }
 
 }

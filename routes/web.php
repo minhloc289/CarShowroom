@@ -26,6 +26,10 @@ use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\RentalCarController;
 use App\Http\Controllers\Backend\RentalOrderController;
 use App\Http\Controllers\frontend\RentalHistoryController;
+use App\Http\Controllers\Backend\RentalReceiptController;
+use App\Http\Controllers\Backend\RentalRenewalController;
+use App\Http\Controllers\Backend\RevenueController;
+
 
 use App\Http\Controllers\Backend\TestDriveController;
 use App\Http\Controllers\frontend\RegisterTestDrive;
@@ -69,7 +73,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/rental-order/{id}', [RentalOrderController::class, 'show'])->name('rentalOrders.details');
     Route::get('/rental-orders/create', [RentalOrderController::class, 'loadCreateForm'])->name('rentalOrders.create');
     //Lấy dữ liệu từ xe cụ thể 
-    Route::get('/rental-car/{rental_id}', [RentalCarController::class, 'getRentalDetails'])->name('rentalCars.getDetails');
+    Route::get('/rental-car/getDetails/{rental_id}', [RentalCarController::class, 'getRentalDetails'])->name('rentalCars.getDetails');
     //Lấy dữ liệu từ khách hàng
     Route::get('/customer/get-by-phone', [CustomerController::class, 'getCustomerByPhone'])->name('customer.getByPhone');
     //Tạo đơn thuê xe
@@ -77,6 +81,13 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/rental-orders/payment/{order_id}', [RentalOrderController::class, 'completePayment'])->name('rentalOrders.completePayment');
     //Kiểm tra trạng thái thanh toán (AJAX)
     Route::get('/check-order-status', [RentalOrderController::class, 'checkOrderStatus'])->name('checkOrderStatus');
+
+    //Hóa đơn thuê xe
+    Route::get('/rental-receipt', [RentalReceiptController::class, 'index'])->name('rentalReceipt');
+    //Xử lý yêu cầu gia hạn
+    Route::post('/rental-renewals/approve/{renewal_id}', [RentalRenewalController::class, 'approve'])->name('rental.renewals.approve');
+    Route::post('/rental-renewals/reject/{renewal_id}', [RentalRenewalController::class, 'reject'])->name('rental.renewals.reject');
+    Route::get('/admin/rental-renewals/{renewal_id}', [RentalRenewalController::class, 'show'])->name('rental.renewals.show');
 
 
     /* RENTAL CAR */
@@ -92,6 +103,8 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/rental-car/download-template', [RentalCarController::class, 'downloadTemplate'])->name('rentalCar.download.template');
     Route::post('/rental-car/import', [RentalCarController::class, 'importExcel'])->name('rentalCar.import');
     Route::delete('/rental-car/delete-multiple', [RentalCarController::class, 'deleteMultiple'])->name('rentalCar.deleteMultiple');
+    Route::get('/check-rental-status', [RentalCarController::class, 'checkRentalStatus'])->name('checkRentalStatus');
+
 
     /* USER CRUD */
     Route::get('/user', [AdminController::class, 'loadUserPage'])->name('user'); // Load user page
@@ -122,6 +135,9 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::delete('/test_drive/delete,{id}', [TestDriveController::class, 'delete'])->name('test_drive.destroy');
     // Thanh toan va thong ke
     Route::get('/admin/payments/manage', [PaymentController::class, 'managePayments'])->name('payments.manage');
+    Route::get('/payments', [RevenueController::class, 'index'])->name('payments.index');
+    Route::get('/payments/detail/{payment}', [RevenueController::class, 'Paymentdetail'])->name('payments.detail');
+
 
 
 
@@ -256,6 +272,9 @@ Route::get('/car-rent/{id}', [RentCarController::class, 'showRentForm'])->name('
 Route::post('/car-rent/{id}', [RentCarController::class, 'rentCar'])->name('rent.submit');
 Route::get('/rental/payment/vnpay', [RentalPaymentController::class, 'vnpay_payment'])->name('rental.payment.vnpay');
 Route::get('/rental/payment/vnpay-return', [RentalPaymentController::class, 'vnpay_return'])->name('rental.payment.vnpay_return');
+Route::post('/rental/extend/{receipt_id}', [RentCarController::class, 'handleExtend'])->name('rental.extend');
+Route::get('/rental/payment/renewal', [RentalPaymentController::class, 'vnpay_payment_renewal'])->name('rental.payment.vnpay_renewal');
+Route::get('/rental/payment/renewal-return', [RentalPaymentController::class, 'vnpay_return_renewal'])->name('rental.payment.vnpay_return_renewal');
 
 //Car buy
 Route::get('/car/{id}/buy', [BuyCarController::class, 'showBuyForm'])->name('car.buy');

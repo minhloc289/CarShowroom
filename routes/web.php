@@ -120,6 +120,10 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/test_drive/create', [TestDriveController::class, 'createCustomer'])->name('customer.stores');
     Route::get('/test_drive/search', [TestDriveController::class, 'search'])->name('customer.search');
     Route::delete('/test_drive/delete,{id}', [TestDriveController::class, 'delete'])->name('test_drive.destroy');
+    // Thanh toan va thong ke
+    Route::get('/admin/payments/manage', [PaymentController::class, 'managePayments'])->name('payments.manage');
+
+
 
 });
 

@@ -166,7 +166,7 @@
             filter.addEventListener('change', fetchFilteredOrders); // Khi thay đổi dropdown
             filter.addEventListener('keyup', fetchFilteredOrders); // Khi nhập liệu
         });
-
+    </script>
         // Gọi fetch lần đầu để hiển thị dữ liệu mặc định
         fetchFilteredOrders();
     });
@@ -187,6 +187,5 @@
                 console.error('Error checking order status:', error);
             });
     }, 5000); // Thời gian 5 giây
-
 </script>
 @endsection

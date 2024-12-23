@@ -149,3 +149,13 @@ Breadcrumbs::for('order.add.car', function (BreadcrumbTrail $trail) {
     $trail->parent('Order'); // Parent breadcrumb
     $trail->push('Thêm Order Xe');
 });
+
+Breadcrumbs::for('rentalReceipt', function (BreadcrumbTrail $trail) {
+    $trail->push('Xử lý yêu cầu gia hạn');
+    $trail->push('Thông tin hóa đơn thuê xe');  
+});
+
+Breadcrumbs::for('rentalRenewals', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalReceipt');
+    $trail->push('Chi tiết gia hạn');  
+});

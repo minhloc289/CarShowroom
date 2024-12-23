@@ -10,3 +10,39 @@
         {!! '<script src="' . asset($val) . '"></script>' !!}
     @endforeach
 @endif
+
+<script>
+    setInterval(() => {
+            fetch('/admin/check-rental-status', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message); // Log thông báo từ server
+                    // Bạn có thể thêm logic cập nhật UI tại đây nếu cần
+                })
+                .catch(error => {
+                    console.error('Error checking rental status:', error);
+                });
+        }, 5000);
+
+    setInterval(() => {
+            fetch('/admin/check-order-status', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message); // Log thông báo từ server
+                    // Bạn có thể thêm logic để cập nhật UI ở đây nếu cần
+                })
+                .catch(error => {
+                    console.error('Error checking order status:', error);
+                });
+        }, 5000); // Thời gian 5 giây    
+</script>

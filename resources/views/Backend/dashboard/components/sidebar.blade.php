@@ -132,7 +132,7 @@
                             <div class="menu-sub menu-sub-accordion menu-active-bg">
                                 <div class="menu-item">
                                     <a class="menu-link"
-                                        href="{{route('rentalOrders')}}" target="blank">
+                                        href="{{route('rentalOrders')}}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>
@@ -140,8 +140,7 @@
                                     </a>
                                 </div>
                                 <div class="menu-item">
-                                    <a class="menu-link" href="{{route('rentalReceipt')}}"
-                                        target="blank">
+                                    <a class="menu-link" href="{{route('rentalReceipt')}}">
                                         <span class="menu-bullet">
                                             <span class="bullet bullet-dot"></span>
                                         </span>

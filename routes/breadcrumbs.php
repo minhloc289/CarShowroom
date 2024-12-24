@@ -152,10 +152,15 @@ Breadcrumbs::for('order.add.car', function (BreadcrumbTrail $trail) {
 
 Breadcrumbs::for('rentalReceipt', function (BreadcrumbTrail $trail) {
     $trail->push('Xử lý yêu cầu gia hạn');
-    $trail->push('Thông tin hóa đơn thuê xe');  
+    $trail->push('Thông tin hóa đơn thuê xe' , route('rentalReceipt'));  
 });
 
 Breadcrumbs::for('rentalRenewals', function (BreadcrumbTrail $trail) {
     $trail->parent('rentalReceipt');
     $trail->push('Chi tiết gia hạn');  
+});
+
+Breadcrumbs::for('rental.extend.manual.search', function (BreadcrumbTrail $trail) {
+    $trail->parent('rentalReceipt');
+    $trail->push('Gia hạn thủ công');  
 });

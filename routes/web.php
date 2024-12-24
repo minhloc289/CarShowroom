@@ -82,6 +82,8 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     //Kiểm tra trạng thái thanh toán (AJAX)
     Route::get('/check-order-status', [RentalOrderController::class, 'checkOrderStatus'])->name('checkOrderStatus');
 
+
+
     //Hóa đơn thuê xe
     Route::get('/rental-receipt', [RentalReceiptController::class, 'index'])->name('rentalReceipt');
     //Xử lý yêu cầu gia hạn
@@ -89,6 +91,11 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/rental-renewals/reject/{renewal_id}', [RentalRenewalController::class, 'reject'])->name('rental.renewals.reject');
     Route::get('/admin/rental-renewals/{renewal_id}', [RentalRenewalController::class, 'show'])->name('rental.renewals.show');
 
+    Route::get('/rental/extend/manual/search', [RentalRenewalController::class, 'showSearchPage'])->name('rental.extend.manual.search');
+    // Load danh sách hóa đơn dựa trên số điện thoại
+    Route::post('/rental/extend/manual/search', [RentalRenewalController::class, 'searchReceipts'])->name('rental.extend.manual.search.process');
+    // Xử lý gia hạn thủ công
+    Route::post('/rental/extend/manual/process', [RentalRenewalController::class, 'processManualExtend'])->name('rental.extend.manual.process');
 
     /* RENTAL CAR */
     Route::get('/rental-car', [RentalCarController::class, 'loadRentalCar'])->name('rentalCar');

@@ -41,7 +41,7 @@
             <div class="col-md-4">
                 <label for="rental_days" class="form-label">Số ngày thuê</label>
                 <input type="number" name="rental_days" id="rental_days" class="form-control"
-                    value="{{ old('rental_days') }}" required>
+                    value="{{ old('rental_days') }}" required value="1" min="1">
             </div>
             <div class="col-md-4">
                 <label for="rental_price_per_day" class="form-label">Giá thuê mỗi ngày (VND)</label>
@@ -117,7 +117,7 @@
             const rentalId = rentalIdSelect.value;
 
             if (rentalId) {
-                fetch(`/admin/rental-car/${rentalId}`)
+                fetch(`/admin/rental-car/getDetails/${rentalId}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.error) {

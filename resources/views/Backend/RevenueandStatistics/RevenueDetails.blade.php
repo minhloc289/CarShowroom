@@ -1,6 +1,8 @@
 @extends('Backend.dashboard.layout')
 
 @section('content')
+<x-breadcrumbs breadcrumb="Revenue.details" />
+
     <div class="container custom-width w-95 ml-4 mt-8 p-6 bg-white shadow-lg rounded-lg">
         <!-- Tiêu đề -->
         <h2 class="text-2xl font-bold text-blue-600 mb-6">

@@ -117,7 +117,7 @@
             const rentalId = rentalIdSelect.value;
 
             if (rentalId) {
-                fetch(`/admin/rental-car/${rentalId}`)
+                fetch(`/admin/rental-car/getDetails/${rentalId}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.error) {

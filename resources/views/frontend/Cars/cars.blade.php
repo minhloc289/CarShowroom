@@ -77,7 +77,7 @@
             <p class="text-gray-600">Seats: {{ $car->seat_capacity }}</p>
             <p class="text-gray-600">Engine Type: {{ $car->engine_type }}</p>
             <p class="text-gray-600">Max Speed: {{ $car->max_speed }} km/h</p>
-            <p class="text-gray-600">Price: ${{ number_format($car->sale->sale_price, 2) }}</p>
+            <p class="text-gray-600">Price: {{ number_format($car->sale->sale_price, 2) }} VND</p>
             <div class="flex justify-center space-x-4 mb-4">
                 <a href="{{ route('cars.details', $car->car_id) }}">
                     <button class="text-blue-500 text-sm font-semibold hover:underline">View Details→</button>

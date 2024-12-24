@@ -39,29 +39,28 @@
             <!--end::Col-->
             <!--begin::Col-->
             <div class="col-xxl-8" style="height: 700px; pointer-events: none;">
-                <div class="card card-xxl-stretch-50 mb-5 mb-xl-8" style="height: 90%">
-                    <div class=" w-full h-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6 " style="height: 750px">
-                        <div class="flex justify-between">
-                            <div>
-                                <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32.4k
-                                </h5>
-                                <p class="text-base font-normal text-gray-500 dark:text-gray-400">Sales</p>
-                            </div>
-                            <div
-                                class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                                12%
-                                <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 10 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div id="area-chart" class="mt-4 w-full h-full"></div>
-
-                    </div>
+    <div class="card card-xxl-stretch-50 mb-5 mb-xl-8" style="height: 90%; pointer-events: none;">
+        <div class="w-full h-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6" style="height: 750px; pointer-events: auto;">
+            <div class="flex justify-between">
+                <div>
+                    <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32.4k</h5>
+                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Sales</p>
+                </div>
+                <div
+                    class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+                    12%
+                    <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 10 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 13V1m0 0L1 5m4-4 4 4" />
+                    </svg>
                 </div>
             </div>
+            <div id="area-chart" class="mt-4 w-full h-full" ></div>
+        </div>
+    </div>
+</div>
+
             <!--end::Col-->
             <!--begin::Col-->
             <div class="col-xxl-4">
@@ -171,7 +170,7 @@
                         <div class="grid grid-cols-2">
                             <dl class="flex items-center">
                                 <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal me-1">Money spent:</dt>
-                                <dd class="text-gray-900 text-sm dark:text-white font-semibold">$3,232</dd>
+                                <dd class="text-gray-900 text-sm dark:text-white font-semibold">3,232,120 VND</dd>
                             </dl>
                             <dl class="flex items-center justify-end">
                                 <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal me-1">Conversion rate:
@@ -234,6 +233,7 @@
     const finalRentalRevenues = @json($finalRentalRevenues ?? []);
     const totalRentalRevenues = @json($totalPaymentRevenues);
     const totalPaymentRevenues = @json($totalRentalRevenues);
+
 
 
     const options = {
@@ -319,6 +319,13 @@
     // Tính tổng từng mảng
 
     const getChartOptions = () => {
+        const totalSum = totalRentalRevenues + totalPaymentRevenues;
+
+// Tính tỷ lệ phần trăm
+const series = [
+    (totalRentalRevenues / totalSum) * 100,
+    (totalPaymentRevenues / totalSum) * 100,
+];
         return {
             series: [totalRentalRevenues, totalPaymentRevenues],
             colors: ["#1C64F2", "#16BDCA"],
@@ -349,7 +356,8 @@
                     fontFamily: "Inter, sans-serif",
                 },
                 formatter: function (value) {
-                    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+                    return `${value.toFixed(2)}%`;
+
                 }
             },
             legend: {

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order; // Đảm bảo đã import
+use App\Models\SalesCars; // Đảm bảo đã import
 use App\Models\Payment; // Đảm bảo đã import
 
 
@@ -40,7 +41,9 @@ class paymentcontroller extends Controller
         $order->status_order = 0; // Pending
         $order->order_date = now();
         $order->save();
-
+        $salesCar = SalesCars::find($saleId);
+        $salesCar->quantity -= 1;
+        $salesCar->save();
         // Tạo bản ghi trong bảng payments
         $payment = new Payment();
         $payment->payment_id = 'PAY' . time(); // Hoặc sử dụng logic tạo ID phù hợp

@@ -166,10 +166,6 @@
             filter.addEventListener('change', fetchFilteredOrders); // Khi thay đổi dropdown
             filter.addEventListener('keyup', fetchFilteredOrders); // Khi nhập liệu
         });
-        
-    
-        // Gọi fetch lần đầu để hiển thị dữ liệu mặc định
-        fetchFilteredOrders();
     });
 </script>
 @endsection

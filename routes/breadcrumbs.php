@@ -164,3 +164,14 @@ Breadcrumbs::for('rental.extend.manual.search', function (BreadcrumbTrail $trail
     $trail->parent('rentalReceipt');
     $trail->push('Gia hạn thủ công');  
 });
+
+Breadcrumbs::for('Revenue', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí Doanh Thu và Thống Kê');
+    $trail->push('Doanh Thu', route('payments.manage'));
+});
+
+Breadcrumbs::for('Revenue.details', function (BreadcrumbTrail $trail) {
+    $trail->parent('Revenue');
+    $trail->push('Chi tiết thanh toán');  
+
+});

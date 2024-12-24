@@ -2,15 +2,19 @@
 
 @section('content')
 
+<x-breadcrumbs breadcrumb="Revenue" />
 
 <div class="container mt-4">
 	<div class="row">
 		<div class="col-12">
 			<div class="d-flex justify-content-between align-items-center mb-4">
 				<h1 class="fw-bold text-primary">Danh sách thanh toán</h1>
-				<a href="" class="btn btn-success">+ Thêm thanh toán</a>
 			</div>
-
+	            <div class="mb-4">
+                <h3 id="totalRevenueDisplay" class="text-lg font-semibold text-success">
+                    Tổng doanh thu:
+                </h3>
+            </div>
 			<div class="flex items-center space-x-4 mb-4">
 				<!-- Tìm kiếm -->
 				<input type="text" id="searchInput" class="rounded-lg border border-gray-300 px-4 py-2 w-64"
@@ -127,6 +131,23 @@
 																	</tr>
 												@endif
 						@endforeach
+						@foreach ($rentalPayments as $payment)
+							<tr>
+								<td>{{ $payment->rentalOrder->order_id }}</td>
+								<td>{{ $payment->rentalOrder->user->name }}</td>
+								<td>Thuê xe</td>
+								<td>Thanh toán toàn bộ </td>
+								<td>{{ $payment->payment_date ? \Carbon\Carbon::parse($payment->payment_date)->format('d/m/Y') : 'Chưa rõ' }}
+								</td>
+								<td>{{ number_format($payment->total_amount, 0, ',', '.') }} VND</td>
+								<td>
+									<a href="{{route('revenue.rental.detail', $payment->rentalOrder->order_id)}}"
+										class="btn btn-outline-primary btn-sm">
+										<i class="bi bi-eye"></i> Chi tiết
+									</a>
+								</td>
+							</tr>
+						@endforeach
 					</tbody>
 
 
@@ -142,7 +163,32 @@
 		const searchInput = document.getElementById('searchInput');
 		const paymentTypeFilter = document.getElementById('paymentTypeFilter');
 		const paymentsContainer = document.querySelector('#paymentsContainer tbody');
+		const totalRevenueDisplay = document.getElementById('totalRevenueDisplay');
+		function calculateTotalRevenue() {
+        let totalRevenue = 0;
 
+        // Lấy tất cả các hàng đang hiển thị (display !== 'none')
+        const visibleRows = Array.from(paymentsContainer.querySelectorAll('tr')).filter(row => row.style.display !== 'none');
+
+        visibleRows.forEach(row => {
+            // Lấy cột "Số tiền" (cột thứ 6 - index 5)
+            const revenueCell = row.cells[5];
+            if (revenueCell) {
+                // Chuyển giá trị trong ô "Số tiền" thành số
+                const amount = parseFloat(revenueCell.textContent.replace(/\./g, '').replace(' VND', '').trim()) || 0;
+
+                totalRevenue += amount;
+            }
+			
+        });
+
+        // Hiển thị tổng doanh thu
+		totalRevenueDisplay.textContent = `Tổng doanh thu: ${totalRevenue.toLocaleString('vi-VN')} VND`;
+
+
+
+		
+    }
 		function filterPayments() {
 			// Lấy giá trị từ ô tìm kiếm và combobox
 			const searchValue = searchInput.value.toLowerCase().trim();
@@ -166,11 +212,14 @@
 				// Hiển thị hoặc ẩn hàng dựa trên kết quả lọc
 				row.style.display = matchesSearch && matchesType ? '' : 'none';
 			});
+			calculateTotalRevenue();
 		}
 
 		// Lắng nghe sự kiện input và change cho ô tìm kiếm và combobox
 		searchInput.addEventListener('input', filterPayments);
 		paymentTypeFilter.addEventListener('change', filterPayments);
+		calculateTotalRevenue();
+
 	});
 </script>
 

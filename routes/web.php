@@ -144,6 +144,9 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/admin/payments/manage', [PaymentController::class, 'managePayments'])->name('payments.manage');
     Route::get('/payments', [RevenueController::class, 'index'])->name('payments.index');
     Route::get('/payments/detail/{payment}', [RevenueController::class, 'Paymentdetail'])->name('payments.detail');
+    Route::get('/statis', [RevenueController::class, 'statis_index'])->name('statis.index');
+    Route::get('/revenue/rental/detail/{id}', [RevenueController::class, 'show'])->name('revenue.rental.detail');
+
 
 
 

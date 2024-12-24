@@ -1,4 +1,5 @@
-{{-- <base href="{{ env('APP_URL') }}"> --}}
+{{--
+<base href="{{ env('APP_URL') }}"> --}}
 <title>Admin Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta charset="utf-8" />
@@ -9,7 +10,7 @@
 <!--end::Fonts-->
 <!--begin::Page Vendor Stylesheets(used by this page)-->
 <link href="/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" />
-<!--end::Page Vendor Stylesheets--> 
+<!--end::Page Vendor Stylesheets-->
 <!--begin::Global Stylesheets Bundle(used by all pages)-->
 <link href="/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
 <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
@@ -19,4 +20,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="{{ asset('/assets/css/customize.css') }}">
 <script src="{{ asset('/assets/js/custom/customizeJS.js') }}" defer></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link rel="stylesheet" href="{{asset('tailwindcharts/css/flowbite.min.css')}}">
+<script src="{{asset('tailwindcharts/js/apexcharts.js')}}"></script>
+<script src="{{asset('tailwindcharts/js/flowbite.min.js')}}"></script>

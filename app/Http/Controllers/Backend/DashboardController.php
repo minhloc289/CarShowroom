@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Payment; // Import model Payment
+use App\Models\RentalPayment; // Import model Payment
+use App\Models\RentalOrder; // Import model Payment
 use App\Models\User;
 
 
@@ -13,17 +16,49 @@ class DashboardController extends Controller
 {
     public function __construct()
     {
-        
+
     }
 
-    public function loadDashboard() {
+    public function loadDashboard()
+    {
+        // Doanh thu từ Payment
+        $paymentRevenues = Payment::selectRaw('MONTH(COALESCE(full_payment_date, remaining_payment_date, payment_deposit_date)) as month, SUM(total_amount) as total')
+            ->whereRaw('YEAR(COALESCE(full_payment_date, remaining_payment_date, payment_deposit_date)) = ?', [date('Y')])
+            ->groupByRaw('MONTH(COALESCE(full_payment_date, remaining_payment_date, payment_deposit_date))')
+            ->pluck('total', 'month')
+            ->toArray();
+
+        // Doanh thu từ RentalPayment
+        $rentalRevenues = RentalPayment::selectRaw('MONTH(payment_date) as month, SUM(total_amount) as total')
+            ->whereYear('payment_date', date('Y'))
+            ->groupByRaw('MONTH(payment_date)')
+            ->pluck('total', 'month')
+            ->toArray();
+
+        // Gộp doanh thu từ cả hai nguồn và đảm bảo đầy đủ 12 tháng
+        $monthlyRevenues = [];
+        $finalPaymentRevenues = [];
+        $finalRentalRevenues = [];
+
+        for ($i = 1; $i <= 12; $i++) {
+            $finalPaymentRevenues[$i] = $paymentRevenues[$i] ?? 0;
+            $finalRentalRevenues[$i] = $rentalRevenues[$i] ?? 0;
+            $monthlyRevenues[$i] = $finalPaymentRevenues[$i] + $finalRentalRevenues[$i];
+        }
+        $totalPaymentRevenues = array_sum($finalPaymentRevenues);
+        $totalRentalRevenues = array_sum($finalRentalRevenues);
         $config = $this->config();
-        return view('Backend.dashboard.home.home', compact(
-            'config'
-        ));
+        return view('Backend.dashboard.home.home', [
+            'monthlyRevenues' => array_values($monthlyRevenues), // Tổng doanh thu hàng tháng
+            'totalPaymentRevenues' => ($totalPaymentRevenues), // Doanh thu từ Payment
+            'totalRentalRevenues' => ($totalRentalRevenues), // Doanh thu từ Rental
+            'finalRentalRevenues' => array_values($finalRentalRevenues),
+            'finalPaymentRevenues' => array_values($finalPaymentRevenues)
+        ]);
     }
 
-    public function loadProfile() {
+    public function loadProfile()
+    {
         $user = Auth::user();
         return view('Backend.dashboard.profile.employee_profile', compact('user'));
     }
@@ -76,7 +111,8 @@ class DashboardController extends Controller
 
 
 
-    private function config() {
+    private function config()
+    {
         return [
             'js' => [
                 'assets/js/custom/widgets.js',
@@ -86,5 +122,5 @@ class DashboardController extends Controller
             ]
         ];
     }
-    
+
 }

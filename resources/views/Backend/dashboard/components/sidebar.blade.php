@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-@if ($user && $user->name === 'Admin') <!-- Kiểm tra nếu người dùng đã đăng nhập và có tên là 'Admin' -->
+@if ($user && $user->is_quanly == 1) <!-- Kiểm tra nếu người dùng đã đăng nhập và có tên là 'Admin' -->
     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
         <span class="menu-link">
             <span class="menu-icon">
@@ -152,7 +152,7 @@
                         </div>
                     </div>
                 </div>
-                @if ($user && $user->name === 'Admin') 
+                @if ($user && $user->is_quanly == 1) 
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                     <span class="menu-link">
                         <span class="menu-icon">

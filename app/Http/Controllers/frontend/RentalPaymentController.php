@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Mail\DepositSuccessfulNotification;
+use Carbon\Carbon;
 use App\Models\RentalReceipt;
+use App\Models\RentalRenewal;
 
 class RentalPaymentController extends Controller
 {
@@ -104,7 +106,6 @@ class RentalPaymentController extends Controller
         return redirect()->away($vnp_Url);
     }
 
-
     /**
      * Xử lý kết quả trả về từ VNPAY.
      */
@@ -182,6 +183,13 @@ class RentalPaymentController extends Controller
         // Lấy thông tin từ request
         $orderId = $request->query('order_id');
         $amount = $request->query('amount');
+        $renewalType = $request->query('renewal_type');
+        $renewalId = $request->query('renewal_id'); 
+
+        session([
+            'renewal_id' => $renewalId,
+            'renewal_type' => $renewalType,
+        ]);
 
         // Kiểm tra tồn tại của đơn hàng
         $order = RentalOrder::findOrFail($orderId);
@@ -197,7 +205,7 @@ class RentalPaymentController extends Controller
             'deposit_amount' => 0,
             'total_amount' => $amount,
             'remaining_amount' => 0,
-            'due_date' => now()->addDays(1),
+            'due_date' => now()->addMinutes(2),
             'payment_date' => now(),
             'transaction_code' => $vnp_TxnRef,
         ]);
@@ -261,6 +269,8 @@ class RentalPaymentController extends Controller
     {
         $vnp_HashSecret = "ATCT9RJYIMSNQ47T8J3AAM87W3NPPQS8"; // Chuỗi bí mật
         $inputData = $request->all();
+        $renewalId = session('renewal_id');
+        $renewalType = session('renewal_type');
 
         // Lấy hash từ dữ liệu trả về
         $vnp_SecureHash = $inputData['vnp_SecureHash'] ?? '';
@@ -284,25 +294,57 @@ class RentalPaymentController extends Controller
                         $order = RentalOrder::find($payment->order_id);
                         $payment->update([
                             'full_payment_status' => 'Successful',
+                            'status_deposit' => 'Successful',
                             'payment_date' => now(),
                         ]);
+
                         if ($order) {
                             $order->update(['status' => 'Paid']);
-                            $rental = RentalCars::find($order->rental_id);
-                            if ($rental) {
-                                $rental->update(['availability_status' => 'Rented']);
+                            $renewal = RentalRenewal::findOrFail($renewalId);
+                            $receipt = $renewal->rentalReceipt;
+
+                            if ($renewalType === 'active') {
+                                // Trường hợp hợp đồng còn hạn
+                                RentalReceipt::create([
+                                    'rental_id' => $receipt->rental_id,
+                                    'order_id' => $order->order_id,
+                                    'rental_start_date' => $receipt->rental_start_date,
+                                    'rental_end_date' => $renewal->new_end_date,
+                                    'rental_price_per_day' => $receipt->rental_price_per_day,
+                                    'total_cost' => $renewal->renewal_cost,
+                                    'status' => 'Active',
+                                    'is_renewal' => true,
+                                ]);
+                            } elseif ($renewalType === 'completed') {
+                                // Trường hợp hợp đồng đã hết hạn
+                                RentalReceipt::create([
+                                    'rental_id' => $receipt->rental_id,
+                                    'order_id' => $order->order_id,
+                                    'rental_start_date' => Carbon::now()->hour >= 22 
+                                        ? Carbon::now()->addDay()->startOfDay()
+                                        : Carbon::now(),
+                                    'rental_end_date' => $renewal->new_end_date,
+                                    'rental_price_per_day' => $receipt->rental_price_per_day,
+                                    'total_cost' => $renewal->renewal_cost,
+                                    'status' => 'Active',
+                                    'is_renewal' => true,
+                                ]);
+
+                                $rental = RentalCars::find($order->rental_id);
+                                if ($rental) {
+                                    $rental->update(['availability_status' => 'Rented']);
+                                }
                             }
 
-                            $receipt = RentalReceipt::where('order_id', $order->order_id)->firstOrFail();
-
+                            // Gửi email thông báo
                             try {
                                 Mail::to($order->user->email)->send(new \App\Mail\PaymentSuccessfulNotification([
                                     'name' => $order->user->name,
                                     'order_id' => $order->order_id,
                                     'receipt_id' => $receipt->receipt_id,
-                                    'start_date' => $receipt->rental_start_date,
-                                    'end_date' => $receipt->rental_end_date,
-                                    'total_cost' => $receipt->total_cost,
+                                    'start_date' => Carbon::parse($receipt->rental_start_date)->format('d-m-Y'),
+                                    'end_date' => Carbon::parse($renewal->new_end_date)->format('d-m-Y'),
+                                    'total_cost' => (float) $renewal->renewal_cost,
                                 ]));
 
                                 toastr()->success('Thanh toán gia hạn thành công. Email xác nhận đã được gửi.');
@@ -312,6 +354,7 @@ class RentalPaymentController extends Controller
                         }
                     }
                 }
+
                 return redirect()->route('rentalHistory');
             } else {
                 toastr()->error('Thanh toán gia hạn thất bại.');
@@ -322,4 +365,5 @@ class RentalPaymentController extends Controller
             return redirect()->route('rentalHistory');
         }
     }
+
 }

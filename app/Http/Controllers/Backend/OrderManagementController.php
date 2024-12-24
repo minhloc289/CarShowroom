@@ -50,9 +50,14 @@ class OrderManagementController extends Controller
     {
         // Lấy danh sách xe chưa bị xóa từ bảng car_details liên kết với bảng sales_cars
         $cars = CarDetails::whereHas('salesCars', function ($query) {
-            $query->where('is_deleted', 0);
-        })->with('sale')->get();
-        $accessories = Accessories::where('quantity', '>', 0)->get();
+            $query->where('is_deleted', 0)
+                  ->where('quantity', '>', 0);
+        })->with('salesCars')->get();
+        ;
+        $accessories = Accessories::where('quantity', '>', 0)
+                          ->where('is_deleted', 0)
+                          ->get();
+
 
         // Nhóm xe theo thương hiệu
         $carsByBrand = $cars->groupBy('brand');
@@ -163,6 +168,8 @@ class OrderManagementController extends Controller
             $car = SalesCars::find($saleId);
             $carPrice = $car->sale_price;
             $totalAmount += $carPrice;
+            $car->quantity -= 1;
+            $car->save();
         }
 
         // Giá phụ kiện
@@ -180,6 +187,8 @@ class OrderManagementController extends Controller
                     'quantity' => $accessoryData['quantity'],
                     'price' => $accessory->price,
                 ];
+                $accessory->quantity -= $accessoryData['quantity'];
+                $accessory->save();
             }
         }
 

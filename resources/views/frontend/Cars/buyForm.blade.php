@@ -41,35 +41,34 @@
                     <!-- Họ và tên -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Họ và tên</label>
-                        <input type="text" name="name" id="name" required
-                            class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2"
+                        <input type="text" name="name" id="name" required readonly
+                            class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 bg-gray-100"
                             value="{{ $user->name }}">
                     </div>
 
                     <!-- Email -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                        <input type="email" name="email" id="email" required
-                            class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2"
+                        <input type="email" name="email" id="email" required readonly
+                            class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 bg-gray-100"
                             value="{{ $user->email }}">
                     </div>
 
                     <!-- Số điện thoại -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Số điện thoại</label>
-                        <input type="tel" name="phone" id="phone" required
-                            class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2"
+                        <input type="tel" name="phone" id="phone" required readonly
+                            class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 bg-gray-100"
                             value="{{ $user->phone }}">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Ngày đặt cọc: </label>
                         <input type="date" name="date" id="date" required readonly
-                            class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 disabled-input">
+                            class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 px-4 py-2 bg-gray-100">
                     </div>
                 </div>
 
 
-                <!-- Tổng chi phí -->
                 <!-- Tổng chi phí -->
                 <div class="p-6">
                     <div class="p-4 bg-blue-100 rounded-md shadow-md">
@@ -85,7 +84,14 @@
                     </div>
                 </div>
 
-
+                <div class="flex justify-start items-center space-x-2 mt-6">
+                    <input type="checkbox" id="agree-terms" class="w-5 h-5 border-gray-300 focus:ring-blue-500"
+                        required>
+                    <label for="agree-terms" class="text-gray-700">
+                        Tôi đồng ý với các <a href="{{ route('CustomerDashBoard.terms') }}" target="_blank"
+                            class="text-blue-500 hover:underline">Điều khoản & Dịch vụ</a> của Merus.
+                    </label>
+                </div>
                 <div class="p-4">
                     <!-- Nút xác nhận thông tin -->
                     <div class="flex justify-center">
@@ -175,6 +181,13 @@
 
     // Chuyển sang tab "Thanh toán" nếu thông tin hợp lệ
     function goToDepositTab() {
+        const agreeTerms = document.getElementById('agree-terms');
+
+        if (!agreeTerms.checked) {
+            alert("Vui lòng đồng ý với Điều khoản & Dịch vụ trước khi tiếp tục!");
+            return;
+        }
+
         if (validateInfo()) {
             // Lấy thông tin từ tab "Thông tin" và điền vào tab "Thanh toán"
             updatePaymentTab();

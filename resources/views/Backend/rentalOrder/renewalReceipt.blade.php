@@ -7,6 +7,16 @@
     <div class="container mx-auto p-4">
         <h2 class="text-xl font-semibold text-gray-800 mb-6">Quản lý hóa đơn thuê xe</h2>
 
+        <!-- Nút gia hạn thủ công -->
+        <div class="mb-6">
+            <a 
+                href="{{ route('rental.extend.manual.search') }}" 
+                class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md"
+            >
+                Gia hạn thủ công
+            </a>
+        </div>
+
         <!-- Danh sách hóa đơn -->
         <div class="bg-white rounded-lg shadow-md p-4">
             <h3 class="text-lg font-medium text-gray-700 mb-4">Danh sách hóa đơn</h3>
@@ -44,10 +54,21 @@
                             <td class="border border-gray-200 px-4 py-2">{{ number_format($receipt->total_cost, 0, ',', '.') }} VND</td>
                             <td class="border border-gray-200 px-4 py-2">
                                 @if($receipt->renewals->isNotEmpty())
-                                    <a href="{{ route('rental.renewals.show', $receipt->renewals->first()->renewal_id) }}"
-                                       class="text-blue-500 hover:text-blue-700">
-                                        Có {{ $receipt->renewals->count() }} yêu cầu
-                                    </a>
+                                    @php
+                                        // Kiểm tra xem tất cả các yêu cầu đã được xử lý hay chưa
+                                        $allProcessed = $receipt->renewals->every(function($renewal) {
+                                            return in_array($renewal->status, ['Approved', 'Rejected']); // Chỉ định các trạng thái đã xử lý
+                                        });
+                                    @endphp
+                            
+                                    @if($allProcessed)
+                                        <span class="text-green-500">Đã xử lý</span>
+                                    @else
+                                        <a href="{{ route('rental.renewals.show', $receipt->renewals->first()->renewal_id) }}"
+                                           class="text-blue-500 hover:text-blue-700">
+                                            Có {{ $receipt->renewals->count() }} yêu cầu
+                                        </a>
+                                    @endif
                                 @else
                                     <span class="text-gray-500">Không có</span>
                                 @endif

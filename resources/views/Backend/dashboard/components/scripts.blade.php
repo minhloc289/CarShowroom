@@ -12,7 +12,7 @@
 @endif
 
 <script>
-    setInterval(() => {
+        setInterval(() => {
             fetch('/admin/check-rental-status', {
                 method: 'GET',
                 headers: {
@@ -29,7 +29,7 @@
                 });
         }, 5000);
 
-    setInterval(() => {
+        setInterval(() => {
             fetch('/admin/check-order-status', {
                 method: 'GET',
                 headers: {

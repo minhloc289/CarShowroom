@@ -158,11 +158,16 @@ class RentCarController extends Controller
             toastr()->error('Không thể gia hạn cho biên lai này.');
             return redirect()->back();
         }
-
+        
         // Xử lý logic gia hạn dựa trên trạng thái
         if ($receipt->status === 'Active') {
+            // Ép kiểu và kiểm tra dữ liệu đầu vào
+            $extendDays = (int) $validated['extend_days']; // Đảm bảo $extendDays là số nguyên
+            $rentalEndDate = Carbon::parse($receipt->rental_end_date); // Đảm bảo là Carbon instance
+        
             // Nới ngày kết thúc thêm số ngày gia hạn
-            $newEndDate = Carbon::parse($receipt->rental_end_date)->addDays($extendDays);
+            $newEndDate = $rentalEndDate->addDays($extendDays);
+            
         } elseif ($receipt->status === 'Completed') {
             // Đặt ngày bắt đầu mới là ngày sau ngày kết thúc
             $newStartDate = Carbon::parse($receipt->rental_end_date)->addDay();

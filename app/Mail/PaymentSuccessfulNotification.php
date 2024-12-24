@@ -5,15 +5,18 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class PaymentSuccessfulNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
+    public $name;
+    public $order_id;
+    public $receipt_id;
+    public $start_date;
+    public $end_date;
+    public $total_cost;
 
     /**
      * Create a new message instance.
@@ -22,7 +25,12 @@ class PaymentSuccessfulNotification extends Mailable
      */
     public function __construct(array $data)
     {
-        $this->data = $data;
+        $this->name = $data['name'];
+        $this->order_id = $data['order_id'];
+        $this->receipt_id = $data['receipt_id'];
+        $this->start_date = $data['start_date'];
+        $this->end_date = $data['end_date'];
+        $this->total_cost = $data['total_cost'];
     }
 
     /**
@@ -32,8 +40,7 @@ class PaymentSuccessfulNotification extends Mailable
      */
     public function build()
     {
-        return $this->subject('Thanh toán gia hạn thuê xe thành công')
-            ->markdown('emails.payment.successful')
-            ->with('data', $this->data);
+        return $this->subject('Xác nhận Thanh Toán Gia Hạn Thành Công')
+                    ->view('emails.payment.successful');
     }
 }

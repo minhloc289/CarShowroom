@@ -22,6 +22,7 @@ class RentalReceipt extends Model
         'rental_price_per_day',
         'total_cost',
         'status',
+        'is_renewal',
     ];
 
     /**

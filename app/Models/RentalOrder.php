@@ -17,6 +17,7 @@ class RentalOrder extends Model
         'rental_id',
         'status',
         'order_date',
+        'renew_order'
     ];
 
     // Quan hệ với RentalReceipt (một đơn hàng có thể có nhiều biên lai thuê)

@@ -14,14 +14,16 @@ class RentalHistoryController extends Controller
         // Lấy user hiện tại
         $userId = Auth::guard('account')->user()->id;
 
-        // Lấy tất cả các biên lai thuê xe của khách hàng với trạng thái Paid
+        // Lấy tất cả các biên lai thuê xe của khách hàng
         $rentalReceipts = RentalReceipt::whereHas('rentalOrder', function ($query) use ($userId) {
             $query->where('user_id', $userId)
                 ->where('status', 'Paid'); // Chỉ lấy Order có status là Paid
-        })->with(['rentalCar.carDetails', 'rentalOrder'])->get();
+        })->with(['rentalCar.carDetails', 'rentalOrder'])
+        ->get();
 
         return view('frontend.profilepage.rentalHistory', compact('rentalReceipts'));
     }
+
 
     public function showReceipt($receiptId)
     {

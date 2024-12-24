@@ -1,6 +1,7 @@
 @extends('Backend.dashboard.layout')
 
 @section('content')
+<x-breadcrumbs breadcrumb="TestDriveCreate" />
 
     <div class="container mx-auto px-4 sm:px-8 py-8">
         <!-- Background form -->
@@ -83,7 +84,7 @@
                 
                     <!-- Right Side (Car Image) -->
                     <div class="w-2/3 flex justify-center items-center">
-                        <img id="car_image" src="assets/img/logo (2).png" alt="Car Image" class="w-full max-w-[50%] rounded-lg">
+                        <img id="car_image" src="https://raw.githubusercontent.com/cotda/image/refs/heads/main/logo%20(2).png" alt="Car Image" class="w-full max-w-[40%] rounded-lg">
                     </div>
                 </div>
                 

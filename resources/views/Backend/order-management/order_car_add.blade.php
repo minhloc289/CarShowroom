@@ -12,22 +12,22 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="customer_phone" class="form-label">Số điện thoại</label>
-                    <input type="text" class="form-control" id="customer_phone" name="customer_phone">
+                    <input type="text" class="form-control" id="customer_phone" name="customer_phone" required>
                 </div>
                 <div class="col-md-6">
                     <label for="customer_name" class="form-label">Tên khách hàng</label>
-                    <input type="text" class="form-control" id="customer_name" name="customer_name">
+                    <input type="text" class="form-control" id="customer_name" name="customer_name" required readonly>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="customer_email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="customer_email" name="customer_email">
+                    <input type="email" class="form-control" id="customer_email" name="customer_email" required readonly>
                 </div>
                 <div class="col-md-6">
                     <label for="customer_address" class="form-label">Địa chỉ</label>
-                    <input type="text" class="form-control" id="customer_address" name="customer_address" rows="3"
+                    <input type="text" class="form-control" id="customer_address" name="customer_address" required rows="3"
                         readonly></input>
                 </div>
             </div>

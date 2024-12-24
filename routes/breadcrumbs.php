@@ -127,6 +127,14 @@ Breadcrumbs::for('order.details', function (BreadcrumbTrail $trail) {
     $trail->parent('Order'); // Parent breadcrumb
     $trail->push('Chi tiết Order');
 });
+Breadcrumbs::for('TestDrive', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lý xe lái thử', route('test_drive.index'));
+});
+Breadcrumbs::for('TestDriveCreate', function (BreadcrumbTrail $trail) {
+    $trail->parent('TestDrive');
+    $trail->push('Thêm đơn lái thử');
+
+});
 
 
 //Rental Order

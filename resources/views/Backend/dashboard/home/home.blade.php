@@ -1,6 +1,9 @@
 @extends('Backend.dashboard.layout')
 
 @section('content')
+<link rel="stylesheet" href="{{asset('tailwindcharts/css/flowbite.min.css')}}">
+<script src="{{asset('tailwindcharts/js/apexcharts.js')}}"></script>
+<script src="{{asset('tailwindcharts/js/flowbite.min.js')}}"></script>
 <!--begin::Toolbar-->
 <div class="toolbar" id="kt_toolbar">
     <!--begin::Container-->

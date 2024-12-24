@@ -21,6 +21,3 @@
 <link rel="stylesheet" href="{{ asset('/assets/css/customize.css') }}">
 <script src="{{ asset('/assets/js/custom/customizeJS.js') }}" defer></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-<link rel="stylesheet" href="{{asset('tailwindcharts/css/flowbite.min.css')}}">
-<script src="{{asset('tailwindcharts/js/apexcharts.js')}}"></script>
-<script src="{{asset('tailwindcharts/js/flowbite.min.js')}}"></script>

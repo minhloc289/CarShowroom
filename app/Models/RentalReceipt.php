@@ -22,6 +22,7 @@ class RentalReceipt extends Model
         'rental_price_per_day',
         'total_cost',
         'status',
+        'is_renewal',
     ];
 
     /**
@@ -43,5 +44,10 @@ class RentalReceipt extends Model
     public function rentalOrder()
     {
         return $this->belongsTo(RentalOrder::class, 'order_id');
+    }
+
+    public function renewals()
+    {
+        return $this->hasMany(RentalRenewal::class, 'receipt_id', 'receipt_id');
     }
 }

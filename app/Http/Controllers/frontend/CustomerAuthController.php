@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerifyEmail;
+use Illuminate\Support\Facades\Log;
 
 class CustomerAuthController extends Controller
 {
@@ -122,7 +123,7 @@ class CustomerAuthController extends Controller
             toastr()->success('Đăng ký thành công. Vui lòng kiểm tra email để xác nhận tài khoản!');
             return redirect()->route('CustomerDashBoard.index');
         } catch (\Exception $e) {
-            \Log::error($e->getMessage());
+            Log::error($e->getMessage());
             toastr()->error('Đã xảy ra lỗi. Vui lòng thử lại.');
             return back()->withInput();
         }
@@ -164,36 +165,36 @@ public function logout(Request $request)
 
     return redirect()->route('CustomerDashBoard.index');
 }
-// public function resetPassword(Request $request)
-// {
-//     // Xác thực dữ liệu nhập vào
-//     $request->validate([
-//         'old_password' => 'required', // Mật khẩu cũ là bắt buộc
-//         'password' => 'required|string|min:6|confirmed', // Mật khẩu mới phải trùng khớp với password_confirmation
-//         'password_confirmation' => 'required', // Trường xác nhận mật khẩu không được để trống
-//     ]);
+public function resetPassword(Request $request)
+{
+    // Xác thực dữ liệu nhập vào
+    $request->validate([
+        'old_password' => 'required', // Mật khẩu cũ là bắt buộc
+        'password' => 'required|string|min:6|confirmed', // Mật khẩu mới phải trùng khớp với password_confirmation
+        'password_confirmation' => 'required', // Trường xác nhận mật khẩu không được để trống
+    ]);
 
-//     // Lấy thông tin người dùng đang đăng nhập
-//     $user = Auth::guard('account')->user();
+    // Lấy thông tin người dùng đang đăng nhập
+    $user = Auth::guard('account')->user();
 
-//     // Kiểm tra mật khẩu cũ
-//     if ($request->password !== $request->password_confirmation) {
-//         toastr()->error('Mật khẩu cũ mới và mật khẩu xác minh không trùng khớp');
-//         return redirect()->back(); // Quay lại trang đổi mật khẩu
-//     }
-//     if (!Hash::check($request->old_password, $user->password)) {
-//         toastr()->error('Mật khẩu cũ không chính xác');
-//         return redirect()->back(); // Quay lại trang đổi mật khẩu
-//     }
+    // Kiểm tra mật khẩu cũ
+    if ($request->password !== $request->password_confirmation) {
+        toastr()->error('Mật khẩu cũ mới và mật khẩu xác minh không trùng khớp');
+        return redirect()->back(); // Quay lại trang đổi mật khẩu
+    }
+    if (!Hash::check($request->old_password, $user->password)) {
+        toastr()->error('Mật khẩu cũ không chính xác');
+        return redirect()->back(); // Quay lại trang đổi mật khẩu
+    }
 
 
-//     // Cập nhật mật khẩu mới
-//     $user->password = Hash::make($request->password);
-//     $user->save();
+    // Cập nhật mật khẩu mới
+    $user->password = Hash::make($request->password);
+    $user->save();
 
-//     // Thông báo thành công
-//     toastr()->success('Mật khẩu đã được thay đổi thành công');
-//     return redirect()->route('view.resetpass'); // Chuyển hướng sau khi đổi mật khẩu
-// }
+    // Thông báo thành công
+    toastr()->success('Mật khẩu đã được thay đổi thành công');
+    return redirect()->route('view.resetpass'); // Chuyển hướng sau khi đổi mật khẩu
+}
 }
 

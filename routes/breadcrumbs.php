@@ -159,3 +159,11 @@ Breadcrumbs::for('rentalRenewals', function (BreadcrumbTrail $trail) {
     $trail->parent('rentalReceipt');
     $trail->push('Chi tiết gia hạn');  
 });
+Breadcrumbs::for('Revenue', function (BreadcrumbTrail $trail) {
+    $trail->push('Quản lí Doanh Thu và Thống Kê');
+    $trail->push('Doanh Thu', route('payments.manage'));
+});
+Breadcrumbs::for('Revenue.details', function (BreadcrumbTrail $trail) {
+    $trail->parent('Revenue');
+    $trail->push('Chi tiết thanh toán');  
+});

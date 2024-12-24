@@ -34,13 +34,16 @@ use App\Http\Controllers\Backend\RevenueController;
 use App\Http\Controllers\Backend\TestDriveController;
 use App\Http\Controllers\frontend\RegisterTestDrive;
 /* BACKEND ROUTES */
+
+
+
 Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(function () {
 
     /* AUTHENTICATION */
     Route::get('/', [AuthController::class, 'index'])->name('auth.admin')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::post('login', [AuthController::class, 'login'])->name('auth.login')->withoutMiddleware([AuthenticateMiddleware::class])->middleware(LoginMiddleware::class);
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
-
+    
     /* DASHBOARD */
     Route::get('/dashboard', [DashboardController::class, 'loadDashboard'])->name('dashboard');
     Route::get('/user/profile', [DashboardController::class, 'loadProfile'])->name('profile');
@@ -66,6 +69,7 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::post('/orders/{order}/confirm-payment', [OrderManagementController::class, 'confirmPayment'])->name('orders.confirmPayment');
     Route::get('/orders/car/add', [OrderManagementController::class, 'addCar'])->name('orders.car.add');
     Route::post('/orders/store', [OrderManagementController::class, 'store'])->name('orders.store');
+    Route::post('/check-payment-status', [OrderManagementController::class, 'checkPaymentStatus'])->name('check.payment.status');
 
     /* RENTAL ORDER */
     Route::get('/rental-orders', [RentalOrderController::class, 'index'])->name('rentalOrders');
@@ -148,9 +152,6 @@ Route::prefix('admin')->middleware(AuthenticateMiddleware::class)->group(functio
     Route::get('/revenue/rental/detail/{id}', [RevenueController::class, 'show'])->name('revenue.rental.detail');
 
 
-
-
-
 });
 
 // Accessories Backend
@@ -167,6 +168,10 @@ Route::prefix('admin/accessories')->group(function () {
     Route::get('/template', [AccessoryController::class, 'downloadTemplate'])->name('accessories.template');
     Route::post('/bulk-delete', [AccessoryController::class, 'bulkDelete'])->name('accessories.bulkDelete');
 });
+
+Route::get('/unauthorized', function () {
+    return view('errors.unauthorized');
+})->name('unauthorized');
 
 /* FRONTEND ROUTES */
 

@@ -33,6 +33,7 @@ class RentalRenewalController extends Controller
                 'rental_id' => $receipt->rental_id,
                 'status' => 'Pending', // Trạng thái ban đầu của Order
                 'order_date' => now(),
+                'renew_order' => true, // Đánh dấu là Order gia hạn
             ]);
 
             $renewalType = 'completed'; // Dạng gia hạn: Hết hạn
@@ -55,6 +56,7 @@ class RentalRenewalController extends Controller
                 'rental_id' => $receipt->rental_id,
                 'status' => 'Pending', // Trạng thái ban đầu của Order
                 'order_date' => now(),
+                'renew_order' => true, // Đánh dấu là Order gia hạn
             ]);
 
             $renewalType = 'active'; // Dạng gia hạn: Còn hạn
@@ -193,6 +195,7 @@ class RentalRenewalController extends Controller
                 'rental_id' => $receipt->rental_id,
                 'status' => 'Paid', // Trạng thái đã thanh toán
                 'order_date' => now(),
+                'renew_order' => true, // Đánh dấu là Order gia hạn
             ]);
 
             // Cập nhật order_id trên hóa đơn cũ

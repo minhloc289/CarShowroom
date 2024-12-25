@@ -32,10 +32,6 @@
                                 class="bg-white text-gray-900 px-8 py-4 rounded-lg hover:bg-gray-100 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl">
                                 Explore the collection
                             </a>
-                            <a href="#"
-                                class="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white/10 transition-all duration-300 text-lg">
-                                Detailed consultation
-                            </a>
                         </div>
                     </div>
                     <!-- Right Image Section -->
@@ -138,12 +134,6 @@
                                             data-car-id="{{ $rentalCar->car_id }}">
                                             Rent Now
                                         </a>
-            
-                                        <!-- View Details Button -->
-                                        <a href="#"
-                                            class="w-1/2 py-3 px-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors duration-300 text-center font-medium">
-                                            View Details
-                                        </a>
                                     </div>
                                 </div>
                             @endif
@@ -169,17 +159,6 @@
                     </button>
                 </div>
             </div>
-        </div>
-
-
-        <!-- View All Button -->
-        <div class="text-center mt-12">
-            <a href="#" class="inline-flex items-center px-8 py-4 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-all duration-300 text-lg font-medium group">
-                View more
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-            </a>
         </div>
     </div>
 @endsection

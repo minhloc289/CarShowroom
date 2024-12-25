@@ -32,7 +32,7 @@
             </div>
             <div class="col-md-6">
                 <label for="start_date" class="form-label">Ngày bắt đầu thuê</label>
-                <input type="date" name="start_date" id="start_date" class="form-control" required>
+                <input type="date" name="start_date" id="start_date" class="form-control" required min="{{ date('Y-m-d') }}">
             </div>
         </div>
 

@@ -1,6 +1,9 @@
 @extends('Backend.dashboard.layout')
 
 @section('content')
+<link rel="stylesheet" href="{{asset('tailwindcharts/css/flowbite.min.css')}}">
+<script src="{{asset('tailwindcharts/js/apexcharts.js')}}"></script>
+<script src="{{asset('tailwindcharts/js/flowbite.min.js')}}"></script>
 <!--begin::Toolbar-->
 <div class="toolbar" id="kt_toolbar">
     <!--begin::Container-->
@@ -16,130 +19,10 @@
             <span class="h-20px border-gray-200 border-start mx-4"></span>
             <!--end::Separator-->
             <!--begin::Breadcrumb-->
-            <ul class="breadcrumb breadcrumb-separatorless fw-bold fs-7 my-1">
-                <!--begin::Item-->
-                <li class="breadcrumb-item text-muted">
-                    <a href="../../demo1/dist/index.html" class="text-muted text-hover-primary">Home</a>
-                </li>
-                <!--end::Item-->
-                <!--begin::Item-->
-                <li class="breadcrumb-item">
-                    <span class="bullet bg-gray-200 w-5px h-2px"></span>
-                </li>
-                <!--end::Item-->
-                <!--begin::Item-->
-                <li class="breadcrumb-item text-dark">Light Aside</li>
-                <!--end::Item-->
-            </ul>
             <!--end::Breadcrumb-->
         </div>
         <!--end::Page title-->
         <!--begin::Actions-->
-        <div class="d-flex align-items-center py-1">
-            <!--begin::Wrapper-->
-            <div class="me-4">
-                <!--begin::Menu-->
-                <a href="#" class="btn btn-sm btn-flex btn-light btn-active-primary fw-bolder"
-                    data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                    <!--begin::Svg Icon | path: icons/duotune/general/gen031.svg-->
-                    <span class="svg-icon svg-icon-5 svg-icon-gray-500 me-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d="M19.0759 3H4.72777C3.95892 3 3.47768 3.83148 3.86067 4.49814L8.56967 12.6949C9.17923 13.7559 9.5 14.9582 9.5 16.1819V19.5072C9.5 20.2189 10.2223 20.7028 10.8805 20.432L13.8805 19.1977C14.2553 19.0435 14.5 18.6783 14.5 18.273V13.8372C14.5 12.8089 14.8171 11.8056 15.408 10.964L19.8943 4.57465C20.3596 3.912 19.8856 3 19.0759 3Z"
-                                fill="black" />
-                        </svg>
-                    </span>
-                    <!--end::Svg Icon-->Filter</a>
-                <!--begin::Menu 1-->
-                <div class="menu menu-sub menu-sub-dropdown w-250px w-md-300px" data-kt-menu="true"
-                    id="kt_menu_61484bf6e3ff8">
-                    <!--begin::Header-->
-                    <div class="px-7 py-5">
-                        <div class="fs-5 text-dark fw-bolder">Filter Options</div>
-                    </div>
-                    <!--end::Header-->
-                    <!--begin::Menu separator-->
-                    <div class="separator border-gray-200"></div>
-                    <!--end::Menu separator-->
-                    <!--begin::Form-->
-                    <div class="px-7 py-5">
-                        <!--begin::Input group-->
-                        <div class="mb-10">
-                            <!--begin::Label-->
-                            <label class="form-label fw-bold">Status:</label>
-                            <!--end::Label-->
-                            <!--begin::Input-->
-                            <div>
-                                <select class="form-select form-select-solid" data-kt-select2="true"
-                                    data-placeholder="Select option" data-dropdown-parent="#kt_menu_61484bf6e3ff8"
-                                    data-allow-clear="true">
-                                    <option></option>
-                                    <option value="1">Approved</option>
-                                    <option value="2">Pending</option>
-                                    <option value="2">In Process</option>
-                                    <option value="2">Rejected</option>
-                                </select>
-                            </div>
-                            <!--end::Input-->
-                        </div>
-                        <!--end::Input group-->
-                        <!--begin::Input group-->
-                        <div class="mb-10">
-                            <!--begin::Label-->
-                            <label class="form-label fw-bold">Member Type:</label>
-                            <!--end::Label-->
-                            <!--begin::Options-->
-                            <div class="d-flex">
-                                <!--begin::Options-->
-                                <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
-                                    <input class="form-check-input" type="checkbox" value="1" />
-                                    <span class="form-check-label">Author</span>
-                                </label>
-                                <!--end::Options-->
-                                <!--begin::Options-->
-                                <label class="form-check form-check-sm form-check-custom form-check-solid">
-                                    <input class="form-check-input" type="checkbox" value="2" checked="checked" />
-                                    <span class="form-check-label">Customer</span>
-                                </label>
-                                <!--end::Options-->
-                            </div>
-                            <!--end::Options-->
-                        </div>
-                        <!--end::Input group-->
-                        <!--begin::Input group-->
-                        <div class="mb-10">
-                            <!--begin::Label-->
-                            <label class="form-label fw-bold">Notifications:</label>
-                            <!--end::Label-->
-                            <!--begin::Switch-->
-                            <div class="form-check form-switch form-switch-sm form-check-custom form-check-solid">
-                                <input class="form-check-input" type="checkbox" value="" name="notifications"
-                                    checked="checked" />
-                                <label class="form-check-label">Enabled</label>
-                            </div>
-                            <!--end::Switch-->
-                        </div>
-                        <!--end::Input group-->
-                        <!--begin::Actions-->
-                        <div class="d-flex justify-content-end">
-                            <button type="reset" class="btn btn-sm btn-light btn-active-light-primary me-2"
-                                data-kt-menu-dismiss="true">Reset</button>
-                            <button type="submit" class="btn btn-sm btn-primary"
-                                data-kt-menu-dismiss="true">Apply</button>
-                        </div>
-                        <!--end::Actions-->
-                    </div>
-                    <!--end::Form-->
-                </div>
-                <!--end::Menu 1-->
-                <!--end::Menu-->
-            </div>
-            <!--end::Wrapper-->
-            <!--begin::Button-->
-            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#kt_modal_create_app"
-                id="kt_toolbar_primary_button">Create</a>
-            <!--end::Button-->
-        </div>
         <!--end::Actions-->
     </div>
     <!--end::Container-->
@@ -155,36 +38,29 @@
 
             <!--end::Col-->
             <!--begin::Col-->
-            <div class="col-xxl-8" style="height: 100%;">
-                <div class="card card-xxl-stretch-50 mb-5 mb-xl-8" style="height: 90%">
-                    <div class=" w-full h-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
-                        <div class="flex justify-between">
-                            <div>
-                                <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32.4k
-                                </h5>
-                                <p class="text-base font-normal text-gray-500 dark:text-gray-400">Sales</p>
-                            </div>
-                            <div
-                                class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                                12%
-                                <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 10 14">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
-                                </svg>
-                            </div>
-                        </div>
-                        <div id="area-chart" class="mt-4 w-full h-full"></div>
-                        <div
-                            class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
-                            <div class="flex justify-between items-center pt-5">
-                                <!-- Button -->
-
-                            </div>
-                        </div>
-                    </div>
+            <div class="col-xxl-8" style="height: 700px; pointer-events: none;">
+    <div class="card card-xxl-stretch-50 mb-5 mb-xl-8" style="height: 90%; pointer-events: none;">
+        <div class="w-full h-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6" style="height: 750px; pointer-events: auto;">
+            <div class="flex justify-between">
+                <div>
+                    <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">32.4k</h5>
+                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Sales</p>
+                </div>
+                <div
+                    class="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
+                    12%
+                    <svg class="w-3 h-3 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 10 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 13V1m0 0L1 5m4-4 4 4" />
+                    </svg>
                 </div>
             </div>
+            <div id="area-chart" class="mt-4 w-full h-full" ></div>
+        </div>
+    </div>
+</div>
+
             <!--end::Col-->
             <!--begin::Col-->
             <div class="col-xxl-4">
@@ -294,7 +170,7 @@
                         <div class="grid grid-cols-2">
                             <dl class="flex items-center">
                                 <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal me-1">Money spent:</dt>
-                                <dd class="text-gray-900 text-sm dark:text-white font-semibold">$3,232</dd>
+                                <dd class="text-gray-900 text-sm dark:text-white font-semibold">3,232,120 VND</dd>
                             </dl>
                             <dl class="flex items-center justify-end">
                                 <dt class="text-gray-500 dark:text-gray-400 text-sm font-normal me-1">Conversion rate:
@@ -308,17 +184,7 @@
                             class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                             <div class="flex justify-between items-center pt-5">
                                 <!-- Button -->
-                                <button id="dropdownDefaultButton" data-dropdown-toggle="lastDaysdropdown"
-                                    data-dropdown-placement="bottom"
-                                    class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
-                                    type="button">
-                                    Last 7 days
-                                    <svg class="w-2.5 m-2.5 ms-1.5" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 1 4 4 4-4" />
-                                    </svg>
-                                </button>
+
                                 <!-- Dropdown menu -->
                                 <div id="lastDaysdropdown"
                                     class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
@@ -349,15 +215,6 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <a href="#"
-                                    class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2">
-                                    Leads Report
-                                    <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="m1 9 4-4-4-4" />
-                                    </svg>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -377,7 +234,7 @@
     const totalRentalRevenues = @json($totalPaymentRevenues);
     const totalPaymentRevenues = @json($totalRentalRevenues);
 
-    console.log(finalPaymentRevenues);
+
 
     const options = {
         chart: {
@@ -462,6 +319,13 @@
     // Tính tổng từng mảng
 
     const getChartOptions = () => {
+        const totalSum = totalRentalRevenues + totalPaymentRevenues;
+
+// Tính tỷ lệ phần trăm
+const series = [
+    (totalRentalRevenues / totalSum) * 100,
+    (totalPaymentRevenues / totalSum) * 100,
+];
         return {
             series: [totalRentalRevenues, totalPaymentRevenues],
             colors: ["#1C64F2", "#16BDCA"],
@@ -492,7 +356,8 @@
                     fontFamily: "Inter, sans-serif",
                 },
                 formatter: function (value) {
-                    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+                    return `${value.toFixed(2)}%`;
+
                 }
             },
             legend: {

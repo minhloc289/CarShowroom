@@ -33,5 +33,27 @@
 - Gửi email hóa đơn, trạng thái thanh toán cho khách hàng
 
 **Chạy dự án**
-### 1. Clone
-git clone <repository-url>
+### 1. Clone dự án
+git clone https://github.com/minhloc289/CarShowroom.git 
+
+### 2. Cài đặt dependencies
+composer install
+
+### 3. Cài đặt file .env
+cp .env.example .env
+
+### 4. Cài đặt key cho dự án
+php artisan key:generate
+
+### 5. Chạy database
+- Ưu tiên chạy các bảng sau trước: order, rental_order
+- Copy path của các file migration trên
+php artisan migrate --path=/database/migrations/...
+- Chạy toàn bộ database
+php artisan migrate
+
+### 6. Chạy dự án
+php artisan serve
+
+
+

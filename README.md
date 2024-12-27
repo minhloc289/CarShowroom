@@ -1,81 +1,84 @@
 # Car Showroom Management System
 
-## Giới thiệu
+## Introduction
 
-Đây là đồ án môn học **Lập trình Web** với mục tiêu xây dựng một hệ thống quản lý showroom ô tô. Đề tài được phát triển bằng **Laravel Framework**, cung cấp các chức năng chính như quản lý mua bán xe, thuê xe, quản lý phụ kiện, và tích hợp thanh toán trực tuyến.
+This is a **Web Programming** course project aimed at building a car showroom management system. The project is developed using **Laravel Framework**, providing core functionalities such as car buying, renting, accessory management, and online payment integration.
 
-## Ngôn ngữ và Công nghệ Sử Dụng
+## Technologies Used
 
-- **Ngôn ngữ lập trình**: PHP, HTML, Tailwind CSS, Javascript
+- **Programming Languages**: PHP, HTML, Tailwind CSS, Javascript
 - **Database**: MySQL
 
-## Các Chức Năng Chính
+## Main Features
 
-### 1. Accessories (Phụ kiện)
+### 1. Accessories
 
-- Người dùng có thể:
-  - Xem giỏ hàng
-  - Thêm phụ kiện vào giỏ hàng
+- Users can:
+  - View the shopping cart
+  - Add accessories to the cart
 
-### 2. So sánh và mua xe
+### 2. Compare and Buy Cars
 
-- Người dùng có thể:
-  - So sánh các mẫu xe trước khi đưa ra quyết định.
-  - Tích hợp thanh toán online qua **VNPay** (môi trường test).
+- Users can:
+  - Compare different car models before making a decision.
+  - Make online payments via **VNPay** (test environment).
 
-### 3. Thuê xe
+### 3. Car Rental
 
-- Người dùng có thể:
-  - Lựa chọn các loại xe có sẵn để thuê.
-  - Lên lịch thuê xe.
-  - Thanh toán đặt cọc trực tuyến qua **VNPay**.
-  - Gia hạn khi xe thuê hết hạn.
+- Users can:
+  - Choose available cars to rent.
+  - Schedule rental dates.
+  - Pay deposits online through **VNPay**.
+  - Extend the rental period when it expires.
 
-### 4. Các chức năng phụ khác
+### 4. Additional Features
 
-- **Quản lý đơn lái thử**:
-  - Người dùng có thể đăng ký lái thử xe và quản lý các lịch hẹn.
-- ***Quản lý nhân viên****:*
-  - Admin có thể thêm, sửa, xóa và quản lý thông tin nhân viên showroom.
-- **Thống kê doanh thu**:
-  - Hiển thị biểu đồ và dữ liệu thống kê doanh thu bán xe, thuê xe và phụ kiện.
+- **Test Drive Management**:
+  - Users can register for test drives and manage their appointments.
+- **Employee Management**:
+  - Admin can add, edit, delete, and manage showroom employee information.
+- **Revenue Statistics**:
+  - Display charts and statistical data on car sales, rentals, and accessory revenues.
 
-### 5. Chức năng gửi email
+### 5. Email Notifications
 
-- Hệ thống sẽ tự động gửi email:
-  - Hóa đơn mua hàng và thuê xe.
-  - Trạng thái thanh toán.
+- The system automatically sends emails for:
+  - Purchase and rental invoices.
+  - Payment status updates.
 
 ---
 
-## Cách Chạy Dự Án
+## How to Run the Project
 
-1. **Clone dự án**:
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/minhloc289/CarShowroom.git
    ```
-2. **Cài đặt các dependencies**:
+2. **Install dependencies**:
    ```bash
    composer install
    ```
-3. **Cấu hình file .env**:
-    ```bash
-    cp .env.example .env
-    ```
-4. Chạy database
-    - Ưu tiên chạy các bảng sau trước: order, rental_order
-    - Copy path của các file migration:
-      ```bash
-      php artisan migrate --path=/database/migrations/...
-      ```
-    - Chạy toàn bộ database:
-      ```bash
-      php artisan migrate
-      ```
-5. **Chạy dự án**:
+3. **Configure the .env file**:
+   ```bash
+   cp .env.example .env
+   ```
+4. **Run database migrations**:
+   - Prioritize running specific tables first: `order`, `rental_order`
+   - Copy paths of migration files:
+     ```bash
+     php artisan migrate --path=/database/migrations/...
+     ```
+   - Run all migrations:
+     ```bash
+     php artisan migrate
+     ```
+5. **Run the project**:
    ```bash
    php artisan serve
    ```
-6. **Truy cập**:
-   Mở trình duyệt và truy cập `http://localhost:8000`.
+6. **Access the application**:
+   Open your browser and navigate to `http://localhost:8000`.
+
+---
+
 

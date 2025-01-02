@@ -11,7 +11,7 @@
             <div
                 class="relative h-[4vh] mt-[-20vh] rounded-full px-[2vw] py-[0.5vh] text-sm text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                 Announcing our next round of funding.
-                <a href="javascript:void(0)" class="font-semibold text-indigo-600">
+                <a href="{{route('CustomerDashBoard.introduce')}}" class="font-semibold text-indigo-600">
                     Read more <span aria-hidden="true">&rarr;</span>
                 </a>
             </div>
@@ -34,7 +34,7 @@
                     class="rounded-md bg-indigo-600 px-[2vw] py-[1vh] text-sm font-semibold text-white shadow-sm hover:bg-indigo-500">
                     Register For Consultation
                 </a>
-                <a href="{{ route('CustomerDashBoard.introduce') }}"
+                <a href="{{ route('CarController.index') }}"
                     class="text-sm font-semibold text-gray-900 hover:underline" style="color: #4954F4;">
                     Learn more <span aria-hidden="true">→</span>
                 </a>
@@ -114,10 +114,6 @@
         <p><strong>Seats</strong>: 4 seats</p>
         <p><strong>Range</strong>: ~ 350 km (NEDC)</p>
         <p><strong>Starting Price</strong>: 2,500,000,000 VND</p>
-        <div class="flex justify-center space-x-4 mt-4">
-            <button class="bg-blue-600 text-white px-4 py-2 rounded">Reserve</button>
-            <button class="border border-blue-600 text-blue-600 px-4 py-2 rounded">View Details</button>
-        </div>
     </div>
 
 
@@ -172,7 +168,6 @@
                     <p class="text-gray-400 mb-4">Treat your car to our entry-level detail, perfect for maintaining
                         everyday
                         elegance.</p>
-                    <a href="#" class="text-blue-500 hover:underline">Learn More →</a>
                 </div>
             </div>
 
@@ -184,7 +179,6 @@
                     <h3 class="text-2xl font-bold mb-2">Maintenance Detail</h3>
                     <p class="text-gray-400 mb-4">Keep your car looking pristine with our maintenance detailing package.
                     </p>
-                    <a href="#" class="text-blue-500 hover:underline">Learn More →</a>
                 </div>
             </div>
 
@@ -195,7 +189,6 @@
                 <div class="p-6">
                     <h3 class="text-2xl font-bold mb-2">Full Detail</h3>
                     <p class="text-gray-400 mb-4">Experience the ultimate transformation with our full-detail package.</p>
-                    <a href="#" class="text-blue-500 hover:underline">Learn More →</a>
                 </div>
             </div>
         </div>

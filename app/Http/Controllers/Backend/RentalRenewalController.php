@@ -9,6 +9,7 @@ use App\Models\RentalReceipt;
 use App\Models\RentalRenewal;
 use App\Models\RentalOrder;
 use Carbon\Carbon;
+use App\Models\RentalCars;
 use Illuminate\Support\Facades\Mail;
 use App\Models\RentalPayment;
 
@@ -33,6 +34,7 @@ class RentalRenewalController extends Controller
                 'rental_id' => $receipt->rental_id,
                 'status' => 'Pending', // Trạng thái ban đầu của Order
                 'order_date' => now(),
+                'renew_order' => true, // Đánh dấu là Order gia hạn
             ]);
 
             $renewalType = 'completed'; // Dạng gia hạn: Hết hạn
@@ -55,6 +57,7 @@ class RentalRenewalController extends Controller
                 'rental_id' => $receipt->rental_id,
                 'status' => 'Pending', // Trạng thái ban đầu của Order
                 'order_date' => now(),
+                'renew_order' => true, // Đánh dấu là Order gia hạn
             ]);
 
             $renewalType = 'active'; // Dạng gia hạn: Còn hạn
@@ -181,58 +184,24 @@ class RentalRenewalController extends Controller
 
         $receipt = RentalReceipt::findOrFail($validated['receipt_id']);
         $extendDays = (int) $validated['extend_days'];
-
-        // Tính chi phí gia hạn
-        $renewalCost = $receipt->rental_price_per_day * $extendDays;
+        $renewalCost = $receipt->rental_price_per_day * $extendDays; // Tính chi phí gia hạn
 
         if ($receipt->status === 'Active') {
-            // Trường hợp hóa đơn còn hạn
-            // Tạo order mới
+            // Trường hợp hợp đồng còn hạn
             $newOrder = RentalOrder::create([
                 'user_id' => $receipt->rentalOrder->user_id,
                 'rental_id' => $receipt->rental_id,
-                'status' => 'Paid', // Trạng thái đã thanh toán
+                'status' => 'Paid',
                 'order_date' => now(),
-            ]);
-
-            // Cập nhật order_id trên hóa đơn cũ
-            $receipt->update([
-                'order_id' => $newOrder->order_id,
-                'rental_end_date' => Carbon::parse($receipt->rental_end_date)->addDays($extendDays),
-                'total_cost' => $receipt->total_cost + $renewalCost,
-                'is_renewal' => true,
-            ]);
-
-            // Tạo thanh toán cho order mới
-            RentalPayment::create([
-                'order_id' => $newOrder->order_id,
-                'status_deposit' => 'Successful', // Đã thanh toán cọc
-                'full_payment_status' => 'Successful', // Đã thanh toán đầy đủ
-                'deposit_amount' => 0,
-                'total_amount' => $renewalCost,
-                'remaining_amount' => 0,
-                'due_date' => now(),
-                'payment_date' => now(), // Thanh toán ngay tại showroom
-                'transaction_code' => uniqid(), // Mã giao dịch
-            ]);
-        } elseif ($receipt->status === 'Completed') {
-            // Trường hợp hóa đơn đã hết hạn
-            // Tạo order mới
-            $newOrder = RentalOrder::create([
-                'user_id' => $receipt->rentalOrder->user_id,
-                'rental_id' => $receipt->rental_id,
-                'status' => 'Paid', // Trạng thái đã thanh toán
-                'order_date' => now(),
+                'renew_order' => true,
             ]);
 
             // Tạo hóa đơn mới
             $newReceipt = RentalReceipt::create([
                 'rental_id' => $receipt->rental_id,
                 'order_id' => $newOrder->order_id,
-                'rental_start_date' => Carbon::now()->hour >= 22 
-                    ? Carbon::now()->addDay()->startOfDay() // Nếu gia hạn sau 22:00, bắt đầu ngày kế tiếp
-                    : Carbon::now(), // Nếu gia hạn trước 20:00, bắt đầu ngay lập tức
-                'rental_end_date' => Carbon::now()->addDays($extendDays)->endOfDay(), // Thời điểm hiện tại + số ngày gia hạn
+                'rental_start_date' => $receipt->rental_start_date, // Giữ nguyên ngày bắt đầu
+                'rental_end_date' => Carbon::parse($receipt->rental_end_date)->addDays($extendDays), // Cộng thêm số ngày gia hạn
                 'rental_price_per_day' => $receipt->rental_price_per_day,
                 'total_cost' => $renewalCost,
                 'status' => 'Active',
@@ -242,7 +211,50 @@ class RentalRenewalController extends Controller
             // Tạo thanh toán cho hóa đơn mới
             RentalPayment::create([
                 'order_id' => $newOrder->order_id,
-                'status_deposit' => 'Successful', // Đã thanh toán cọc
+                'status_deposit' => 'Successful', // Đã thanh toán đặt cọc
+                'full_payment_status' => 'Successful', // Đã thanh toán đầy đủ
+                'deposit_amount' => 0,
+                'total_amount' => $renewalCost,
+                'remaining_amount' => 0,
+                'due_date' => now(),
+                'payment_date' => now(), // Thanh toán ngay tại showroom
+                'transaction_code' => uniqid(), // Mã giao dịch
+            ]);
+
+        } elseif ($receipt->status === 'Completed') {
+            // Trường hợp hợp đồng đã hết hạn
+            $newOrder = RentalOrder::create([
+                'user_id' => $receipt->rentalOrder->user_id,
+                'rental_id' => $receipt->rental_id,
+                'status' => 'Paid',
+                'order_date' => now(),
+                'renew_order' => true,
+            ]);
+
+            // Tạo hóa đơn mới
+            $newReceipt = RentalReceipt::create([
+                'rental_id' => $receipt->rental_id,
+                'order_id' => $newOrder->order_id,
+                'rental_start_date' => Carbon::now()->hour >= 22
+                    ? Carbon::now()->addDay()->startOfDay() // Nếu sau 22:00, bắt đầu từ ngày hôm sau
+                    : Carbon::now(),
+                'rental_end_date' => Carbon::now()->addDays($extendDays)->endOfDay(), // Thời điểm hiện tại + số ngày gia hạn
+                'rental_price_per_day' => $receipt->rental_price_per_day,
+                'total_cost' => $renewalCost,
+                'status' => 'Active',
+                'is_renewal' => true,
+            ]);
+
+            // Cập nhật trạng thái xe thành Rented
+            $rental = RentalCars::find($receipt->rental_id);
+            if ($rental) {
+                $rental->update(['availability_status' => 'Rented']);
+            }
+
+            // Tạo thanh toán cho hóa đơn mới
+            RentalPayment::create([
+                'order_id' => $newOrder->order_id,
+                'status_deposit' => 'Successful', // Đã thanh toán đặt cọc
                 'full_payment_status' => 'Successful', // Đã thanh toán đầy đủ
                 'deposit_amount' => 0,
                 'total_amount' => $renewalCost,
@@ -252,9 +264,13 @@ class RentalRenewalController extends Controller
                 'transaction_code' => uniqid(), // Mã giao dịch
             ]);
         }
-        toastr()->success('Gia hạn hợp đồng thành công.');
+
+        // Hiển thị thông báo thành công
+        toastr()->success('Gia hạn hợp đồng, tạo hóa đơn và thanh toán thành công.');
         return redirect()->route('rentalReceipt');
     }
+
+
 
 
 }

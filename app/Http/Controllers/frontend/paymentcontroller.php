@@ -54,8 +54,8 @@ class paymentcontroller extends Controller
         $payment->deposit_amount = $paymentDepositAmount;
         $payment->remaining_amount = $remainingAmount;
         $payment->total_amount = $totalPrice;
-        $payment->deposit_deadline = now()->addMinutes(5); // Hạn đặt cọc là 5 phút
-        $payment->payment_deadline = now()->addDays(30); // Ví dụ: hạn thanh toán đầy đủ là 30 ngày
+        $payment->deposit_deadline = now()->addMinutes(2); // Hạn đặt cọc là 5 phút
+        $payment->payment_deadline = now()->addMinutes(5); // Ví dụ: hạn thanh toán đầy đủ là 30 ngày
         $payment->save();
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "http://127.0.0.1:8000/payment/vnpay-return";

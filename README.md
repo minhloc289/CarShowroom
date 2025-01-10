@@ -57,6 +57,7 @@ This is a **Web Programming** course project aimed at building a car showroom ma
 2. **Install dependencies**:
    ```bash
    composer install
+   composer require maatwebsite/excel --ignore-platform-reqs
    ```
 3. **Configure the .env file**:
    ```bash

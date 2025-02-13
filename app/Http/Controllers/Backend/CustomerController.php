@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Account;
 use App\Http\Requests\CustomerRequest;
+use App\Mail\VerifyEmail;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
@@ -23,16 +26,20 @@ class CustomerController extends Controller
     public function createCustomer(CustomerRequest $request)
     {
         // Lưu khách hàng vào database
-        Account::create([
+        $account = Account::create([
             'id' => 'ACC' . (Account::count() + 1), // Mã tài khoản tự động
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
             'is_verified' => false, // Luôn là chưa xác thực
-            'email_verification_token' => null, // Token trống
-            'password' => bcrypt('defaultpassword'), // Mật khẩu mặc định
+            'email_verification_token' => Str::random(32), // Token trống
+            'password' => bcrypt('merus'), // Mật khẩu mặc định
         ]);
+
+        Mail::send('emails.verify_email', ['token' => $account->email_verification_token], function ($message) use ($request) {
+            $message->to($request->email)->subject('Xác thực tài khoản của bạn');
+        });
 
         toastr()->success('Thêm khách hàng thành công.');
         return redirect()->route('customer');

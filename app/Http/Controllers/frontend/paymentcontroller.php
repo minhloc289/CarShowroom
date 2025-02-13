@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Order; // Đảm bảo đã import
+use App\Models\SalesCars; // Đảm bảo đã import
 use App\Models\Payment; // Đảm bảo đã import
 
 
@@ -40,7 +41,9 @@ class paymentcontroller extends Controller
         $order->status_order = 0; // Pending
         $order->order_date = now();
         $order->save();
-
+        $salesCar = SalesCars::find($saleId);
+        $salesCar->quantity -= 1;
+        $salesCar->save();
         // Tạo bản ghi trong bảng payments
         $payment = new Payment();
         $payment->payment_id = 'PAY' . time(); // Hoặc sử dụng logic tạo ID phù hợp
@@ -51,8 +54,8 @@ class paymentcontroller extends Controller
         $payment->deposit_amount = $paymentDepositAmount;
         $payment->remaining_amount = $remainingAmount;
         $payment->total_amount = $totalPrice;
-        $payment->deposit_deadline = now()->addMinutes(5); // Hạn đặt cọc là 5 phút
-        $payment->payment_deadline = now()->addDays(30); // Ví dụ: hạn thanh toán đầy đủ là 30 ngày
+        $payment->deposit_deadline = now()->addMinutes(2); // Hạn đặt cọc là 5 phút
+        $payment->payment_deadline = now()->addMinutes(5); // Ví dụ: hạn thanh toán đầy đủ là 30 ngày
         $payment->save();
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "http://127.0.0.1:8000/payment/vnpay-return";

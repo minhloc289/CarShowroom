@@ -45,4 +45,21 @@
                     console.error('Error checking order status:', error);
                 });
         }, 5000); // Thời gian 5 giây    
+
+        setInterval(function () {
+            $.ajax({
+                url: "{{ route('check.payment.status') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}"
+                },
+                success: function (response) {
+                    console.log(response.message);
+                },
+                error: function (xhr) {
+                    console.error("Lỗi kiểm tra trạng thái:", xhr.responseText);
+                }
+            });
+        }, 5000); // 5000ms = 5s
+
 </script>

@@ -20,7 +20,7 @@ class VerifyEmail extends Mailable
      */
     public function __construct($account)
     {
-        //
+        $this->account = $account;
     }
 
     public function build()

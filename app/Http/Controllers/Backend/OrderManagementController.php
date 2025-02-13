@@ -50,9 +50,14 @@ class OrderManagementController extends Controller
     {
         // Lấy danh sách xe chưa bị xóa từ bảng car_details liên kết với bảng sales_cars
         $cars = CarDetails::whereHas('salesCars', function ($query) {
-            $query->where('is_deleted', 0);
-        })->with('sale')->get();
-        $accessories = Accessories::where('quantity', '>', 0)->get();
+            $query->where('is_deleted', 0)
+                  ->where('quantity', '>', 0);
+        })->with('salesCars')->get();
+        ;
+        $accessories = Accessories::where('quantity', '>', 0)
+                          ->where('is_deleted', 0)
+                          ->get();
+
 
         // Nhóm xe theo thương hiệu
         $carsByBrand = $cars->groupBy('brand');
@@ -163,6 +168,8 @@ class OrderManagementController extends Controller
             $car = SalesCars::find($saleId);
             $carPrice = $car->sale_price;
             $totalAmount += $carPrice;
+            $car->quantity -= 1;
+            $car->save();
         }
 
         // Giá phụ kiện
@@ -180,6 +187,8 @@ class OrderManagementController extends Controller
                     'quantity' => $accessoryData['quantity'],
                     'price' => $accessory->price,
                 ];
+                $accessory->quantity -= $accessoryData['quantity'];
+                $accessory->save();
             }
         }
 
@@ -209,8 +218,8 @@ class OrderManagementController extends Controller
             'deposit_amount' => $depositAmount,
             'total_amount' => $totalAmount,
             'remaining_amount' => $remainingAmount,
-            'deposit_deadline' => $request->payment_method === 'full' ? now() : now()->addDays(7),
-            'payment_deadline' => $request->payment_method === 'full' ? now() : now()->addDays(30),
+            'deposit_deadline' => $request->payment_method === 'full' ? now() : now()->addMinutes(2),
+            'payment_deadline' => $request->payment_method === 'full' ? now() : now()->addMinutes(5),
             'full_payment_date' => $request->payment_method === 'full' ? now() : null, // Ngày thanh toán đầy đủ nếu phương thức là full
             'payment_deposit_date' => $request->payment_method === 'deposit' ? now() : null, // Ngày thanh toán còn lại nếu phương thức là deposit
         ]);
@@ -219,6 +228,37 @@ class OrderManagementController extends Controller
         return redirect()->back();
     }
 
+    public function checkPaymentStatus(Request $request)
+    {
+        try {
+            // Cập nhật trạng thái status_deposit và status_order
+            Payment::where('status_deposit', 0)
+                ->where('deposit_deadline', '<', now())
+                ->get()
+                ->each(function ($payment) {
+                    $payment->update(['status_deposit' => 2]);
+                    $payment->update(['status_payment_all' => 2]);
+                    if ($payment->order) {
+                        $payment->order->update(['status_order' => 2]);
+                    }
+                });
+
+            // Cập nhật trạng thái status_payment_all và status_order
+            Payment::where('status_payment_all', 0)
+                ->where('payment_deadline', '<', now())
+                ->get()
+                ->each(function ($payment) {
+                    $payment->update(['status_payment_all' => 2]);
+                    if ($payment->order) {
+                        $payment->order->update(['status_order' => 2]);
+                    }
+                });
+
+            return response()->json(['message' => 'Cập nhật trạng thái thành công'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Có lỗi xảy ra: ' . $e->getMessage()], 500);
+        }
+    }
 
 
 

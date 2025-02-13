@@ -15,8 +15,10 @@ class CarController extends Controller
         $seatCapacities = CarDetails::distinct()->pluck('seat_capacity'); // Lấy danh sách seat_capacity duy nhất
         $brands = CarDetails::distinct()->pluck('brand'); // Lấy danh sách brand duy nhất    
         $cars = CarDetails::whereHas('salesCars', function ($query) {
-            $query->where('is_deleted', 0);
-        })->with('sale')->get();// Lấy dữ liệu từ bảng `car_details` và liên kết với `sales_cars`
+            $query->where('is_deleted', 0)
+                  ->where('quantity', '>', 0);
+        })->with('salesCars')->get();
+        // Lấy dữ liệu từ bảng `car_details` và liên kết với `sales_cars`
         return view("frontend.Cars.cars", compact('cars', 'engineTypes', 'seatCapacities', 'brands'));
     }
     public function show($car_id)
